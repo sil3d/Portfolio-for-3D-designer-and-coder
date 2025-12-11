@@ -29,6 +29,28 @@ A professional, high-performance portfolio platform designed for 3D Artists and 
 
 ---
 
+## 📸 Gallery & Previews
+
+<p align="center">
+  <img src="app/static/images_github/Capture d'écran 2025-12-09 000158.png" width="45%" alt="Preview 1">
+  <img src="app/static/images_github/Capture d'écran 2025-12-09 232604.png" width="45%" alt="Preview 2">
+  <img src="app/static/images_github/Capture d'écran 2025-12-10 212213.png" width="45%" alt="Preview 3">
+  <img src="app/static/images_github/Capture d'écran 2025-12-11 002612.png" width="45%" alt="Preview 4">
+  <img src="app/static/images_github/Capture d'écran 2025-12-11 002623.png" width="45%" alt="Preview 5">
+  <img src="app/static/images_github/Capture d'écran 2025-12-11 002642.png" width="45%" alt="Preview 6">
+  <img src="app/static/images_github/Capture d'écran 2025-12-11 002708.png" width="45%" alt="Preview 7">
+  <img src="app/static/images_github/Capture d'écran 2025-12-11 002723.png" width="45%" alt="Preview 8">
+  <img src="app/static/images_github/Capture d'écran 2025-12-11 002735.png" width="45%" alt="Preview 9">
+  <img src="app/static/images_github/Capture d'écran 2025-12-11 002750.png" width="45%" alt="Preview 10">
+  <img src="app/static/images_github/Capture d'écran 2025-12-11 002804.png" width="45%" alt="Preview 11">
+  <img src="app/static/images_github/Capture d'écran 2025-12-11 002819.png" width="45%" alt="Preview 12">
+  <img src="app/static/images_github/Capture d'écran 2025-12-11 002850.png" width="45%" alt="Preview 13">
+  <img src="app/static/images_github/Capture d'écran 2025-12-11 002937.png" width="45%" alt="Preview 14">
+  <img src="app/static/images_github/Capture d'écran 2025-12-11 003017.png" width="45%" alt="Preview 15">
+</p>
+
+---
+
 ## 🔒 Security Measures
 
 This project is built with security as a priority for open-source deployment:
