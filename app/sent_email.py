@@ -40,7 +40,13 @@ def contact():
 
         try:
             print(f"DEBUG: Connecting to SMTP {smtp_server}:{smtp_port}...", flush=True)
-            with smtplib.SMTP(smtp_server, smtp_port, timeout=10) as server:
+            
+            # Force IPv4 Resolution to avoid IPv6 timeouts
+            import socket
+            raw_ip = socket.getaddrinfo(smtp_server, smtp_port, family=socket.AF_INET, proto=socket.IPPROTO_TCP)[0][4][0]
+            print(f"DEBUG: Resolved {smtp_server} to IPv4: {raw_ip}", flush=True)
+
+            with smtplib.SMTP(raw_ip, smtp_port, timeout=10) as server:
                 print("DEBUG: Connection established. Starting TLS...", flush=True)
                 server.starttls()
                 print("DEBUG: TLS started. Logging in...", flush=True)
