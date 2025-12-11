@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+
+{% block title %}Contact - Prince Gildas MK{% endblock %}
+
+{% block styles %}
+<style>
+    .form-control {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        color: #fff;
+        border-radius: 8px;
+        padding: 12px 15px;
+    }
+    .form-control:focus {
+        background: rgba(255, 255, 255, 0.1);
+        border-color: var(--accent-color);
+        box-shadow: 0 0 10px rgba(41, 121, 255, 0.2);
+        color: #fff;
+    }
+    label {
+        color: var(--text-color);
+        font-weight: 600;
+        margin-bottom: 8px;
+    }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="text-center mb-5">
+                <h1 class="hero-title" style="font-size: 3rem;">Get In Touch</h1>
+                <p class="hero-subtitle">Let's Build Something Amazing</p>
+            </div>
+
+            <div class="glass-card">
+                <form id="contact-form">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <div class="form-group mb-4">
+                        <label for="name">Name</label>
+                        <input type="text" id="name" name="name" class="form-control" required placeholder="Your Name">
+                    </div>
+                    <div class="form-group mb-4">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" class="form-control" required placeholder="your.email@example.com">
+                    </div>
+                    <div class="form-group mb-4">
+                        <label for="message">Message</label>
+                        <textarea id="message" name="message" rows="5" class="form-control" required placeholder="How can I help you?"></textarea>
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="btn-premium w-100">Send Message</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.getElementById('contact-form').addEventListener('submit', function (event) {
+        event.preventDefault();
+        
+        var formData = new FormData(event.target);
+
+        // Show loading state
+        const submitBtn = event.target.querySelector('button[type="submit"]');
+        const originalText = submitBtn.innerText;
+        submitBtn.innerText = 'Sending...';
+        submitBtn.disabled = true;
+
+        fetch('{{ url_for("send_email.contact") }}', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                Swal.fire({
+                    title: 'Success!',
+                    text: data.message,
+                    icon: 'success',
+                    background: '#050510',
+                    color: '#fff',
+                    confirmButtonColor: '#2979ff'
+                });
+                event.target.reset();
+            } else {
+                Swal.fire({
+                   title: 'Error',
+                   text: data.message,
+                   icon: 'error',
+                   background: '#050510',
+                   color: '#fff'
+                });
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            Swal.fire('Error', 'An error occurred. Please try again.', 'error');
+        })
+        .finally(() => {
+            submitBtn.innerText = originalText;
+            submitBtn.disabled = false;
+        });
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,11 @@
+instance/
+*.db
+*.sqlite3
+.env
+__pycache__/
+*.pyc
+venv/
+env/
+error.log
+.DS_Store
+Thumbs.db

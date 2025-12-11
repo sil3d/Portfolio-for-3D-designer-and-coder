@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>{{ model.name }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style_model_3D.css') }}">
+    <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@v0.163.0/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@v0.163.0/examples/jsm/",
+                "tween": "https://cdn.jsdelivr.net/npm/@tweenjs/tween.js@18.6.4/dist/tween.umd.js"
+            }
+        }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/@tweenjs/tween.js@18.6.4/dist/tween.umd.js"></script>
+</head>
+<body>
+    <!-- Navbar treated as overlay -->
+    {% include 'navbar1.html' %}
+    
+    <div id="heading" class="glass-ui" style="display:none;"> <!-- Hidden initially or if title not needed overlaying navbar -->
+       <!-- Title moved to navbar or separate overlay if desired, but user kept it separate. 
+            Let's keep it but formatted nicer in CSS. 
+            Actually, let's make it visible but understated. -->
+        <h1>{{ model.name }}</h1>
+        <div id="hdr-preview-container"></div>
+    </div>
+
+    <!-- We might want the HDR container to be more accessible, maybe a settings gear? 
+         For now keeping original functionality but styled. -->
+    <div id="hdr-preview-container" style="position: absolute; top: 100px; left: 20px; z-index: 5;">
+         <!-- JS populates this -->
+    </div>
+
+    <div id="progress-container">
+        <div id="progress">Loading Model...</div>
+    </div>
+    
+    <div id="model-name" style="display:none;">{{ model.name }}</div> <!-- Redundant with heading/navbar info -->
+    
+    <div id="gallery-container">
+        <!-- Gallery images inserted by JS -->
+    </div>
+    
+    <div id="actions">
+        <button id="like-button" class="button">Like <span class="count" id="like-count">{{ model.like_count }}</span></button>
+        <a id="download-button" class="button" href="/download/{{ model.id }}" download>Download <span class="count" id="download-count">{{ model.download_count }}</span></a>
+    </div>
+
+    <script type="module" src="{{ url_for('static', filename='js/main_3D_model.js') }}"></script>
+</body>
+</html>

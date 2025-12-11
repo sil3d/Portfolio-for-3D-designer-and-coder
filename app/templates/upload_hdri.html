@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload HDRI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style_upload_hdri.css') }}">
+</head>
+<body>
+
+    <div class="container">
+        <h1>Upload HDRI</h1>
+        
+        <!-- Navigation Button -->
+        <div class="navigation">
+            <a href="{{ url_for('ckeck_password.upload_page') }}" class="button">Upload Images</a>
+            <a href="{{ url_for('admin.manage_all') }}" class="button">Manage All</a>
+        </div>
+        
+        <form id="upload-form" action="/upload_hdri" method="POST" enctype="multipart/form-data">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <div class="form-group">
+                <label for="hdri-name">HDRI Name:</label>
+                <input type="text" id="hdri-name" name="hdri_name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="hdri-file">HDRI File:</label>
+                <input type="file" id="hdri-file" name="hdri_file" accept=".hdr, .exr" required>
+            </div>
+
+            <div class="form-group">
+                <label for="preview-file">Preview Image:</label>
+                <input type="file" id="preview-file" name="preview_file" accept="image/*" required>
+            </div>
+
+            <button type="submit">Upload HDRI</button>
+        </form>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const form = document.getElementById('upload-form');
+        const container = document.querySelector('.container');
+
+        form.addEventListener('submit', (event) => {
+            event.preventDefault(); // Empêche le rechargement de la page
+
+            const formData = new FormData(form);
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', '/upload_hdri', true);
+            
+            // Afficher la barre de chargement
+            const loadingDiv = document.createElement('div');
+            loadingDiv.className = 'loading';
+            loadingDiv.textContent = 'Uploading...';
+            container.appendChild(loadingDiv);
+            
+            xhr.onload = function() {
+                container.removeChild(loadingDiv);
+                const responseDiv = document.createElement('div');
+                if (xhr.status === 200) {
+                    const response = JSON.parse(xhr.responseText);
+                    responseDiv.className = response.success ? 'success' : 'error';
+                    responseDiv.textContent = response.success ? 'File uploaded successfully!' : response.message;
+                } else {
+                    responseDiv.className = 'error';
+                    responseDiv.textContent = 'An error occurred during the upload.';
+                }
+                container.appendChild(responseDiv);
+            };
+
+            xhr.onerror = function() {
+                container.removeChild(loadingDiv);
+                const errorDiv = document.createElement('div');
+                errorDiv.className = 'error';
+                errorDiv.textContent = 'An error occurred during the upload.';
+                container.appendChild(errorDiv);
+            };
+
+            xhr.send(formData);
+        });
+    });
+    </script>
+</body>
+</html>

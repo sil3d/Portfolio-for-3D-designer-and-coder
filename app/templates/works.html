@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %}3D Works - So I Learn 3D{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="text-center mb-5">
+        <h1 class="hero-title" style="font-size: 3rem;">My Journey</h1>
+        <p class="text-muted" style="text-transform: uppercase; letter-spacing: 2px;">Explore my progress through the years</p>
+    </div>
+
+    <div class="row">
+        {% for year, data in years_data.items() %}
+        <div class="col-md-6 col-lg-3 mb-4">
+            <div class="glass-card h-100 p-0" style="padding: 0; overflow: hidden;">
+                <div style="height: 200px; overflow: hidden; position: relative;">
+                     <img src="{{ url_for('static', filename=data.banner_path) }}" class="w-100 h-100" style="object-fit: cover;" alt="{{ data.title }}">
+                </div>
+                <div class="p-4">
+                    <h3 class="mb-3">{{ year }}</h3>
+                    <h5 class="text-white mb-2">{{ data.title }}</h5>
+                    <p class="text-muted small mb-4">{{ data.description }}</p>
+                    <a href="{{ url_for('main.models_year', year=year) }}" class="btn-outline-premium btn-sm w-100 d-block text-center">View Projects</a>
+                </div>
+                <div class="p-3 border-top border-dark d-flex justify-content-between text-muted small" style="background: rgba(255,255,255,0.02)">
+                    <span><i class="fas fa-cube mr-1"></i> {{ data.projects_count }}</span>
+                    <span><i class="fas fa-star mr-1"></i> {{ data.skills_count }}</span>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

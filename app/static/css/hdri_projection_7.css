@@ -1,0 +1,550 @@
+/* Styles généraux */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    overflow-x: hidden;
+    /* Empêche le défilement horizontal */
+}
+
+a {
+    color: rgb(0, 247, 255);
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+button {
+    cursor: pointer;
+    text-transform: uppercase;
+}
+
+#container {
+    width: 100%;
+    height: 100vh;
+    position: relative;
+}
+
+/* Custom GUI Container */
+#gui-container-custom {
+    position: fixed;
+    top: 100px;
+    right: 20px;
+    z-index: 2000;
+    /* Above most things */
+    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out, visibility 0.3s;
+    visibility: hidden;
+    opacity: 0;
+    transform: translateX(20px);
+    max-height: calc(100vh - 150px);
+    overflow-y: auto;
+    border-radius: 8px;
+    pointer-events: none;
+    /* Allow clicking through when hidden */
+}
+
+#gui-container-custom.open {
+    visibility: visible;
+    opacity: 1;
+    transform: translateX(0);
+    pointer-events: auto;
+}
+
+/* Force lil-gui to fit in our container */
+#gui-container-custom .lil-gui {
+    position: relative !important;
+    top: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    left: auto !important;
+    max-height: none !important;
+    margin: 0 !important;
+    width: 300px;
+    --width: 100%;
+}
+
+/* Mobile specific overrides */
+@media (max-width: 768px) {
+    #gui-container-custom {
+        top: 0;
+        right: 0;
+        height: 100vh;
+        max-height: 100vh;
+        width: 80%;
+        max-width: 350px;
+        background: rgba(20, 20, 25, 0.95);
+        backdrop-filter: blur(10px);
+        transform: translateX(100%);
+        border-radius: 0;
+        padding-top: 80px;
+        box-shadow: -5px 0 15px rgba(0, 0, 0, 0.5);
+    }
+
+    #gui-container-custom.open {
+        transform: translateX(0);
+    }
+
+    #gui-container-custom .lil-gui {
+        width: 100%;
+        --width: 100%;
+    }
+}
+
+/* Make sliders and inputs more touch-friendly */
+.lil-gui input[type="range"] {
+    height: 18px !important;
+    cursor: pointer;
+}
+
+.lil-gui input[type="text"],
+.lil-gui input[type="number"] {
+    min-height: 28px !important;
+    font-size: 13px !important;
+    padding: 4px 6px !important;
+}
+
+/* Increase spacing between controllers */
+.lil-gui .controller {
+    margin-bottom: 6px !important;
+}
+
+/* Make folder titles larger and more clickable */
+.lil-gui .title {
+    min-height: 32px !important;
+    line-height: 32px !important;
+    font-size: 14px !important;
+}
+
+#model-name {
+    position: absolute;
+    bottom: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: rgb(0, 183, 255);
+    font-size: 18px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+    z-index: 1;
+}
+
+#hdr-preview-container-wrapper {
+    position: absolute;
+    top: 150px;
+    left: 20px;
+    z-index: 1;
+}
+
+#hdr-preview-container {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 0;
+}
+
+#hdr-preview-container.hidden {
+    display: none;
+}
+
+#hdr-preview-container img {
+    width: 100px;
+    height: 80px;
+    margin: 5px;
+    cursor: pointer;
+    border-radius: 5%;
+}
+
+#actions {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 20px;
+    z-index: 1;
+}
+
+#actions-boutton {
+    position: absolute;
+    top: 10px;
+    /* Ajuste la distance du haut selon tes besoins */
+    right: 50%;
+    /* Ajuste la distance de la droite selon tes besoins */
+    z-index: 1000;
+    /* Assure-toi qu'il soit au-dessus d'autres éléments */
+}
+
+.bouton {
+    margin: 5px;
+    /* Espace entre les boutons */
+    padding: 6px 8px;
+    /* Taille des boutons */
+    cursor: pointer;
+    /* Curseur au survol */
+    background-color: #56bcec;
+    /* Couleur de fond */
+    color: rgb(0, 0, 0);
+    /* Couleur du texte */
+    border: none;
+    /* Pas de bordure */
+    border-radius: 5px;
+    /* Coins arrondis */
+    transition: background-color 0.3s;
+    /* Animation pour le survol */
+}
+
+.bouton:hover {
+    background-color: #b30000;
+    /* Couleur au survol */
+}
+
+.button {
+    background: #439e5e;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    font-size: 18px;
+    cursor: pointer;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    transition: background 0.3s, transform 0.2s;
+
+
+}
+
+.button:hover {
+    background: #0056b3;
+    transform: scale(1.05);
+}
+
+.button .count {
+    margin-left: 10px;
+    font-weight: bold;
+}
+
+#info {
+    display: none;
+    position: absolute;
+    top: 80px;
+    left: 20%;
+    z-index: 100;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 20px;
+    border-radius: 5px;
+}
+
+#info.show {
+    display: block;
+}
+
+#gallery-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.95);
+    z-index: 9000;
+    overflow: hidden;
+    animation: fadeIn 0.5s ease-out;
+}
+
+#gallery-iframe {
+    width: 100%;
+    height: 100%;
+    display: block;
+    border: none;
+    z-index: 9001;
+}
+
+#close-gallery {
+    position: fixed !important;
+    top: 10px !important;
+    right: 10px !important;
+    z-index: 9999 !important;
+    background: #ff3b30 !important;
+    color: white !important;
+    border: none !important;
+    border-radius: 50% !important;
+    width: 50px !important;
+    height: 50px !important;
+    font-size: 24px !important;
+    cursor: pointer !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5) !important;
+    -webkit-tap-highlight-color: transparent;
+}
+
+#close-gallery:hover,
+#close-gallery:active {
+    background: #ff1a1a !important;
+    transform: scale(1.1);
+}
+
+
+/* Media Queries */
+@media (max-width: 768px) {
+    #gallery-iframe {
+        width: 100%;
+        height: 100%;
+    }
+
+    #close-gallery {
+        top: 8px !important;
+        right: 8px !important;
+        width: 45px !important;
+        height: 45px !important;
+        font-size: 20px !important;
+    }
+
+    .button {
+        font-size: 10px;
+        /* Ajuste la taille des boutons sur mobile */
+        padding: 8px 16px;
+        /* Réduit l'espacement pour les boutons */
+    }
+
+    #actions-boutton {
+        display: flex;
+        flex-wrap: wrap;
+        width: 100%;
+        justify-content: center;
+        top: 60px;
+        /* Push down a bit */
+        right: auto;
+        left: 0;
+        padding: 0 10px;
+    }
+
+    .bouton {
+        margin: 3px;
+        padding: 4px 8px;
+        font-size: 11px;
+    }
+
+    #hdr-preview-container-wrapper {
+        top: 150px;
+        /* Below buttons */
+        left: 10px;
+        right: 10px;
+        width: auto;
+        justify-content: center;
+    }
+
+    #hdr-preview-container {
+        display: flex;
+        flex-wrap: wrap;
+        margin-top: 0;
+        justify-content: center;
+    }
+
+    #gui-container-custom {
+        max-width: 250px;
+        /* Smaller width */
+        width: 65%;
+        padding-top: 60px;
+    }
+
+    #gui-container-custom .lil-gui {
+        --width: 100%;
+        --widget-height: 28px;
+        /* Standard height */
+        font-size: 12px;
+        /* Smaller font */
+    }
+
+    #hdr-preview-container img {
+        width: 60px;
+        height: 40px;
+    }
+}
+
+#comment-section {
+    margin: 20px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#comment-section h3 {
+    margin-bottom: 20px;
+    font-size: 1.5em;
+    color: #333;
+}
+
+#comment-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    padding: 10px;
+    font-size: 1em;
+}
+
+#comment-form textarea {
+    resize: vertical;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    border: none;
+    color: white;
+    padding: 10px 15px;
+    font-size: 1em;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+#comments-list {
+    margin-top: 20px;
+}
+
+.comment {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 10px;
+    background-color: #fff;
+    border-radius: 4px;
+}
+
+.comment .email {
+    font-weight: bold;
+    color: #007bff;
+}
+
+.comment .date {
+    font-size: 0.9em;
+    color: #888;
+}
+
+.comment .text {
+    margin-top: 5px;
+    color: #333;
+}
+
+#comment-section {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 10px;
+    margin-bottom: 10px;
+    position: relative;
+}
+
+#comment-section h3 {
+    margin: 0;
+    font-size: 1.2em;
+}
+
+#comment-section .dropdown-button {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    font-size: 1em;
+    background: #388dfc;
+    color: #000000;
+    border: none;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    width: 100%;
+    text-align: left;
+}
+
+#comment-section .dropdown-button i {
+    margin-right: 10px;
+}
+
+#comment-section .dropdown-content {
+    display: none;
+    padding-top: 10px;
+}
+
+#comment-section .form-group {
+    margin-bottom: 10px;
+}
+
+#comment-section .form-group label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+#comment-section .form-group input,
+#comment-section .form-group textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+#comment-section .btn-primary {
+    background-color: #2fda8a;
+    border: none;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#comment-section .btn-primary:hover {
+    background-color: #0056b3;
+}
+
+#comment-section .comments-list {
+    margin-top: 10px;
+}
+
+.comment {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.comment-header {
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+}
+
+.comment-header i {
+    margin-right: 8px;
+    color: #555;
+}
+
+.comment-date {
+    color: #888;
+    font-size: 0.9em;
+}
+
+.comment-body {
+    margin-top: 5px;
+}

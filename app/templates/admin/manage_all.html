@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.7.4/sweetalert2.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.7.4/sweetalert2.min.js"></script>
+    <title>Admin Dashboard - Manage All</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+            color: white;
+            padding: 30px 40px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+
+        .content-wrapper {
+            padding: 40px;
+        }
+
+        .navigation {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .button_all {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            font-size: 1rem;
+            font-weight: 600;
+            color: white;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            text-decoration: none;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .button_all:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+
+        .section-header {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 20px 30px;
+            border-radius: 12px;
+            cursor: pointer;
+            margin: 25px 0 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .section-header:hover {
+            transform: translateX(5px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        }
+
+        .section-header h2 {
+            font-size: 1.5rem;
+            margin: 0;
+        }
+
+        .section-header::after {
+            content: '▼';
+            font-size: 1.2rem;
+            transition: transform 0.3s ease;
+        }
+
+        .section-header.active::after {
+            transform: rotate(180deg);
+        }
+
+        .section-content {
+            display: none;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+        }
+
+        td {
+            padding: 15px;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover {
+            background: #f8f9fa;
+        }
+
+        input[type="text"],
+        input[type="file"] {
+            padding: 10px 15px;
+            margin: 5px 0;
+            width: 100%;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            transition: border-color 0.3s ease;
+        }
+
+        input[type="text"]:focus,
+        input[type="file"]:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        button[name="delete_file"],
+        button[name="delete_hdri"],
+        button[name="delete_gallery"],
+        button[name="delete_download"] {
+            background: linear-gradient(135deg, #f5576c 0%, #f093fb 100%);
+        }
+
+        img {
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        form {
+            margin: 0;
+        }
+
+        select {
+            padding: 10px 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            margin-right: 10px;
+            font-size: 0.95rem;
+        }
+
+        @media (max-width: 768px) {
+            .content-wrapper {
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 1.8rem;
+            }
+            
+            table {
+                font-size: 0.9rem;
+            }
+            
+            th, td {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎨 Admin Dashboard</h1>
+            <p>Manage all your portfolio content in one place</p>
+        </div>
+        <div class="content-wrapper">
+        <div class="navigation">
+            <a href="{{ url_for('main.upload_page_hdri') }}" class="button_all">Upload HDRI</a>
+            <a href="{{ url_for('ckeck_password.upload_page') }}" class="button_all">Upload Images</a>
+        </div>
+        <div class="section-header" onclick="toggleSection('files-section')"><h2>📁 Manage Files</h2></div>
+        <div id="files-section" class="section-content">
+            <table>
+                <thead>
+                    <tr>
+                        <th>File Name</th>
+                        <th>Image</th>
+                        <th>Update</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for file in files %}
+                    <tr>
+                        <td>{{ file.file_name }}</td>
+                        <td><img src="{{ url_for('admin.image', file_id=file.id) }}" alt="File Image"
+                                style="max-width: 100px; max-height: 100px;"></td>
+                        <td>
+                            <form action="{{ url_for('admin.update_file') }}" method="post" enctype="multipart/form-data">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                <input type="hidden" name="file_id" value="{{ file.id }}">
+                                <input type="text" name="file_name" value="{{ file.file_name }}" required>
+                                <input type="text" name="year" value="{{ file.year }}" required>
+                                <input type="file" name="banner" accept=".png, .jpg, .jpeg">
+                                <input type="hidden" name="current_banner_path" value="{{ file.banner_path }}">
+                                <input type="hidden" name="current_banner_mimetype" value="{{ file.banner_mimetype }}">
+                                <input type="file" name="glb_file" accept=".glb">
+                                <input type="hidden" name="current_glb_path" value="{{ file.file_path_glb }}">
+                                <input type="hidden" name="current_glb_mimetype" value="{{ file.file_path_glb_mimetype }}">
+                                <button type="submit" name="update_file">Update File</button>
+                            </form>                            
+                        </td>
+                        <td>
+                            <form action="{{ url_for('admin.manage_all') }}" method="post" onsubmit="confirmDelete(event, '{{ file.file_name }}')">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                <input type="hidden" name="file_id" value="{{ file.id }}">
+                                <button type="submit" name="delete_file">Delete File</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+
+        <div class="section-header" onclick="toggleSection('hdri-section')"><h2>🌅 Manage HDRI</h2></div>
+        <div id="hdri-section" class="section-content">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Preview</th>
+                        <th>Update</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for hdri in hdri_items %}
+                    <tr>
+                        <td>{{ hdri.name }}</td>
+                        <td><img src="{{ url_for('admin.preview_hdri', hdri_id=hdri.id) }}" alt="HDRI Preview"
+                                style="max-width: 100px; max-height: 100px;"></td>
+                        <td>
+                            <form action="{{ url_for('admin.manage_all') }}" method="post"
+                                enctype="multipart/form-data">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                <input type="hidden" name="hdri_id" value="{{ hdri.id }}">
+                                <input type="text" name="name" value="{{ hdri.name }}" required>
+                                <input type="file" name="preview">
+                                <input type="hidden" name="current_preview_path" value="{{ hdri.preview_path }}">
+                                <input type="hidden" name="current_preview_mimetype"
+                                    value="{{ hdri.preview_path_mimetype }}">
+                                <button type="submit" name="update_hdri">Update HDRI</button>
+                            </form>
+                        </td>
+                        <td>
+                            <form action="{{ url_for('admin.manage_all') }}" method="post" onsubmit="confirmDelete(event, '{{ hdri.name }}')">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                <input type="hidden" name="hdri_id" value="{{ hdri.id }}">
+                                <button type="submit" name="delete_hdri">Delete HDRI</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section-header" onclick="toggleSection('gallery-section')"><h2>🖼️ Manage Gallery</h2></div>
+        <div id="gallery-section" class="section-content">
+            <form action="{{ url_for('admin.manage_all') }}" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <select name="file_id" required>
+                    {% for file in files %}
+                    <option value="{{ file.id }}">{{ file.file_name }}</option>
+                    {% endfor %}
+                </select>
+                <input type="file" name="gallery_image" required>
+                <button type="submit" name="upload_gallery">Upload Gallery Image</button>
+            </form>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Image</th>
+                        <th>Associated File</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for gallery in gallery_files %}
+                    <tr>
+                        <td><img src="{{ url_for('admin.gallery_image', gallery_id=gallery.id) }}" alt="Gallery Image"
+                                style="max-width: 100px; max-height: 100px;"></td>
+                        <td>{{ gallery.file_id }}</td>
+                        <td>
+                            <form action="{{ url_for('admin.manage_all') }}" method="post" onsubmit="confirmDelete(event, 'gallery image')">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                <input type="hidden" name="gallery_id" value="{{ gallery.id }}">
+                                <button type="submit" name="delete_gallery">Delete Gallery Item</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+
+        <div class="section-header" onclick="toggleSection('downloads-section')"><h2>📥 Manage Downloads</h2></div>
+        <div id="downloads-section" class="section-content">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Download ID</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for download in downloads %}
+                    <tr>
+                        <td>{{ download.id }}</td>
+                        <td>
+                            <form action="{{ url_for('admin.manage_all') }}" method="post" onsubmit="confirmDelete(event, 'download record')">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                <input type="hidden" name="download_id" value="{{ download.id }}">
+                                <button type="submit" name="delete_download">Delete Download</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        function toggleSection(sectionId) {
+            var section = document.getElementById(sectionId);
+            var header = event.target.closest('.section-header');
+            var isVisible = section.style.display === 'block';
+            
+            document.querySelectorAll('.section-content').forEach(function (sec) {
+                sec.style.display = 'none';
+            });
+            document.querySelectorAll('.section-header').forEach(function (h) {
+                h.classList.remove('active');
+            });
+            
+            if (!isVisible) {
+                section.style.display = 'block';
+                header.classList.add('active');
+            }
+        }
+        function showAlert(message, type = 'info') {
+            Swal.fire({
+                icon: type,
+                title: message,
+                showConfirmButton: true,
+                timer: 3000,
+                background: '#fff',
+                confirmButtonColor: '#667eea'
+            });
+        }
+
+        // Delete confirmation handler
+        function confirmDelete(event, itemName) {
+            event.preventDefault();
+            
+            const form = event.target;
+            // Find the submit button to get its name attribute
+            const submitButton = form.querySelector('button[type="submit"]');
+            const buttonName = submitButton ? submitButton.name : '';
+            
+            Swal.fire({
+                title: 'Are you sure?',
+                text: `You are about to delete ${itemName}. This action cannot be undone!`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#f5576c',
+                cancelButtonColor: '#667eea',
+                confirmButtonText: 'Yes, delete it!',
+                cancelButtonText: 'Cancel',
+                background: '#fff'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // When form.submit() is called programmatically, the submit button's name
+                    // is NOT included in the POST data. We need to add it as a hidden input.
+                    if (buttonName) {
+                        const hiddenInput = document.createElement('input');
+                        hiddenInput.type = 'hidden';
+                        hiddenInput.name = buttonName;
+                        hiddenInput.value = '1';
+                        form.appendChild(hiddenInput);
+                    }
+                    // Remove the onsubmit handler and submit the form
+                    form.onsubmit = null;
+                    form.submit();
+                }
+            });
+        }
+    </script>
+</body>
+
+</html>

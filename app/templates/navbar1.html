@@ -1,0 +1,90 @@
+<style>
+  /* Navbar Styles for navbar1 (used in home, 3D viewer, etc.) */
+  .navbar-main {
+    background: rgba(0, 0, 0, 0.9) !important;
+    backdrop-filter: blur(10px);
+    padding: 12px 20px;
+  }
+  
+  .navbar-main .navbar-brand {
+    color: #fff !important;
+    font-weight: 700;
+    font-size: 1.3rem;
+  }
+  
+  .navbar-main .nav-link {
+    color: #fff !important;
+    padding: 8px 15px;
+  }
+  
+  .navbar-main .nav-link:hover {
+    color: #2979ff !important;
+  }
+  
+  .navbar-main .navbar-toggler {
+    border-color: #2979ff;
+    padding: 8px 12px;
+  }
+  
+  .navbar-main .navbar-toggler-icon {
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='%232979ff' stroke-width='2.5' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+  }
+  
+  /* Mobile dropdown background */
+  @media (max-width: 991px) {
+    .navbar-main .navbar-collapse {
+      background: rgba(0, 0, 0, 0.95);
+      padding: 15px;
+      border-radius: 8px;
+      margin-top: 10px;
+    }
+    
+    .navbar-main .nav-link {
+      padding: 12px 15px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .navbar-main .nav-item:last-child .nav-link {
+      border-bottom: none;
+    }
+  }
+</style>
+
+<nav class="navbar navbar-expand-lg fixed-top navbar-main">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/">SO I LEARN 3D</a>
+    
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    
+    <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" href="/">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('main.works') }}">3D Works</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('main.resume') }}">Resume</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('main.accomplishments') }}">Awards</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('main.skills') }}">Skills</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('main.storyline') }}">Storyline</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('send_email.contact') }}">Contact</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Push content down so it's not hidden behind fixed navbar -->
+<div style="margin-top: 70px;"></div>

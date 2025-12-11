@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}My Portfolio{% endblock %}</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <style>
+        body {
+            font-family: 'Outfit', sans-serif; /* Update to use Outfit */
+            background-color: #0f1115;      /* Match premium dark theme */
+            color: #e0e0e0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        main {
+            flex: 1;
+        }
+        /* Remove other inline styles that conflict with style.css or let style.css override */
+    </style>
+    {% block styles %}{% endblock %}
+</head>
+<body>
+    <div id="particles-js" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;"></div>
+    {% include 'navbar1.html' %}
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    {% include 'footer.html' %}
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- Particles.js -->
+    <script src="{{ url_for('static', filename='js/particles.js') }}"></script>
+    
+    <!-- Mobile navbar toggle fix -->
+    <script>
+        $(document).ready(function() {
+            // Ensure hamburger toggle works properly
+            $('.navbar-toggler').on('click', function(e) {
+                e.preventDefault();
+                var $collapse = $('#navbarNav');
+                if ($collapse.hasClass('show')) {
+                    $collapse.collapse('hide');
+                } else {
+                    $collapse.collapse('show');
+                }
+            });
+            
+            // Close navbar when clicking a nav link on mobile
+            $('.navbar-nav .nav-link').on('click', function() {
+                var $collapse = $('#navbarNav');
+                if ($collapse.hasClass('show')) {
+                    $collapse.collapse('hide');
+                }
+            });
+            
+            // Close navbar when clicking outside
+            $(document).on('click touchstart', function(e) {
+                var $navbar = $('#navbarNav');
+                var $toggler = $('.navbar-toggler');
+                if ($navbar.hasClass('show') && 
+                    !$(e.target).closest('.navbar-collapse').length && 
+                    !$(e.target).closest('.navbar-toggler').length) {
+                    $navbar.collapse('hide');
+                }
+            });
+        });
+    </script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,155 @@
+/* Google Fonts - Poppins */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  min-height: 100%;
+  
+}
+nav {
+  position: fixed;
+  top: 0;
+  left: 0;;
+  display: flex;
+  align-items: center;
+  background:none;
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0.1);
+  z-index: 1001; /* Assurez-vous que la navbar est au-dessus du reste */
+}
+
+nav .logo {
+  display: flex;
+  align-items: center;
+  margin: 0 24px;
+}
+
+.logo-img {
+  width: 40px; /* Ajustez la taille selon vos besoins */
+  height: auto;
+}
+
+.logo .menu-icon {
+  color: #f5f5f5;
+  font-size: 24px;
+  margin-right: 14px;
+  cursor: pointer;
+}
+
+.logo .logo-name {
+  color: #fffefe;
+  font-size: 22px;
+  font-weight: 500;
+}
+
+nav .sidebar {
+  position: fixed;
+  top: 0;
+  left: -100%;
+  height: 100%;
+  width: 260px;
+  max-height: 90%; /* Hauteur maximale de la sidebar */
+  padding: 20px 0;
+  background-color: #141414d2;
+  box-shadow: 0 5px 1px rgba(0, 0, 0, 0.1);
+  transition: all 0.4s ease;
+  z-index: 1000; /* Assurez-vous que la sidebar est au-dessus de la navbar */
+}
+
+nav.open .sidebar {
+  left: 0;
+  height: auto; /* Ajuste la hauteur automatiquement en fonction du contenu */
+  max-height: 80vh; /* Hauteur maximale pour éviter qu'elle ne couvre tout */
+  border-bottom-right-radius: 50%;
+
+}
+
+.sidebar .sidebar-content {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 30px 16px;
+}
+
+.sidebar-content .list {
+  list-style: none;
+}
+
+.list .nav-link {
+  display: flex;
+  align-items: center;
+  margin: 8px 0;
+  padding: 14px 12px;
+  border-radius: 8px;
+  text-decoration: none;
+}
+
+.lists .nav-link:hover {
+  background-color: #40caf4;
+}
+
+.nav-link .icon {
+  margin-right: 14px;
+  font-size: 20px;
+  color: #ffffff;
+}
+
+.nav-link .link {
+  font-size: 16px;
+  color: #ffffff;
+  font-weight: 400;
+}
+
+.lists .nav-link:hover .icon,
+.lists .nav-link:hover .link {
+  color: #fff;
+}
+
+/* CSS pour le footer */
+footer {
+  background-color: transparent;
+  color: #ffffff;
+  text-align: center;
+  padding: 20px;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
+
+.footer-content p {
+  margin: 0;
+  font-size: 0.875rem;
+  color: #b0b0b0;
+}
+
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: -100%;
+  height: 1000vh;
+  width: 200%;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.4s ease;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 1500; /* Assurez-vous que l'overlay est au-dessus de tout le reste mais sous la sidebar */
+}
+
+nav.open ~ .overlay {
+  opacity: 1;
+  left: 260px;
+  pointer-events: auto;
+}
+
+/* Marges pour éviter que les éléments touchent la barre de navigation */
+.container {
+  margin-top: 70px; /* Hauteur de la barre de navigation */
+  padding: 20px; /* Ajoute un peu d'espace intérieur */
+}

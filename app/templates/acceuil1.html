@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accueil</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <style>
+   html, body {
+            height: 100%;
+            margin: 0;
+        }
+        body {
+            width: 100vw;
+            height: 100vh;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            background: url("/static/images_years/Image_06.jpg") no-repeat center center;
+            background-size: cover;
+            overflow: hidden;
+        }
+
+        /* Styles pour le conteneur des cartes */
+        .cards-container {
+            margin-top: 0px; /* Marge pour éviter que les cartes ne se superposent à la navbar */
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            padding: 20px;
+            width: 100%;
+            overflow-y: auto; /* Ajoute un défilement vertical si nécessaire */
+        }
+
+        /* Styles pour les cartes */
+        .card {
+            display: grid;
+            grid-template-columns: 300px;
+            grid-template-rows: 210px 210px 80px;
+            grid-template-areas: "image" "text" "stats";
+            border-radius: 18px;
+            background: white;
+            box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.9);
+            font-family: roboto, sans-serif;
+            text-align: center;
+            cursor: pointer;
+            margin: 0;
+            transform-style: preserve-3d;
+            perspective: 1000px;
+            max-width: 300px; /* Largeur maximale des cartes */
+            transition: transform 0.3s;
+        }
+
+        .card:hover {
+            transform: scale(1.05);
+        }
+
+        .card-image {
+            grid-area: image;
+            background-size: cover;
+            background-position: center;
+            border-top-left-radius: 15px;
+            border-top-right-radius: 15px;
+            height: 210px;
+        }
+
+        .card-text {
+            grid-area: text;
+            margin: 5px;
+            transform: translateZ(30px);
+        }
+
+        .card-text .date {
+            color: rgb(255, 7, 110);
+            font-size: 13px;
+        }
+
+        .card-text p {
+            color: rgb(0, 0, 0);
+            font-size: 15px;
+            font-weight: 300;
+        }
+
+        .card-text h2 {
+            margin-top: 0px;
+            font-size: 28px;
+        }
+
+        .card-stats {
+            grid-area: stats;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-rows: 1fr;
+            border-bottom-left-radius: 15px;
+            border-bottom-right-radius: 15px;
+            background: rgb(0, 0, 0, 0.1);
+        }
+
+        .card-stats .stat {
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            color: rgb(34, 34, 34);
+        }
+
+        .card-stats .border {
+            border-left: 1px solid white;
+            border-right: 1px solid white;
+        }
+
+        .card-stats .value {
+            font-size: 22px;
+            font-weight: 500;
+        }
+
+        .card-stats .value sup {
+            font-size: 12px;
+        }
+
+        .card-stats .type {
+            font-size: 11px;
+            font-weight: 300;
+            text-transform: uppercase;
+        }
+ /* Définition de l'animation d'écriture */
+@keyframes typing {
+    from { width: 0; }
+    to { width: 100%; }
+}
+
+@keyframes cursor {
+    from { border-right-color: rgba(255, 255, 255, 0.75); }
+    to { border-right-color: transparent; }
+}
+
+/* Styles pour les messages d'encouragement */
+.encouragement-messages {
+    color: white; /* Texte blanc */
+    background-color: rgba(0, 0, 0, 0.5); /* Fond semi-transparent pour plus de contraste */
+    padding: 20px; /* Padding pour le confort de lecture */
+    border-radius: 10px; /* Arrondir les coins du conteneur */
+    overflow: hidden; /* Assurer que l'animation est contenue dans le conteneur */
+    position: relative;
+}
+
+.encouragement-messages h3, .encouragement-messages p {
+    margin: 0;
+    white-space: nowrap; /* Éviter le retour à la ligne */
+    overflow: hidden; /* Cacher le texte débordant */
+    border-right: 3px solid rgba(255, 255, 255, 0.75); /* Simuler le curseur */
+    animation: typing 4s steps(30, end), cursor 0.75s step-end infinite;
+}
+
+.encouragement-messages p {
+    animation: typing 6s steps(30, end), cursor 0.75s step-end infinite;
+}
+
+        /* Masquer les messages d'encouragement en vue mobile */
+        @media (max-width: 767px) {
+            .encouragement-messages {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    {% include 'navbar1.html' %}
+    <div class="container">
+        {% block content %}{% endblock %}
+    </div>
+
+    <!-- Conteneur des cartes -->
+    <div class="cards-container">
+        {% for year, data in years_data.items() %}
+        <a href="{{ url_for('main.models_year', year=year) }}" class="card">
+            <div class="card-image" style="background-image: url('{{ url_for('static', filename=data.banner_path) }}');"></div>
+            <div class="card-text">
+                <span class="date">{{ year }}</span>
+                <h2>{{ data.title }}</h2>
+                <p>{{ data.description }}</p>
+            </div>
+            <div class="card-stats">
+                <div class="stat">
+                    <div class="value">{{ year }}</div>
+                    <div class="type">Year</div>
+                </div>
+                <div class="stat border">
+                    <div class="value">{{ data.projects_count }}</div>
+                    <div class="type">Projects</div>
+                </div>
+                <div class="stat">
+                    <div class="value">{{ data.skills_count }}</div>
+                    <div class="type">Skills</div>
+                </div>
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+
+    <!-- Messages d'encouragement -->
+    <div class="container text-center mt-1 encouragement-messages">
+        <h3>Keep up the great work!</h3>
+        <p>Your creativity and dedication are truly inspiring. Keep pushing the boundaries and striving for excellence. The future is bright!</p>
+    </div>
+
+    <!-- Scripts -->
+    <script src="{{ url_for('static', filename='js/vanilla-tilt.min.js') }}"></script>
+    <script>
+        VanillaTilt.init(document.querySelectorAll(".card"), {
+            glare: true,
+            reverse: true,
+            "max-glare": 0.7,
+        });
+    </script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

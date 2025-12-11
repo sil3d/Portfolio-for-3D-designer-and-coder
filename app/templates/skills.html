@@ -1,0 +1,144 @@
+{% extends "base.html" %}
+
+{% block title %}Skills - Prince Gildas MK{% endblock %}
+
+{% block styles %}
+<style>
+    /* Circular Progress Styles */
+    .skill-section {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 30px;
+        margin-bottom: 3rem;
+    }
+    .skill-item {
+        text-align: center;
+        width: 150px;
+    }
+    .circle {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        position: relative;
+        margin: 0 auto 15px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: conic-gradient(
+            var(--circle-color) calc(var(--percentage) * 1%),
+            rgba(255,255,255,0.1) calc(var(--percentage) * 1%)
+        );
+        box-shadow: 0 0 15px rgba(0,0,0,0.5);
+    }
+    .circle::before {
+        content: "";
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        background: var(--card-bg); /* Use theme card bg */
+    }
+    .circle span {
+        position: relative;
+        z-index: 1;
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #1b1b1b;
+    }
+    .skill-item p {
+        font-weight: 600;
+        color: var(--text-color);
+        margin-bottom: 0;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="text-center mb-5">
+        <h1 class="hero-title" style="font-size: 3rem;">Technical Arsenal</h1>
+        <p class="hero-subtitle">My Proficiency Level</p>
+    </div>
+
+    <!-- Technical Skills -->
+    <div class="glass-card mb-5">
+        <h3 class="section-title text-center mb-4">Technical Skills</h3>
+        <div class="skill-section">
+            <div class="skill-item">
+                <div class="circle" style="--percentage: 80; --circle-color: #ff6f61;"><span>80%</span></div>
+                <p>Fusion 360</p>
+            </div>
+            <div class="skill-item">
+                <div class="circle" style="--percentage: 30; --circle-color: #4caf50;"><span>30%</span></div>
+                <p>Blender</p>
+            </div>
+            <div class="skill-item">
+                <div class="circle" style="--percentage: 80; --circle-color: #ffeb3b;"><span>80%</span></div>
+                <p>KeyShot</p>
+            </div>
+            <div class="skill-item">
+                <div class="circle" style="--percentage: 50; --circle-color: #2979ff;"><span>50%</span></div>
+                <p>Twinmotion</p>
+            </div>
+            <div class="skill-item">
+                <div class="circle" style="--percentage: 30; --circle-color: #9c27b0;"><span>30%</span></div>
+                <p>Python</p>
+            </div>
+            <div class="skill-item">
+                <div class="circle" style="--percentage: 20; --circle-color: #ff9800;"><span>20%</span></div>
+                <p>JS/HTML/CSS</p>
+            </div>
+            <!-- Added more from original -->
+            <div class="skill-item">
+                <div class="circle" style="--percentage: 80; --circle-color: #3f51b5;"><span>80%</span></div>
+                <p>CAD</p>
+            </div>
+            <div class="skill-item">
+                <div class="circle" style="--percentage: 85; --circle-color: #009688;"><span>85%</span></div>
+                <p>Mechanics</p>
+            </div>
+             <div class="skill-item">
+                <div class="circle" style="--percentage: 75; --circle-color: #ff5722;"><span>60%</span></div>
+                <p>Robotics</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Professional Skills -->
+    <div class="glass-card mb-5">
+        <h3 class="section-title text-center mb-4">Professional Skills</h3>
+        <div class="skill-section">
+            <div class="skill-item">
+                <div class="circle" style="--percentage: 90; --circle-color: #ff5722;"><span>90%</span></div>
+                <p>Communication</p>
+            </div>
+            <div class="skill-item">
+                <div class="circle" style="--percentage: 90; --circle-color: #4caf50;"><span>90%</span></div>
+                <p>Project Mgmt</p>
+            </div>
+            <div class="skill-item">
+                <div class="circle" style="--percentage: 95; --circle-color: #673ab7;"><span>95%</span></div>
+                <p>Design Thinking</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Languages -->
+    <div class="glass-card">
+        <h3 class="section-title text-center mb-4">Languages</h3>
+        <div class="skill-section">
+            <div class="skill-item">
+                <div class="circle" style="--percentage: 95; --circle-color: #3f51b5;"><span>95%</span></div>
+                <p>French</p>
+            </div>
+            <div class="skill-item">
+                <div class="circle" style="--percentage: 80; --circle-color: #ff9800;"><span>80%</span></div>
+                <p>English</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,339 @@
+{% extends "base.html" %}
+
+{% block title %}Resume - Prince Gildas MBAMA KOMBILA{% endblock %}
+
+{% block content %}
+<div class="resume-container">
+    
+    <!-- Header -->
+    <div class="glass-card mb-5 text-center">
+        <h1 class="hero-title" style="font-size: 2.5rem;">Prince Gildas MBAMA KOMBILA</h1>
+        <h3 class="hero-subtitle mb-3">Multidisciplinary Engineer</h3>
+        <div class="hero-roles mb-4">
+            <span class="role-badge">Mechanical</span>
+            <span class="role-badge">Robotics</span>
+            <span class="role-badge">AI Engineer</span>
+            <span class="role-badge">IOT</span>
+            <span class="role-badge">Industrial Design</span>
+        </div>
+        <!-- Download PDF button triggering print -->
+        <button onclick="window.print()" class="btn-premium no-print mr-3"><i class="fas fa-file-pdf mr-2"></i> Download as PDF</button>
+        <button id="focus-mode-btn" class="btn-outline-premium no-print"><i class="fas fa-eye mr-2"></i> Focus Mode</button>
+    </div>
+
+    <style>
+        /* Contextual style for focus mode to keep cards light and readable */
+        .resume-container.focus-active {
+            background-color: #ffffff; /* Paper like background */
+            padding: 40px; /* Internal padding */
+            border-radius: 8px;
+            box-shadow: 0 0 50px rgba(0,0,0,0.5); /* Spotlight shadow */
+        }
+        
+        .resume-container.focus-active .glass-card {
+            background: rgba(240, 240, 240, 0.5) !important; /* Subtle distinction for cards */
+            box-shadow: none; /* Flatten inside cards slightly or keep subtle */
+            border: 1px solid #ddd;
+        }
+
+        /* Ensure Focus Mode overlay is HIDDEN during print */
+        @media print {
+            #focus-overlay {
+                display: none !important;
+            }
+            .resume-container.focus-active {
+                background: none !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                box-shadow: none !important;
+                border: none !important;
+                position: static !important;
+                max-width: 100% !important; /* Reset width constraint */
+            }
+            .resume-container.focus-active .glass-card {
+                background: none !important;
+                box-shadow: none !important;
+                border: none !important;
+                padding: 0 !important;
+            }
+            /* Ensure buttons are hidden even if in focus mode (handled by .no-print mostly) */
+            .no-print {
+                display: none !important;
+            }
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const focusBtn = document.getElementById('focus-mode-btn');
+            const resumeContainer = document.querySelector('.resume-container');
+            
+            // Create overlay dynamically
+            let focusOverlay = document.createElement('div');
+            focusOverlay.id = 'focus-overlay';
+            // Dark glass effect: semi-transparent black with blur
+            focusOverlay.style.cssText = 'display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.92); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); z-index: 9998; transition: all 0.5s ease;';
+            document.body.appendChild(focusOverlay);
+
+            let isFocusMode = false;
+
+            if (focusBtn && resumeContainer) {
+                const toggleFocusMode = () => {
+                    isFocusMode = !isFocusMode;
+                    if (isFocusMode) {
+                        // Enter Focus Mode
+                        focusOverlay.style.display = 'block';
+                        resumeContainer.style.position = 'relative';
+                        resumeContainer.style.zIndex = '9999';
+                        resumeContainer.classList.add('focus-active');
+                        
+                        focusBtn.innerHTML = '<i class="fas fa-eye-slash mr-2"></i> Exit Focus';
+                        focusBtn.classList.add('active');
+                        resumeContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    } else {
+                        // Exit Focus Mode
+                        focusOverlay.style.display = 'none';
+                        resumeContainer.style.position = '';
+                        resumeContainer.style.zIndex = '';
+                        resumeContainer.classList.remove('focus-active');
+                        
+                        focusBtn.innerHTML = '<i class="fas fa-eye mr-2"></i> Focus Mode';
+                        focusBtn.classList.remove('active');
+                    }
+                };
+
+                focusBtn.addEventListener('click', toggleFocusMode);
+                
+                focusOverlay.addEventListener('click', function() {
+                    if (isFocusMode) toggleFocusMode();
+                });
+
+                // --- PRINT LAYOUT FIX ---
+                // Listen for print events to temporarily disable Focus Mode styles
+                // This ensures the PDF is identical to the standard layout
+                window.addEventListener('beforeprint', () => {
+                    if (isFocusMode) {
+                        resumeContainer.classList.remove('focus-active');
+                        focusOverlay.style.display = 'none';
+                        // Keep 'isFocusMode' true so we can restore it after
+                    }
+                });
+
+                window.addEventListener('afterprint', () => {
+                    if (isFocusMode) {
+                        resumeContainer.classList.add('focus-active');
+                        focusOverlay.style.display = 'block';
+                    }
+                });
+            }
+        });
+    </script>
+
+    <!-- Profile Summary -->
+    <div class="glass-card mb-5">
+        <h3 class="section-title"><i class="fas fa-user-circle mr-2"></i> Profile Summary</h3>
+        <p class="lead" style="font-size: 1.1rem; line-height: 1.8;">
+            Multidisciplinary Engineer (Mechanical, Robotics, AI, and Industrial Design) with 6+ years of diverse experience in CAD modeling, robotics, electronics, software development, and product innovation.
+            Proven track record in developing end-to-end systems, from concept and design to manufacturing, programming, and deployment. Skilled in leading projects, supervising teams, and delivering workshops in academic and industrial contexts. 
+            Passionate about solving complex problems, building disruptive technologies, and adapting to fast-paced environments.
+        </p>
+    </div>
+
+    <!-- Experience -->
+    <!-- Experience -->
+    <div class="mb-5">
+        <h3 class="section-title mb-4"><i class="fas fa-briefcase mr-2"></i> Professional Experience</h3>
+        
+        <div class="glass-card">
+            <!-- Job 1 -->
+            <div class="mb-4">
+                <div class="d-flex justify-content-between align-items-center mb-2 flex-wrap">
+                    <h4 class="mb-0 text-black">Lead Designer & Robotics Engineer</h4>
+                    <span class="text-accent">2024 – Present</span>
+                </div>
+                <p class="text-muted font-italic mb-2">JAWJI (Startup, Senegal)</p>
+                <ul>
+                    <li>Designed and built drones & VTOL systems from scratch, covering mechanical, electrical, and software integration.</li>
+                    <li>Served as lead designer, coordinating R&D and innovation projects.</li>
+                </ul>
+            </div>
+            <hr class="border-secondary my-4">
+
+            <!-- Job 2 -->
+            <div class="mb-4">
+                <div class="d-flex justify-content-between align-items-center mb-2 flex-wrap">
+                    <h4 class="mb-0 text-black">Project Supervisor & Workshop Instructor</h4>
+                    <span class="text-accent">2023 – Present</span>
+                </div>
+                <p class="text-muted font-italic mb-2">DAUST</p>
+                <ul>
+                    <li>Supervised student projects.</li>
+                    <li>Instructed robotics/CAD workshops and Summer Camps.</li>
+                    <li>Lead Designer PARC 2024; Competitor PARC 2025 Engineer League (1st Place).</li>
+                </ul>
+            </div>
+            <hr class="border-secondary my-4">
+
+            <!-- Job 3 -->
+            <div class="mb-4">
+                <div class="d-flex justify-content-between align-items-center mb-2 flex-wrap">
+                    <h4 class="mb-0 text-black">App Developer & Team Lead</h4>
+                    <span class="text-accent">2023 – 2024</span>
+                </div>
+                <p class="text-muted font-italic mb-2">Vocasara</p>
+                <ul>
+                    <li>Developed AI-based electrical fault detection app.</li>
+                    <li>Guided multidisciplinary team.</li>
+                </ul>
+            </div>
+            <hr class="border-secondary my-4">
+
+            <!-- Job 4 -->
+            <div class="mb-4">
+                <div class="d-flex justify-content-between align-items-center mb-2 flex-wrap">
+                    <h4 class="mb-0 text-black">Drone Show Designer</h4>
+                    <span class="text-accent">2021 – 2023</span>
+                </div>
+                <ul>
+                    <li>Designed shows for Radisson Blu, African Renaissance Monument, Fally Ipupa Concert.</li>
+                </ul>
+            </div>
+            <hr class="border-secondary my-4">
+
+            <!-- Job 5 -->
+            <div>
+                 <div class="d-flex justify-content-between align-items-center mb-2 flex-wrap">
+                    <h4 class="mb-0 text-black">Robotics Instructor</h4>
+                    <span class="text-accent">2021 – 2022</span>
+                </div>
+                <p class="text-muted font-italic mb-2">Lycée Bilingue BERKELEY</p>
+                <ul>
+                    <li>Taught automation and mechanics to high school students.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Skills -->
+        <div class="col-md-12 mb-5">
+            <div class="glass-card h-100">
+                <h3 class="section-title"><i class="fas fa-tools mr-2"></i> Technical Skills</h3>
+                
+                <div class="mb-4">
+                    <h5 class="text-accent">Mechanical & CAD/Design</h5>
+                    <p>Fusion 360 (200+ projects, 30+ professional), Blender (Animation), Keyshot, Autodesk CFD, Ansys</p>
+                </div>
+
+                <div class="mb-4">
+                    <h5 class="text-accent">Electronics & Robotics</h5>
+                    <p>Arduino, Raspberry Pi, 3D printing, soldering, Fritzing, XFLR5, INAV Config, Matlab/Simulink and more</p>
+                </div>
+
+                <div class="mb-4">
+                    <h5 class="text-accent">Programming</h5>
+                    <div class="d-flex flex-wrap gap-2">
+                        <span class="role-badge">Python</span>
+                        <span class="role-badge">HTML/CSS</span>
+                        <span class="role-badge">React</span>
+                        <span class="role-badge">Arduino C</span>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <h5 class="text-accent">AI & Simulation</h5>
+                    <p>Machine learning, PyQT Designer, Unreal Engine,,Twinmotion,matlab, Simulink, </p>
+                </div>
+
+                <div>
+                    <h5 class="text-accent">Other Tools</h5>
+                    <p>Figma, Excel, Word, JAWSET POSTSHOT, 3D photogrammetry, Filmora, POSTSHOT, QgroundControl, XFLR5,Github,Fritzing,Mission Planner, INAV, ELRS</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Education -->
+    <div class="mb-5">
+        <h3 class="section-title mb-4"><i class="fas fa-graduation-cap mr-2"></i> Education</h3>
+        <div class="glass-card">
+            <ul class="list-unstyled">
+                <li class="mb-3">
+                    <strong>BSc in Industrial Computing</strong> – ISI Dakar
+                </li>
+                <li class="mb-3">
+                    <strong>Ongoing Engineering Training (Mechanical Engineering)</strong> – DAUST
+                </li>
+                <li>
+                    <strong>High School Diploma (BAC, Mechanical Construction)</strong> – 2017
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Notable Projects -->
+    <div class="mb-5">
+        <h3 class="section-title mb-4"><i class="fas fa-rocket mr-2"></i> Notable Projects</h3>
+        
+        <div class="glass-card mb-4">
+            <h5 class="text-accent">Plug & Spray System</h5>
+            <p>
+                <strong>Challenge:</strong> Design a fertilizer implement and simulate its motion for the PARC AgRobot.
+            </p>
+            <p>
+                <strong>Solution:</strong> A lightweight, intelligent spraying module with mechanical, electronic, and fluidic subsystems. Powered by ESP32 and controlled via a custom Flutter app. Features a two-axis gimbal for precise targeting.
+            </p>
+            <a href="https://www.linkedin.com/feed/update/urn:li:activity:7381284720350961664/" target="_blank" class="btn-outline-premium btn-sm">View on LinkedIn (Video)</a>
+        </div>
+
+        <div class="glass-card mb-4">
+            <h5 class="text-accent">RC Autonomous Car (2024 – ongoing)</h5>
+            <p>3D-printed, designed, and programmed an autonomous RC car with ROS, Isaac Sim, LiDAR, and Raspberry Pi video streaming.</p>
+        </div>
+
+        <div class="glass-card mb-4">
+            <h5 class="text-accent">“LANC” Voice Assistant (2021–2022)</h5>
+            <p>Built a bilingual (FR/EN) voice assistant similar to Alexa, capable of device control and information retrieval.</p>
+        </div>
+
+        <div class="glass-card mb-4">
+            <h5 class="text-accent">Smart Waste Bin (DAUST, 2023)</h5>
+            <p>AI-based system for waste classification (plastic, glass, metal, unknown).</p>
+        </div>
+        
+        <div class="glass-card">
+             <h5 class="text-accent">Other Contributions</h5>
+             <ul>
+                 <li><strong>GrabCAD Portfolio:</strong> 32+ projects, 29,000+ downloads, 9,000+ score, 566+ followers.</li>
+                 <li><strong>YouTube Channel:</strong> 3D design and animation content.</li>
+             </ul>
+        </div>
+    </div>
+
+    <!-- Languages & Attributes -->
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            <div class="glass-card h-100">
+                <h4 class="mb-3"><i class="fas fa-globe mr-2"></i> Languages</h4>
+                <ul class="list-unstyled">
+                    <li><strong>English:</strong> Professional working proficiency</li>
+                    <li><strong>French:</strong> Native</li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-6 mb-4">
+             <div class="glass-card h-100">
+                <h4 class="mb-3"><i class="fas fa-compass mr-2"></i> Personal Attributes</h4>
+                <ul class="list-unstyled">
+                    <li>Curious, adaptive, and enthusiastic learner.</li>
+                    <li>Strong leadership and teamwork skills.</li>
+                    <li>Problem-solving mindset and resilience.</li>
+                </ul>
+                <div class="mt-3 font-italic text-center text-accent">
+                    “Fake it till you make it – learning never ends.”
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

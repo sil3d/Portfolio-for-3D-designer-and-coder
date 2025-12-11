@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subscribe</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/subscribe.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-Z9R0A0fX5uOfYz+sgc9o2btQabz0awJlQHyoSVFEeSH/K9HBAj/J0otK/oKCbLToQwIv2U3Tkr/0G8v2bm5Ig==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+    <!-- Inclure la barre de navigation -->
+    {% include 'navbar1.html' %}
+    <div class="subscribe-container">
+        <img src="{{ url_for('static', filename='/logo/logo.png') }}" alt="Logo" class="logo"> <!-- Logo ici -->
+        <h1>Subscribe to Notifications</h1>
+        <p>Subscribe to receive notifications whenever new videos or 3D models are published. Your email will not be used for any other purpose, and no personal information is stored in your browser.</p>
+        <form id="subscribe-form">
+            <div class="form-group">
+                <label for="email"><i class="fa fa-envelope"></i> Email:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <button type="submit" class="btn"><i class="fa fa-bell"></i> Subscribe</button>
+        </form>
+
+        <h2>Unsubscribe</h2>
+        <p>If you no longer wish to receive notifications, you can unsubscribe here:</p>
+        <form id="unsubscribe-form">
+            <div class="form-group">
+                <label for="unsubscribe-email"><i class="fa fa-envelope-open"></i> Email:</label>
+                <input type="email" id="unsubscribe-email" name="email" required>
+            </div>
+            <button type="submit" class="btn"><i class="fa fa-bell-slash"></i> Unsubscribe</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('subscribe-form').addEventListener('submit', function (event) {
+            event.preventDefault();
+            var formData = new FormData(event.target);
+
+            fetch('{{ url_for("subscribe.subscribe") }}', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    Swal.fire('Success', data.message, 'success');
+                    event.target.reset();
+                } else {
+                    Swal.fire('Error', data.message, 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                Swal.fire('Error', 'An error occurred. Please try again.', 'error');
+            });
+        });
+
+        document.getElementById('unsubscribe-form').addEventListener('submit', function (event) {
+            event.preventDefault();
+            var formData = new FormData(event.target);
+
+            fetch('{{ url_for("subscribe.unsubscribe") }}', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    Swal.fire('Success', data.message, 'success');
+                    event.target.reset();
+                } else {
+                    Swal.fire('Error', data.message, 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                Swal.fire('Error', 'An error occurred. Please try again.', 'error');
+            });
+        });
+    </script>
+</body>
+</html>

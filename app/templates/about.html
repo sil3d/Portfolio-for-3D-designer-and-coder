@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Texte 3D avec Profondeur</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #121212;
+            color: #fff;
+            font-family: 'Courier New', Courier, monospace;
+            perspective: 800px; /* Perspective pour l'effet 3D */
+            overflow: hidden;
+        }
+        .text {
+            font-size: 5rem;
+            text-align: center;
+            transform-style: preserve-3d; /* Préserver la 3D */
+            transition: transform 0.1s; /* Transition douce */
+        }
+        .shadow {
+            position: absolute;
+            left: 0;
+            top: 0;
+            color: rgba(0, 255, 0, 0.2);
+            transform: translateZ(-50px); /* Déplacer l'ombre en profondeur */
+        }
+    </style>
+</head>
+<body>
+    {% include 'navbar1.html' %}
+    <div class="container">
+        {% block content %}{% endblock %}
+    </div>
+
+    <div class="text" id="textContainer">
+        <div class="shadow">So i learn 3D</div>
+        So i learn 3D
+    </div>
+
+    <script>
+        const textContainer = document.getElementById("textContainer");
+
+        document.addEventListener("mousemove", (event) => {
+            const x = (event.clientX / window.innerWidth - 0.5) * 30; // Ajustez l'intensité
+            const y = (event.clientY / window.innerHeight - 0.5) * 30; // Ajustez l'intensité
+            textContainer.style.transform = `rotateY(${x}deg) rotateX(${-y}deg)`;
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unauthorized Access</title>
+    <style>
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            background-color: black;
+            color: #00FF00;
+            text-align: center;
+            margin-top: 50px;
+            line-height: 1.5;
+        }
+        .error-message {
+            color: #FF0000;
+            font-size: 28px;
+            margin-bottom: 20px;
+            text-shadow: 0 0 5px #FF0000;
+        }
+        h2 {
+            font-size: 36px;
+            text-shadow: 0 0 10px #00FF00;
+        }
+        p {
+            font-size: 18px;
+            text-shadow: 0 0 5px #00FF00;
+        }
+        img {
+            width: 150px;
+            height: 150px;
+            margin-bottom: 30px;
+            animation: glitch 1s infinite;
+        }
+        @keyframes glitch {
+            0% { transform: translate(0, 0); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(2px, -2px); }
+            60% { transform: translate(-2px, -2px); }
+            80% { transform: translate(2px, 2px); }
+            100% { transform: translate(0, 0); }
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <img src="{{ url_for('static', filename='logo/logo.png') }}" alt="Logo">
+        <h2>Unauthorized Access</h2>
+        <p class="error-message">ACCESS DENIED</p>
+        <p>Who are you?</p>
+        <p>Are you a scammer?</p>
+        <p>Hmmm... a hacker, maybe?</p>
+        <p>Anyway, thanks for stopping by, but...</p>
+        <p>Take it easy and go AWAY.</p>
+        <p>THANKS</p>
+    </div>
+</body>
+</html>

@@ -1,0 +1,251 @@
+{% extends "base.html" %}
+
+{% block title %}Home - SO I LEARN 3D{% endblock %}
+
+{% block content %}
+<div class="hero-section">
+    <div class="profile-container">
+        <img src="{{ url_for('static', filename='images/profile_placeholder.png') }}" alt="Prince Gildas MK" class="profile-img">
+    </div>
+    
+    <h1 class="hero-title">Prince Gildas MBAMA KOMBILA</h1>
+    <h2 class="hero-subtitle">3D Designer | Coder | Robotics Junior Engineer</h2>
+    
+    <div class="hero-roles">
+        <span class="role-badge">Product Design</span>
+        <span class="role-badge">Industrial Design</span>
+        <span class="role-badge">AI Engineer</span>
+        <span class="role-badge">IOT</span>
+        <span class="role-badge">AI & Automation</span>
+    </div>
+
+    <div class="social-links">
+        <a href="https://grabcad.com/prince.gildas.mk.so_i_learn_3d-1" target="_blank" class="social-icon" title="GrabCAD">
+            <i class="fas fa-cube"></i>
+        </a>
+        <a href="https://github.com/sil3d" target="_blank" class="social-icon" title="GitHub">
+            <i class="fab fa-github"></i>
+        </a>
+        <a href="https://www.linkedin.com/in/prince-gildas-mbama-kombila-7a34ab245/" target="_blank" class="social-icon" title="LinkedIn">
+            <i class="fab fa-linkedin"></i>
+        </a>
+        <a href="https://www.youtube.com/@so_i_learn_3d549" target="_blank" class="social-icon" title="YouTube (So I Learn 3D)">
+            <i class="fab fa-youtube"></i>
+        </a>
+        <!-- Additional YouTube channels if needed, maybe consolidate or add as smaller links? User asked for all. -->
+        <a href="https://www.youtube.com/@LANCyt" target="_blank" class="social-icon" title="YouTube (LANC)">
+            <i class="fas fa-play-circle"></i>
+        </a>
+         <a href="https://www.youtube.com/@Mbamaprincegildas" target="_blank" class="social-icon" title="YouTube (Personal)">
+            <i class="fas fa-user-circle"></i>
+        </a>
+    </div>
+    
+    <!-- Share Modal -->
+    <div id="share-modal" class="glass-card" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 10000; padding: 2rem; width: 90%; max-width: 400px; text-align: center;">
+        <h3 style="color: #000; margin-bottom: 1.5rem;">Share Profile</h3>
+        <div class="d-flex justify-content-center flex-wrap" style="gap: 15px;">
+            <a id="share-whatsapp" href="#" target="_blank" class="social-icon" style="font-size: 2.5rem; color: #25D366;" title="WhatsApp">
+                <i class="fab fa-whatsapp"></i>
+            </a>
+            <a id="share-linkedin" href="#" target="_blank" class="social-icon" style="font-size: 2.5rem; color: #0077b5;" title="LinkedIn">
+                <i class="fab fa-linkedin"></i>
+            </a>
+            <a id="share-twitter" href="#" target="_blank" class="social-icon" style="font-size: 2.5rem; color: #000;" title="X (Twitter)">
+                <i class="fab fa-x-twitter"></i> <!-- Font Awesome 6 has x-twitter, if 5 use twitter and maybe style it black -->
+                <!-- Fallback if using FA 5 -->
+                <i class="fab fa-twitter"></i>
+            </a>
+            <button id="share-copy" class="btn-outline-premium" style="padding: 10px 20px; font-size: 0.9rem; margin-top: 10px;">
+                <i class="fas fa-copy"></i> Copy Link
+            </button>
+        </div>
+        <button id="close-share" class="btn btn-sm btn-secondary mt-4">Close</button>
+    </div>
+    
+    <!-- Overlay for modal -->
+    <div id="share-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 9999;"></div>
+
+    <div class="mt-5" style="opacity: 0; animation: fadeUp 1s ease forwards 1s;">
+        <a href="{{ url_for('main.resume') }}" class="btn-premium mr-3">View Resume</a>
+        <a href="{{ url_for('main.accomplishments') }}" class="btn-outline-premium mr-3">Awards</a>
+        <button id="share-btn" class="btn-outline-premium"><i class="fas fa-share-alt mr-2"></i> Share Profile</button>
+    </div>
+    
+    <!-- Rating Display Section -->
+    <div class="mt-5 rating-showcase" style="opacity: 0; animation: fadeUp 1s ease forwards 1.5s;">
+        <div class="glass-card text-center" style="max-width: 500px; margin: 0 auto; padding: 2rem;">
+            <h3 style="color: var(--text-color); margin-bottom: 1rem;">Community Rating</h3>
+            <div id="rating-display-home">
+                <div class="rating-stars-display" id="stars-container">
+                    <!-- Stars will be populated via JavaScript -->
+                </div>
+                <div class="rating-number" id="rating-number" style="font-size: 2rem; font-weight: bold; color: var(--accent-color); margin: 1rem 0;">
+                    <span id="average-rating">-.-</span>/5.0
+                    <span id="rating-emoji" style="margin-left: 10px;"></span>
+                </div>
+                <div class="rating-count" id="rating-count" style="color: rgba(255,255,255,0.7); margin-bottom: 1rem;">
+                    Loading...
+                </div>
+            </div>
+            <a href="{{ url_for('rating.rating_page') }}" class="btn-premium mt-3">
+                <i class="fas fa-star mr-2"></i>Rate Our Work
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="container mt-5 mb-5">
+    <div class="row">
+        <!-- Optional: Featured Works Preview or similar, kept simple for now as per landing page request -->
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Share Profile Logic
+        const shareBtn = document.getElementById('share-btn');
+        const shareModal = document.getElementById('share-modal');
+        const shareOverlay = document.getElementById('share-overlay');
+        const closeShare = document.getElementById('close-share');
+        const shareCopy = document.getElementById('share-copy');
+
+        // Dynamic Links
+        const currentUrl = encodeURIComponent(window.location.href);
+        const shareText = encodeURIComponent('Check out the portfolio of Prince Gildas MBAMA KOMBILA - Multidisciplinary Engineer');
+
+        document.getElementById('share-whatsapp').href = `https://wa.me/?text=${shareText}%20${currentUrl}`;
+        document.getElementById('share-linkedin').href = `https://www.linkedin.com/sharing/share-offsite/?url=${currentUrl}`;
+        document.getElementById('share-twitter').href = `https://twitter.com/intent/tweet?text=${shareText}&url=${currentUrl}`;
+
+        function openModal() {
+            shareModal.style.display = 'block';
+            shareOverlay.style.display = 'block';
+        }
+
+        function closeModal() {
+            shareModal.style.display = 'none';
+            shareOverlay.style.display = 'none';
+        }
+
+        if (shareBtn) {
+            shareBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                // Prefer custom modal over Web Share API to ensure X/LinkedIn/WhatsApp are visible as requested
+                openModal();
+            });
+        }
+
+        if (closeShare) closeShare.addEventListener('click', closeModal);
+        if (shareOverlay) shareOverlay.addEventListener('click', closeModal);
+
+        if (shareCopy) {
+            shareCopy.addEventListener('click', () => {
+                const dummy = document.createElement('input');
+                document.body.appendChild(dummy);
+                dummy.value = window.location.href;
+                dummy.select();
+                document.execCommand('copy');
+                document.body.removeChild(dummy);
+                
+                const originalText = shareCopy.innerHTML;
+                shareCopy.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                setTimeout(() => {
+                    shareCopy.innerHTML = originalText;
+                }, 2000);
+            });
+        }
+    });
+
+    // Load and display ratings
+    function loadHomeRating() {
+        fetch('/rating/average')
+            .then(response => response.json())
+            .then(data => {
+                const avgRating = data.average || 0;
+                const count = data.count || 0;
+                const stars = data.stars || 0;
+                
+                // Update rating number
+                document.getElementById('average-rating').textContent = avgRating.toFixed(1);
+                
+                // Update count
+                const countText = count === 0 ? 'No ratings yet' : 
+                                 count === 1 ? '1 rating' : 
+                                 `${count} ratings`;
+                document.getElementById('rating-count').textContent = countText;
+                
+                // Update stars
+                const starsContainer = document.getElementById('stars-container');
+                starsContainer.innerHTML = '';
+                for (let i = 1; i <= 5; i++) {
+                    const star = document.createElement('span');
+                    star.style.cssText = 'font-size: 2.5rem; margin: 0 5px; transition: all 0.3s ease;';
+                    
+                    if (i <= Math.floor(stars)) {
+                        star.textContent = '★';
+                        star.style.color = '#ffd700';
+                        star.style.textShadow = '0 0 20px rgba(255, 215, 0, 0.8)';
+                    } else if (i === Math.ceil(stars) && stars % 1 !== 0) {
+                        star.textContent = '⯨'; // Half star
+                        star.style.color = '#ffd700';
+                        star.style.textShadow = '0 0 20px rgba(255, 215, 0, 0.8)';
+                    } else {
+                        star.textContent = '☆';
+                        star.style.color = 'rgba(255, 255, 255, 0.3)';
+                    }
+                    
+                    starsContainer.appendChild(star);
+                    
+                    // Add animation delay
+                    setTimeout(() => {
+                        star.style.transform = 'scale(1.1)';
+                        setTimeout(() => star.style.transform = 'scale(1)', 100);
+                    }, i * 100);
+                }
+                
+                // Update emoji based on rating
+                const emojiMap = {
+                    5: '🤩',
+                    4: '😊',
+                    3: '🙂',
+                    2: '😐',
+                    1: '😞',
+                    0: '⭐'
+                };
+                const ratingFloor = Math.floor(avgRating);
+                const emoji = ratingFloor >= 4.5 ? emojiMap[5] :
+                             ratingFloor >= 3.5 ? emojiMap[4] :
+                             ratingFloor >= 2.5 ? emojiMap[3] :
+                             ratingFloor >= 1.5 ? emojiMap[2] :
+                             avgRating > 0 ? emojiMap[1] : emojiMap[0];
+                
+                const emojiEl = document.getElementById('rating-emoji');
+                emojiEl.textContent = emoji;
+                emojiEl.style.cssText = 'display: inline-block; animation: emojiFloat 2s ease-in-out infinite;';
+            })
+            .catch(error => {
+                console.error('Error loading rating:', error);
+                document.getElementById('rating-count').textContent = 'Unable to load ratings';
+            });
+    }
+    
+    // Add emoji float animation
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes emojiFloat {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(5deg); }
+        }
+    `;
+    document.head.appendChild(style);
+    
+    // Load ratings on page load
+    loadHomeRating();
+
+    // Make elements visible that have fadeUp animation
+
+</script>
+{% endblock %}

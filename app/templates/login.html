@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: url("/static/images_years/Image_05.jpg") no-repeat center center;
+            background-size: cover;
+            background-position: center;
+            color: #fff;
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            text-align: center;
+            background-color: rgba(0, 0, 0, 0.6);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+            width: 90%;
+            max-width: 400px;
+            transform: perspective(1000px) rotateY(0deg);
+            transition: transform 0.5s ease;
+        }
+
+        .container:hover {
+            transform: perspective(1000px) rotateY(10deg);
+        }
+
+        .container img {
+            width: 100px;
+            height: 100px;
+            margin-bottom: 20px;
+            transition: transform 0.3s;
+            transform: translateZ(0);
+        }
+
+        .container img:hover {
+            transform: rotate(360deg) translateZ(50px);
+        }
+
+        .container h2 {
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        .container form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .container input[type="text"],
+        .container input[type="password"] {
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            outline: none;
+            font-size: 16px;
+        }
+
+        .container input[type="submit"] {
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #4CAF50;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .container input[type="submit"]:hover {
+            background-color: #45a049;
+            transform: scale(1.05);
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                width: 95%;
+                padding: 20px;
+            }
+
+            .container h2 {
+                font-size: 20px;
+            }
+
+            .container input[type="text"],
+            .container input[type="password"],
+            .container input[type="submit"] {
+                font-size: 14px;
+            }
+        }
+
+        footer {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            text-align: center;
+            background-color: rgba(0, 0, 0, 0.6);
+            padding: 10px;
+            color: #fff;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img src="{{ url_for('static', filename='logo/logo.png') }}" alt="Logo">
+        <h2>Login</h2>
+        <form method="POST">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+            <input type="text" name="username" placeholder="Username" required>
+            <input type="password" name="password" placeholder="Password" required>
+            <input type="submit" value="Login">
+        </form>
+    </div>
+    <footer>
+        &copy; 2024 Soilearn3D. All rights reserved.
+    </footer>
+</body>
+</html>

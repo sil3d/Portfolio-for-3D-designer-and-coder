@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gallery</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+        
+        /* Close Button */
+        .close-button {
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            background: rgba(255, 59, 48, 0.8);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            z-index: 200;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 59, 48, 0.4);
+        }
+        
+        .close-button:hover {
+            background: rgba(255, 59, 48, 1);
+            transform: scale(1.1);
+        }
+        
+        .gallery-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            position: relative;
+            padding: 20px;
+        }
+        
+        .gallery-display {
+            position: relative;
+            max-width: 90%;
+            max-height: 85vh;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 0 40px rgba(41, 121, 255, 0.3);
+            background: rgba(0, 0, 0, 0.5);
+        }
+        
+        .gallery-img {
+            max-width: 100%;
+            max-height: 80vh;
+            object-fit: contain;
+            display: block;
+        }
+        
+        .gallery-img.loading {
+            min-width: 200px;
+            min-height: 150px;
+        }
+        
+        .nav-button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(41, 121, 255, 0.4);
+            color: white;
+            border: 2px solid rgba(41, 121, 255, 0.6);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            z-index: 100;
+            transition: all 0.3s ease;
+            font-size: 1.2rem;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        .nav-button:hover, .nav-button:active {
+            background-color: rgba(41, 121, 255, 0.9);
+            box-shadow: 0 0 20px rgba(41, 121, 255, 0.6);
+        }
+        
+        #prev-button { left: 10px; }
+        #next-button { right: 10px; }
+        
+        .image-counter {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 1rem;
+            z-index: 100;
+        }
+        
+        .no-images {
+            color: #888;
+            text-align: center;
+            padding: 40px;
+        }
+        
+        .no-images i {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            display: block;
+        }
+        
+        /* Mobile Styles */
+        @media (max-width: 768px) {
+            .close-button {
+                top: 10px;
+                right: 10px;
+                width: 40px;
+                height: 40px;
+                font-size: 1.3rem;
+            }
+            
+            .nav-button {
+                width: 45px;
+                height: 45px;
+                font-size: 1rem;
+            }
+            
+            #prev-button { left: 5px; }
+            #next-button { right: 5px; }
+            
+            .gallery-wrapper {
+                padding: 10px;
+            }
+            
+            .gallery-display {
+                max-width: 95%;
+                max-height: 75vh;
+            }
+            
+            .gallery-img {
+                max-height: 70vh;
+            }
+            
+            .image-counter {
+                bottom: 15px;
+                padding: 8px 16px;
+                font-size: 0.9rem;
+            }
+        }
+        
+        /* Very small screens */
+        @media (max-width: 480px) {
+            .nav-button {
+                width: 40px;
+                height: 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Close Button -->
+    <button class="close-button" id="close-button" title="Close Gallery">
+        <i class="fas fa-times"></i>
+    </button>
+
+    <div class="gallery-wrapper" id="gallery-wrapper">
+        <button id="prev-button" class="nav-button"><i class="fas fa-chevron-left"></i></button>
+        
+        <div class="gallery-display">
+            <img id="gallery-image" src="" alt="Gallery Image" class="gallery-img loading">
+        </div>
+
+        <button id="next-button" class="nav-button"><i class="fas fa-chevron-right"></i></button>
+        
+        <div class="image-counter" id="image-counter">Loading...</div>
+    </div>
+    
+    <div class="no-images" id="no-images" style="display: none;">
+        <i class="fas fa-images"></i>
+        <p>No gallery images available for this model.</p>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const galleryWrapper = document.getElementById('gallery-wrapper');
+            const noImagesDiv = document.getElementById('no-images');
+            const galleryImage = document.getElementById('gallery-image');
+            const prevButton = document.getElementById('prev-button');
+            const nextButton = document.getElementById('next-button');
+            const closeButton = document.getElementById('close-button');
+            const imageCounter = document.getElementById('image-counter');
+            
+            let images = [];
+            let currentIndex = 0;
+
+            // Close button - tell parent window to close the modal
+            closeButton.addEventListener('click', function() {
+                // Send message to parent window to close the modal
+                if (window.parent && window.parent !== window) {
+                    window.parent.postMessage('closeGallery', '*');
+                }
+            });
+
+            async function loadGalleryImages() {
+                try {
+                    const modelId = localStorage.getItem('modelId');
+                    if (!modelId) {
+                        throw new Error('No model ID found');
+                    }
+                    
+                    const response = await fetch(`/api/gallery-images/${modelId}`);
+                    if (!response.ok) {
+                        throw new Error('Error loading gallery images');
+                    }
+                    
+                    const imageDataList = await response.json();
+                    images = imageDataList.map(data => data.data);
+                    
+                    if (images.length > 0) {
+                        galleryImage.classList.remove('loading');
+                        galleryImage.src = images[currentIndex];
+                        updateCounter();
+                    } else {
+                        showNoImages();
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    showNoImages();
+                }
+            }
+
+            function updateImage() {
+                if (images.length > 0) {
+                    galleryImage.src = images[currentIndex];
+                    updateCounter();
+                }
+            }
+            
+            function updateCounter() {
+                imageCounter.textContent = `${currentIndex + 1} / ${images.length}`;
+            }
+            
+            function showNoImages() {
+                galleryWrapper.style.display = 'none';
+                noImagesDiv.style.display = 'block';
+            }
+
+            prevButton.addEventListener('click', function() {
+                currentIndex = (currentIndex - 1 + images.length) % images.length;
+                updateImage();
+            });
+
+            nextButton.addEventListener('click', function() {
+                currentIndex = (currentIndex + 1) % images.length;
+                updateImage();
+            });
+            
+            // Keyboard navigation
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'ArrowLeft') {
+                    currentIndex = (currentIndex - 1 + images.length) % images.length;
+                    updateImage();
+                } else if (e.key === 'ArrowRight') {
+                    currentIndex = (currentIndex + 1) % images.length;
+                    updateImage();
+                } else if (e.key === 'Escape') {
+                    if (window.parent && window.parent !== window) {
+                        window.parent.postMessage('closeGallery', '*');
+                    }
+                }
+            });
+            
+            // Touch swipe support for mobile
+            let touchStartX = 0;
+            let touchEndX = 0;
+            
+            document.addEventListener('touchstart', function(e) {
+                touchStartX = e.changedTouches[0].screenX;
+            }, { passive: true });
+            
+            document.addEventListener('touchend', function(e) {
+                touchEndX = e.changedTouches[0].screenX;
+                handleSwipe();
+            }, { passive: true });
+            
+            function handleSwipe() {
+                const swipeThreshold = 50;
+                const diff = touchStartX - touchEndX;
+                
+                if (Math.abs(diff) > swipeThreshold) {
+                    if (diff > 0) {
+                        // Swipe left - next image
+                        currentIndex = (currentIndex + 1) % images.length;
+                    } else {
+                        // Swipe right - previous image
+                        currentIndex = (currentIndex - 1 + images.length) % images.length;
+                    }
+                    updateImage();
+                }
+            }
+
+            loadGalleryImages();
+        });
+    </script>
+</body>
+</html>

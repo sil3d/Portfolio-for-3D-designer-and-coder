@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block title %}Gallery - Prince Gildas MK{% endblock %}
+
+{% block styles %}
+<style>
+    /* Gallery specific styles */
+    .gallery-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 80vh;
+        position: relative;
+    }
+    .gallery-display {
+        position: relative;
+        max-width: 90%;
+        max-height: 80vh;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 0 30px rgba(0,0,0,0.5);
+        z-index: 10; /* Ensure image is above background but below buttons */
+    }
+    .gallery-img {
+        max-width: 100%;
+        max-height: 80vh;
+        object-fit: contain;
+        display: block;
+    }
+    .nav-button {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background-color: rgba(41, 121, 255, 0.2);
+        color: white;
+        border: 1px solid rgba(41, 121, 255, 0.5);
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        z-index: 1003; /* Higher than gallery-display */
+        transition: all 0.3s ease;
+        font-size: 1.2rem;
+    }
+    .nav-button:hover {
+        background-color: var(--accent-color);
+        box-shadow: 0 0 15px var(--accent-color);
+    }
+    #prev-button { left: 20px; }
+    #next-button { right: 20px; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="text-center mb-4">
+        <h1 class="hero-title">Gallery</h1>
+    </div>
+    
+    <div class="gallery-wrapper">
+        <button id="prev-button" class="nav-button"><i class="fas fa-chevron-left"></i></button>
+        
+        <div class="gallery-display">
+            <!-- Ensure src is populated by JS or Placeholder -->
+            <img id="gallery-image" src="" alt="Gallery Image" class="gallery-img">
+        </div>
+
+        <button id="next-button" class="nav-button"><i class="fas fa-chevron-right"></i></button>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script type="module" src="{{ url_for('static', filename='js/main_gallery.js') }}"></script>
+{% endblock %}

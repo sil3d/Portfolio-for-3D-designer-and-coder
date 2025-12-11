@@ -1,0 +1,214 @@
+{% extends "base.html" %}
+
+{% block title %}Storyline - SO I LEARN 3D{% endblock %}
+
+{% block content %}
+<!-- Video Hero Section -->
+<div class="story-hero">
+    <video autoplay muted loop playsinline class="story-video-bg">
+        <source src="{{ url_for('static', filename='videos/story_intro.mp4') }}" type="video/mp4"> 
+        <!-- Fallback if video is missing or loading -->
+        Your browser does not support the video tag.
+    </video>
+    <div class="story-hero-overlay"></div>
+    <div class="story-hero-content text-center">
+        <h1 class="hero-title text-white mb-3" style="font-size: 5rem; text-shadow: 0 10px 30px rgba(0,0,0,0.5);">MY JOURNEY</h1>
+        <p class="hero-subtitle text-white mb-5" style="text-shadow: 0 5px 15px rgba(0,0,0,0.5);">From Curiosity to Creation</p>
+        
+        <div class="d-flex justify-content-center flex-wrap gap-3">
+            <a href="#timeline-start" class="btn-premium mr-3 animate-btn">Explore My Story</a>
+            <a href="https://grabcad.com/prince.gildas.mk.so_i_learn_3d-1" target="_blank" class="btn-outline-premium text-white border-white mr-3 animate-btn">
+                <i class="fas fa-cube mr-2"></i> GrabCAD
+            </a>
+            <a href="https://www.linkedin.com/in/prince-gildas-mbama-kombila-7a34ab245/" target="_blank" class="btn-outline-premium text-white border-white animate-btn">
+                <i class="fab fa-linkedin mr-2"></i> LinkedIn
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Dynamic Gallery Timeline -->
+<div id="timeline-start" class="container-fluid py-5" style="background: var(--bg-color); position: relative; z-index: 2;">
+    <div class="container">
+        
+        <!-- Story Point 1 -->
+        <div class="row align-items-center mb-5 story-point hidden-scroll">
+            <div class="col-md-6 mb-4 mb-md-0 story-img-col">
+                <div class="glass-card p-2 transform-hover floating-anim">
+                    <img src="{{ url_for('static', filename='images_years/2022.jpg') }}" onerror="this.src='https://via.placeholder.com/600x400/1a1a1a/ffffff?text=The+Beginning'" alt="The Beginning" class="img-fluid rounded shadow-lg">
+                </div>
+            </div>
+            <div class="col-md-6 story-text-col pl-md-5">
+                <h2 class="section-title mb-3">The Spark</h2>
+                <div class="glass-card p-4">
+                    <p class="lead">Every journey begins with a spark. For me, it was the realization that I could bring my imagination to life through 3D design and engineering. I started with simple shapes, learning the fundamentals of CAD.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Story Point 2 (Inverted) -->
+        <div class="row align-items-center mb-5 story-point hidden-scroll flex-row-reverse">
+            <div class="col-md-6 mb-4 mb-md-0 story-img-col">
+                <div class="glass-card p-2 transform-hover floating-anim delay-1">
+                    <img src="{{ url_for('static', filename='images_years/2023.jpg') }}" onerror="this.src='https://via.placeholder.com/600x400/1a1a1a/ffffff?text=Growth'" alt="Growth" class="img-fluid rounded shadow-lg">
+                </div>
+            </div>
+            <div class="col-md-6 story-text-col pr-md-5">
+                <h2 class="section-title mb-3 text-right">Rapid Growth</h2>
+                <div class="glass-card p-4">
+                    <p class="lead text-right">As my skills sharpened, so did my ambition. I moved from static models to complex assemblies, integrating electronics and simulations. Hours turned into days of refining every vertex and line.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Story Point 3 -->
+        <div class="row align-items-center mb-5 story-point hidden-scroll">
+            <div class="col-md-6 mb-4 mb-md-0 story-img-col">
+                <div class="glass-card p-2 transform-hover floating-anim">
+                    <img src="{{ url_for('static', filename='images_years/2024.jpg') }}" onerror="this.src='https://via.placeholder.com/600x400/1a1a1a/ffffff?text=Innovation'" alt="Innovation" class="img-fluid rounded shadow-lg">
+                </div>
+            </div>
+            <div class="col-md-6 story-text-col pl-md-5">
+                <h2 class="section-title mb-3">Innovation & Impact</h2>
+                <div class="glass-card p-4">
+                    <p class="lead">Today, my focus is on innovation that matters. Building autonomous systems, drones, and AI-driven solutions. It's not just about making things look good—it's about making them work beautifully.</p>
+                </div>
+            </div>
+        </div>
+
+         <!-- Story Point 4 (Example Gallery Grid for more dynamic feel) -->
+         <div class="row mt-5">
+             <div class="col-12 text-center mb-5">
+                 <h2 class="section-title">Gallery of Moments</h2>
+             </div>
+             <div class="col-md-4 mb-4 story-point hidden-scroll stagger-1">
+                 <div class="glass-card p-0 overflow-hidden h-100 floating-anim delay-2">
+                     <img src="{{ url_for('static', filename='images_years/2024.jpg') }}" class="img-fluid w-100 h-100 object-fit-cover transition-zoom">
+                 </div>
+             </div>
+             <div class="col-md-4 mb-4 story-point hidden-scroll stagger-2">
+                 <div class="glass-card p-0 overflow-hidden h-100 floating-anim">
+                     <img src="{{ url_for('static', filename='images_years/2024.jpg') }}" class="img-fluid w-100 h-100 object-fit-cover transition-zoom">
+                 </div>
+             </div>
+             <div class="col-md-4 mb-4 story-point hidden-scroll stagger-3">
+                 <div class="glass-card p-0 overflow-hidden h-100 floating-anim delay-1">
+                     <img src="{{ url_for('static', filename='images_years/2024.jpg') }}" class="img-fluid w-100 h-100 object-fit-cover transition-zoom">
+                 </div>
+             </div>
+         </div>
+
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Intersection Observer for scroll animations
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.15
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target); 
+                }
+            });
+        }, observerOptions);
+
+        const hiddenElements = document.querySelectorAll('.hidden-scroll');
+        hiddenElements.forEach((el) => observer.observe(el));
+    });
+</script>
+<style>
+    /* Hero & Video Animations */
+    .story-hero {
+        position: relative;
+        height: 100vh;
+        width: 100%;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .story-video-bg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 110%; /* Slightly larger for zoom effect */
+        height: 110%;
+        object-fit: cover;
+        z-index: 0;
+        animation: slowZoom 20s infinite alternate ease-in-out;
+    }
+    
+    @keyframes slowZoom {
+        0% { transform: scale(1); }
+        100% { transform: scale(1.1); }
+    }
+
+    .story-hero-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.6); 
+        z-index: 1;
+    }
+
+    .story-hero-content {
+        position: relative;
+        z-index: 2;
+        animation: fadeUpHero 1.5s ease-out;
+    }
+    
+    @keyframes fadeUpHero {
+        from { opacity: 0; transform: translateY(30px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Scroll Animations */
+    .hidden-scroll {
+        opacity: 0;
+        transform: translateY(60px) rotateX(10deg);
+        transition: all 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        perspective: 1000px;
+    }
+
+    .hidden-scroll.visible {
+        opacity: 1;
+        transform: translateY(0) rotateX(0);
+    }
+
+    /* Floating Image Animation */
+    .floating-anim {
+        animation: floatImg 6s ease-in-out infinite;
+    }
+    .delay-1 { animation-delay: 2s; }
+    .delay-2 { animation-delay: 4s; }
+
+    @keyframes floatImg {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-15px); }
+    }
+
+    /* Button Hover Enhancements */
+    .animate-btn {
+        transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .animate-btn:hover {
+        transform: scale(1.1);
+    }
+
+    .object-fit-cover { object-fit: cover; }
+    .transition-zoom { transition: transform 0.8s ease; }
+    .glass-card:hover .transition-zoom { transform: scale(1.1); }
+</style>
+{% endblock %}

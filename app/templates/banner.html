@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+
+{% block title %}Galerie - {{ year }}{% endblock %}
+
+{% block styles %}
+<style>
+    /* Specific styles for year gallery */
+    .banner-wrapper {
+        min-height: 100vh;
+        /* Background image handling if needed, or let base handle it */
+        /*background: url("/static/images_years/Image_05.jpg") no-repeat center center fixed;*/
+        background-size: cover;
+        padding-top: 100px; /* Space for navbar */
+    }
+
+    .gallery-container {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 20px;
+        padding-bottom: 50px;
+    }
+
+    .gallery-card {
+        border-radius: 20px;
+        background-size: cover;
+        background-position: center;
+        cursor: pointer;
+        overflow: hidden;
+        width: 300px;
+        height: 200px;
+        transition: transform 0.3s, box-shadow 0.3s;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+        position: relative;
+    }
+
+    .gallery-card:hover {
+        transform: scale(1.05);
+        box-shadow: 0 15px 40px rgba(41, 121, 255, 0.4);
+        border: 1px solid var(--accent-color);
+    }
+
+    .card-info {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        background: rgba(0, 0, 0, 0.8); /* Darker backdrop for text */
+        backdrop-filter: blur(5px);
+        padding: 15px;
+        border-radius: 0 0 20px 20px;
+    }
+
+    .card-icon {
+        background: #223;
+        color: white;
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-right: 10px;
+        font-size: 0.8rem;
+    }
+
+    .card-text {
+        text-align: left;
+    }
+
+    .card-text h4 {
+        margin: 0;
+        font-size: 1.1rem;
+        color: white;
+        text-transform: uppercase;
+    }
+
+    .card-text p {
+        margin: 0;
+        color: #b0b0ba;
+        font-size: 0.8rem;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .gallery-card {
+            width: 90%;
+            max-width: 350px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="banner-wrapper">
+    <div class="container text-center mb-5">
+        <h1 class="hero-title" style="text-shadow: 0 0 10px rgba(0,0,0,0.8);">Gallery {{ year }}</h1>
+        <a href="{{ url_for('main.works') }}" class="btn-outline-premium"><i class="fas fa-arrow-left"></i> Back to Years</a>
+    </div>
+
+    <div class="container gallery-container">
+        {% for file in files %}
+        <div class="gallery-card" style="background-image: url('{{ url_for('main.serve_image', file_id=file.id) }}');"
+            onclick="redirectToModel({{ file.id }})">
+            <div class="card-info">
+                <div class="card-icon">{{ file.id }}</div>
+                <div class="card-text">
+                    <h4>{{ file.file_name or 'No Name' }}</h4>
+                    <p>Click to View 3D Model</p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    function redirectToModel(modelId) {
+        localStorage.setItem('modelId', modelId);
+        if (modelId) {
+            window.location.href = `/model/${modelId}`;
+        } else {
+            console.error('ID invalid.');
+        }
+    }
+</script>
+{% endblock %}

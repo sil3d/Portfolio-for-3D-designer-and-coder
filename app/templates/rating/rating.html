@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block title %}Rate Our Work - SO I LEARN 3D{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/rating.css') }}">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="text-center mb-5">
+                <h1 class="hero-title" style="font-size: 3rem;">Rate Our Work</h1>
+                <p class="hero-subtitle">Your feedback helps us improve and grow!</p>
+            </div>
+
+            <div class="glass-card">
+                <form id="rating-form">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    
+                    <div class="form-group mb-4">
+                        <label for="name">Name</label>
+                        <input type="text" id="name" name="name" class="form-control" required placeholder="Your Name">
+                    </div>
+                    
+                    <div class="form-group mb-4">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" class="form-control" required placeholder="your.email@example.com">
+                    </div>
+                    
+                    <div class="form-group mb-4">
+                        <label for="rating">Rating</label>
+                        <div class="star-rating" id="star-rating">
+                            <input type="radio" id="star5" name="rating" value="5" required>
+                            <label for="star5" class="star" title="5 stars">★</label>
+                            
+                            <input type="radio" id="star4" name="rating" value="4">
+                            <label for="star4" class="star" title="4 stars">★</label>
+                            
+                            <input type="radio" id="star3" name="rating" value="3">
+                            <label for="star3" class="star" title="3 stars">★</label>
+                            
+                            <input type="radio" id="star2" name="rating" value="2">
+                            <label for="star2" class="star" title="2 stars">★</label>
+                            
+                            <input type="radio" id="star1" name="rating" value="1">
+                            <label for="star1" class="star" title="1 star">★</label>
+                        </div>
+                        <div id="rating-display" class="mt-2 text-center" style="color: var(--accent-color); font-weight: 600;"></div>
+                    </div>
+                    
+                    <div class="form-group mb-4">
+                        <label for="message">Message</label>
+                        <textarea id="message" name="message" rows="5" class="form-control" required placeholder="Tell us about your experience..."></textarea>
+                    </div>
+                    
+                    <div class="text-center">
+                        <button type="submit" class="btn-premium w-100">Submit Rating</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Recent Ratings Display -->
+            <div class="mt-5">
+                <h3 class="text-center mb-4" style="color: var(--text-color);">Recent Reviews</h3>
+                <div id="recent-ratings" class="recent-ratings-container">
+                    <!-- Ratings will be loaded here via JavaScript -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/rating.js') }}"></script>
+{% endblock %}
