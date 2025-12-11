@@ -23,6 +23,14 @@ def add_admin(username, password):
             db.session.rollback()
 
 if __name__ == "__main__":
-    email = input("Enter the Google email to register: ")
-    password = input("Enter the password: ")
-    add_admin(email, password)
+    import sys
+    if len(sys.argv) == 3:
+        # Run non-interactively (Railway/Cloud)
+        email = sys.argv[1]
+        password = sys.argv[2]
+        add_admin(email, password)
+    else:
+        # Run interactively (Local)
+        email = input("Enter the Google email to register: ")
+        password = input("Enter the password: ")
+        add_admin(email, password)

@@ -31,7 +31,7 @@
         amount: 300,              // Number of particles (desktop)
         color: '#fe4800ff',        // Cyan
         lineColor: '0, 142, 255',// Cyan RGB for rgba()
-        radius: 5,
+        radius: 3,
         speed: 1,
         linkDistance: 150,
         repulseRadius: 200,      // Size of the "hole"

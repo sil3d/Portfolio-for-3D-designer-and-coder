@@ -37,7 +37,11 @@
         }
 
         /* Ensure Focus Mode overlay is HIDDEN during print */
+        /* Ensure Focus Mode overlay is HIDDEN during print */
         @media print {
+            #particles-js, nav, .navbar, footer, .footer {
+                display: none !important;
+            }
             #focus-overlay {
                 display: none !important;
             }
@@ -55,6 +59,7 @@
                 box-shadow: none !important;
                 border: none !important;
                 padding: 0 !important;
+                border: 1px solid #eee !important; /* Proper print border */
             }
             /* Ensure buttons are hidden even if in focus mode (handled by .no-print mostly) */
             .no-print {
