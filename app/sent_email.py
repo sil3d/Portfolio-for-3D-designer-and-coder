@@ -39,13 +39,18 @@ def contact():
         smtp_password = os.getenv('SMTP_PASSWORD')
 
         try:
-            with smtplib.SMTP(smtp_server, smtp_port) as server:
+            print(f"DEBUG: Connecting to SMTP {smtp_server}:{smtp_port}...", flush=True)
+            with smtplib.SMTP(smtp_server, smtp_port, timeout=10) as server:
+                print("DEBUG: Connection established. Starting TLS...", flush=True)
                 server.starttls()
+                print("DEBUG: TLS started. Logging in...", flush=True)
                 server.login(smtp_user, smtp_password)
+                print("DEBUG: Logged in. Sending mail...", flush=True)
                 subject = f"New Contact Form Submission from {name}"
                 body = f"Name: {name}\nEmail: {email}\nMessage: {message}"
                 message = f"Subject: {subject}\n\n{body}"
                 server.sendmail(smtp_user, smtp_user, message)
+                print("DEBUG: Mail sent successfully.", flush=True)
                 return jsonify({'status': 'success', 'message': 'Your message has been sent successfully!'}), 200
         except Exception as e:
             return jsonify({'status': 'error', 'message': f'An error occurred: {e}'}), 500
