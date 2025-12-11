@@ -12,10 +12,10 @@ pymysql
 termcolor
 mysql-connector-python
 mysqlclient
-pymysql
 python-magic
 Flask-Dance
 validate_email
 dnspython
 Flask-Caching
 Flask-Limiter
+psycopg2-binary
