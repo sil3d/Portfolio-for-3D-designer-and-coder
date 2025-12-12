@@ -1,5 +1,5 @@
 from flask import (Blueprint, jsonify, Response, redirect, url_for,
-                   request, session, send_from_directory, render_template, send_file, abort)
+                   request, session, send_from_directory, render_template, send_file, abort, current_app)
 import os
 from app.extensions import db, limiter
 from app.models import File, GalleryFile, HDRI, Comment, Like, Download
@@ -11,36 +11,71 @@ from werkzeug.utils import secure_filename
 import requests
 import re
 import dns.resolver
-from app.compression_utils import compress_file, decompress_file
+import os
+from app.utils import get_location_from_ip, allowed_file, to_base32, compress_file, decompress_file
 
-bp = Blueprint('main', __name__, static_folder='static')
-# Configuration du logging
-logging.basicConfig(filename='error.log', level=logging.ERROR)
+# Create blueprint
+bp = Blueprint('main', __name__)
 
-VALID_YEARS = [2022, 2023, 2024, 2025]
+def convert_gdrive_to_direct_url(url):
+    """Convert Google Drive sharing URL to direct download URL"""
+    if not url:
+        return None
+    # Extract file ID from various Google Drive URL formats
+    # Format 1: https://drive.google.com/file/d/FILE_ID/view?usp=sharing
+    # Format 2: https://drive.google.com/open?id=FILE_ID
+    match = re.search(r'/d/([a-zA-Z0-9_-]+)', url)
+    if not match:
+        match = re.search(r'id=([a-zA-Z0-9_-]+)', url)
+    if match:
+        file_id = match.group(1)
+        return f"https://drive.google.com/uc?export=download&id={file_id}"
+    return url  # Return original if not a Google Drive URL
 
-def get_location_from_ip(ip_address):
+def proxy_external_file(url, mimetype=None):
+    """Fetch an external file and return it as a Response (proxying through server).
+    Handles Google Drive's virus scan warning for large files."""
     try:
-        response = requests.get(f'http://ip-api.com/json/{ip_address}', timeout=5) # Added timeout
-        response.raise_for_status()
-        data = response.json()
+        direct_url = convert_gdrive_to_direct_url(url)
         
-        if data['status'] == 'fail':
-            return 'Unknown Location'
+        # Use a session to handle cookies (needed for Google Drive confirmation)
+        session = requests.Session()
+        resp = session.get(direct_url, timeout=60, stream=True)
         
-        city = data.get('city', 'Unknown')
-        region = data.get('regionName', 'Unknown')
-        country = data.get('country', 'Unknown')
-        location = f"{city}, {region}, {country}"
+        # Check if Google Drive is asking for confirmation (large file warning)
+        if 'drive.google.com' in direct_url and b'confirm=' not in resp.content[:1000]:
+            # Check if content is HTML (confirmation page)
+            content_type = resp.headers.get('Content-Type', '')
+            if 'text/html' in content_type:
+                # Extract the confirmation token from the response
+                html_content = resp.content.decode('utf-8', errors='ignore')
+                
+                # Look for the confirm parameter in the download link
+                confirm_match = re.search(r'confirm=([0-9A-Za-z_-]+)', html_content)
+                if confirm_match:
+                    confirm_token = confirm_match.group(1)
+                    # Retry with confirmation token
+                    confirmed_url = f"{direct_url}&confirm={confirm_token}"
+                    resp = session.get(confirmed_url, timeout=60, stream=True)
+                else:
+                    # Try adding confirm=t (works for some files)
+                    confirmed_url = f"{direct_url}&confirm=t"
+                    resp = session.get(confirmed_url, timeout=60, stream=True)
         
-        return location
-    
-    except requests.RequestException as e:
-        print(f"Error retrieving location: {e}")
-        return 'Unknown Location'
-
-def to_base32(string):
-    return base64.b32encode(string.encode()).decode().rstrip('=')
+        if resp.status_code == 200:
+            # Check if we still got HTML instead of the file
+            response_content_type = resp.headers.get('Content-Type', '')
+            if 'text/html' in response_content_type:
+                logging.error(f"Google Drive returned HTML instead of file for {url}")
+                return jsonify({"error": "Failed to download file from Google Drive - file may require authentication"}), 403
+            
+            content_type = mimetype or response_content_type or 'application/octet-stream'
+            return Response(resp.content, mimetype=content_type)
+        else:
+            return jsonify({"error": f"Failed to fetch file: {resp.status_code}"}), resp.status_code
+    except Exception as e:
+        logging.error(f"Error proxying file from {url}: {e}")
+        return jsonify({"error": "Failed to fetch external file"}), 500
 
 @bp.route('/')
 def index():
@@ -93,10 +128,13 @@ def serve_image(file_id):
     try:
         file = db.session.get(File, file_id)
 
-        if file and file.banner_path:
-            image_data = decompress_file(file.banner_path)
-            mimetype = file.banner_mimetype or 'image/jpeg'
-            return send_file(io.BytesIO(image_data), mimetype=mimetype)
+        if file:
+            if file.banner_url:
+                return redirect(file.banner_url)
+            elif file.banner_path:
+                image_data = decompress_file(file.banner_path)
+                mimetype = file.banner_mimetype or 'image/jpeg'
+                return send_file(io.BytesIO(image_data), mimetype=mimetype)
 
         return "Image not found", 404
 
@@ -117,70 +155,88 @@ def models_year(year):
     except Exception as e:
         return str(e), 500
 
-def allowed_file(filename, allowed_extensions):
-    """Vérifie si le fichier a une extension autorisée."""
-    return '.' in filename and filename.rsplit('.', 1)[1].lower() in allowed_extensions
+
 
 @bp.route('/upload', methods=['POST'])
 @login_required
 def upload_file():
     try:
-        if 'glb_file' not in request.files:
-            return jsonify({"success": False, "message": "No GLB file uploaded"}), 400
-
         model_name = request.form.get('model_name')
-        banner = request.files.get('banner')
-        glb_file = request.files['glb_file']
-        zip_file = request.files.get('zip_file')
         year = request.form.get('year')
+        
+        if not model_name or not year:
+             return jsonify({"success": False, "message": "Model Name and Year are required"}), 400
+
+        # URLs
+        banner_url = request.form.get('banner_url')
+        glb_url = request.form.get('glb_url')
+        zip_url = request.form.get('zip_url')
+
+        # Files
+        banner_file = request.files.get('banner')
+        glb_file = request.files.get('glb_file')
+        zip_file = request.files.get('zip_file')
         gallery_files = request.files.getlist('gallery')
 
-        if not model_name or not year or not glb_file or not allowed_file(glb_file.filename, ['glb']):
-            return jsonify({"success": False, "message": "Required fields are missing or invalid"}), 400
+        # Data placeholders
+        banner_data = None
+        banner_mimetype = None
+        glb_data = None
+        glb_mimetype = None
+        zip_data = None
+        zip_mimetype = None
 
-        if not year.isdigit() or not (1900 <= int(year) <= 2100):
-            return jsonify({"success": False, "message": "Invalid year. Please provide a valid year between 1900 and 2100."}), 400
+        # Logic: GLB
+        if not glb_url and not glb_file:
+             return jsonify({"success": False, "message": "GLB Model (File or URL) is required"}), 400
+        
+        if glb_file and glb_file.filename:
+             if not allowed_file(glb_file.filename, ['glb']):
+                 return jsonify({"success": False, "message": "Invalid GLB file"}), 400
+             glb_data = compress_file(glb_file.read())
+             glb_mimetype = glb_file.mimetype
 
-        user_ip = request.remote_addr
-        location = get_location_from_ip(user_ip)
+        # Logic: Banner
+        if banner_file and banner_file.filename:
+             banner_data = compress_file(banner_file.read())
+             banner_mimetype = banner_file.mimetype
 
-        # Read and compress file data
-        banner_data = compress_file(banner.read()) if banner and allowed_file(banner.filename, ['png', 'jpg', 'jpeg']) else b''
-        glb_data = compress_file(glb_file.read()) if allowed_file(glb_file.filename, ['glb']) else b''
-        zip_data = compress_file(zip_file.read()) if zip_file and allowed_file(zip_file.filename, ['zip']) else b''
-
-        # Ensure MIME types are correct
-        banner_mimetype = banner.content_type if banner else None
-        file_glb_mimetype = 'model/gltf-binary'
-        file_zip_mimetype = zip_file.content_type if zip_file else None
+        # Logic: Zip
+        if zip_file and zip_file.filename:
+             zip_data = compress_file(zip_file.read())
+             zip_mimetype = zip_file.mimetype
 
         new_file = File(
             file_name=model_name,
+            year=int(year),
             banner_path=banner_data,
             banner_mimetype=banner_mimetype,
             file_path_glb=glb_data,
-            file_path_glb_mimetype=file_glb_mimetype,
+            file_path_glb_mimetype=glb_mimetype,
             file_path_zip=zip_data,
-            file_path_zip_mimetype=file_zip_mimetype,
-            added_by=current_user.username,
-            location=location,
-            year=int(year)
+            file_path_zip_mimetype=zip_mimetype,
+            banner_url=banner_url,
+            file_path_glb_url=glb_url,
+            file_path_zip_url=zip_url,
+            added_by=current_user.username, # Assuming current_user has username or ID
+            location='Unknown' # Can update if needed
         )
-        
-        db.session.add(new_file)
-        db.session.flush() # Flush to get the ID
 
-        # Insert gallery files
-        for gallery_file in gallery_files:
-            if gallery_file and allowed_file(gallery_file.filename, ['png', 'jpg', 'jpeg']):
-                gallery_data = compress_file(gallery_file.read())
-                gallery_mimetype = gallery_file.content_type
-                new_gallery_image = GalleryFile(
-                    file_id=new_file.id,
-                    file_path=gallery_data,
-                    images_mimetype=gallery_mimetype
-                )
-                db.session.add(new_gallery_image)
+        db.session.add(new_file)
+        db.session.flush() # Get ID
+
+        # Gallery Images (keeping as file uploads for now, could act similarly)
+        if gallery_files:
+            for file in gallery_files:
+                if file and file.filename:
+                    gallery_data = compress_file(file.read())
+                    gallery_mimetype = file.mimetype
+                    new_gallery_image = GalleryFile(
+                        file_id=new_file.id,
+                        file_path=gallery_data,
+                        images_mimetype=gallery_mimetype
+                    )
+                    db.session.add(new_gallery_image)
 
         db.session.commit()
 
@@ -195,42 +251,54 @@ def upload_file():
 @login_required
 def upload_hdri():
     try:
-        if 'hdri_file' not in request.files:
-            return jsonify({"success": False, "message": "No HDRI file uploaded"}), 400
-
         hdri_name = request.form.get('hdri_name')
-        hdri_file = request.files['hdri_file']
+        # Check for URL or File
+        hdri_url = request.form.get('hdri_url')
+        preview_url = request.form.get('preview_url')
+        
+        hdri_file = request.files.get('hdri_file')
         preview_file = request.files.get('preview_file')
 
-        if not hdri_name or not hdri_file or not allowed_file(hdri_file.filename, ['hdr', 'exr']):
-            return jsonify({"success": False, "message": "Required fields are missing or invalid"}), 400
+        if not hdri_name:
+             return jsonify({"success": False, "message": "HDRI Name is required"}), 400
 
-        if preview_file and not allowed_file(preview_file.filename, ['png', 'jpg', 'jpeg']):
-            return jsonify({"success": False, "message": "Invalid preview file format. Only PNG, JPG, JPEG are allowed."}), 400
+        hdri_data = None
+        hdri_mimetype = None
+        preview_data = None
+        preview_mimetype = None
 
-        hdri_data = compress_file(hdri_file.read())
-        preview_data = compress_file(preview_file.read()) if preview_file else b''
+        # Logic for HDRI: URL > File
+        if not hdri_url and not hdri_file:
+             return jsonify({"success": False, "message": "HDRI File or URL is required"}), 400
+        
+        if hdri_file and hdri_file.filename:
+             if not allowed_file(hdri_file.filename, ['hdr', 'exr']):
+                  return jsonify({"success": False, "message": "Invalid HDRI file type"}), 400
+             hdri_data = compress_file(hdri_file.read())
+             hdri_mimetype = hdri_file.mimetype
 
-        hdri_mimetype = hdri_file.mimetype or 'image/vnd.radiance'
-        if hdri_file.filename.lower().endswith('.exr'):
-            hdri_mimetype = 'image/vnd.radiance'
-        elif hdri_file.filename.lower().endswith('.hdr'):
-            hdri_mimetype = 'image/vnd.radiance'
-
-        preview_mimetype = preview_file.mimetype if preview_file else 'image/jpeg'
+        # Logic for Preview: URL > File
+        if not preview_url and not preview_file:
+             return jsonify({"success": False, "message": "Preview Image or URL is required"}), 400
+             
+        if preview_file and preview_file.filename:
+             preview_data = compress_file(preview_file.read())
+             preview_mimetype = preview_file.mimetype
 
         new_hdri = HDRI(
             name=hdri_name,
             file_path=hdri_data,
             file_path_mimetype=hdri_mimetype,
             preview_path=preview_data,
-            preview_path_mimetype=preview_mimetype
+            preview_path_mimetype=preview_mimetype,
+            file_path_url=hdri_url,
+            preview_path_url=preview_url
         )
         
         db.session.add(new_hdri)
         db.session.commit()
 
-        return jsonify({"success": True, "message": "HDRI and preview uploaded successfully."})
+        return jsonify({"success": True, "message": "HDRI added successfully."})
 
     except Exception as e:
         logging.error(f"Error: {str(e)}")
@@ -281,7 +349,19 @@ def serve_model(model_id):
     try:
         config_record = db.session.get(File, model_id)
         if config_record:
-            return Response(decompress_file(config_record.file_path_glb), mimetype='model/gltf-binary')
+            if config_record.file_path_glb_url:
+                # Proxy the file to avoid CORS issues with Google Drive
+                response = proxy_external_file(config_record.file_path_glb_url, 'model/gltf-binary')
+                # Add cache headers if proxying succeeded
+                if isinstance(response, Response):
+                    response.headers['Cache-Control'] = 'public, max-age=86400'  # Cache for 24 hours
+                return response
+            elif config_record.file_path_glb:
+                response = Response(decompress_file(config_record.file_path_glb), mimetype='model/gltf-binary')
+                response.headers['Cache-Control'] = 'public, max-age=86400'  # Cache for 24 hours
+                return response
+            else:
+                 return jsonify({"error": "Model source not found"}), 404
         else:
             return jsonify({"error": "Model not found"}), 404
     except Exception as e:
@@ -304,7 +384,13 @@ def get_hdri_preview(hdri_id):
     try:
         hdri = db.session.get(HDRI, hdri_id)
         if hdri:
-            return Response(decompress_file(hdri.preview_path), mimetype=hdri.preview_path_mimetype)
+            if hdri.preview_path_url:
+                # Proxy the file to avoid CORS issues
+                return proxy_external_file(hdri.preview_path_url, hdri.preview_path_mimetype or 'image/jpeg')
+            elif hdri.preview_path:
+                return Response(decompress_file(hdri.preview_path), mimetype=hdri.preview_path_mimetype)
+            else:
+                 return jsonify({"error": "Preview content not found"}), 404
         else:
             return jsonify({"error": "Preview not found"}), 404
     except Exception as e:
@@ -315,7 +401,13 @@ def get_hdri_file(hdri_id):
     try:
         hdri = db.session.get(HDRI, hdri_id)
         if hdri:
-            return Response(decompress_file(hdri.file_path), mimetype=hdri.file_path_mimetype)
+             if hdri.file_path_url:
+                # Proxy the file to avoid CORS issues
+                return proxy_external_file(hdri.file_path_url, hdri.file_path_mimetype or 'application/octet-stream')
+             elif hdri.file_path:
+                return Response(decompress_file(hdri.file_path), mimetype=hdri.file_path_mimetype)
+             else:
+                return jsonify({"error": "HDRI content not found"}), 404
         else:
             return jsonify({"error": "HDRI not found"}), 404
     except Exception as e:
@@ -353,7 +445,9 @@ def gallery():
 
 @bp.route('/storyline')
 def storyline():
-    images_dir = os.path.join(bp.static_folder, 'images', 'storyline')
+    # Compute static folder path relative to this file's location (app/routes.py -> app/static)
+    app_dir = os.path.dirname(os.path.abspath(__file__))
+    images_dir = os.path.join(app_dir, 'static', 'images', 'storyline')
     gallery_images = []
     if os.path.exists(images_dir):
         gallery_images = [f for f in os.listdir(images_dir) if f.lower().endswith(('.png', '.jpg', '.jpeg', '.gif', '.webp', '.mp4', '.mkv', '.mov'))]
@@ -383,6 +477,12 @@ def download_file():
         db.session.add(download)
         file_record.download_count += 1
         db.session.commit()
+
+        if file_record.file_path_zip_url:
+            return redirect(file_record.file_path_zip_url)
+
+        if not file_record.file_path_zip:
+             return "File content not found", 404
 
         return send_file(
             io.BytesIO(decompress_file(file_record.file_path_zip)),

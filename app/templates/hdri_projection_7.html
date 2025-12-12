@@ -34,6 +34,32 @@
     <!-- Inclure la barre de navigation -->
     {% include 'navbar1.html' %}
 
+    <!-- First Load Warning Modal -->
+    <div id="first-load-warning" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 9999; display: flex; justify-content: center; align-items: center; flex-direction: column;">
+        <div style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); padding: 40px; border-radius: 20px; text-align: center; max-width: 500px; box-shadow: 0 20px 60px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1);">
+            <i class="fas fa-exclamation-triangle" style="font-size: 60px; color: #f39c12; margin-bottom: 20px;"></i>
+            <h2 style="color: white; margin-bottom: 15px; font-size: 24px;">⚡ First Time Loading</h2>
+            <p style="color: #ccc; margin-bottom: 20px; font-size: 16px; line-height: 1.6;">
+                This is your first time viewing this 3D model.<br>
+                <strong style="color: #f39c12;">The initial load may take a moment</strong> as the model downloads.<br>
+                <span style="color: #4ecdc4;">Subsequent visits will be instant!</span>
+            </p>
+            <div id="loading-progress-container" style="width: 100%; height: 8px; background: rgba(255,255,255,0.1); border-radius: 4px; overflow: hidden; margin-bottom: 20px;">
+                <div id="loading-progress" style="width: 0%; height: 100%; background: linear-gradient(90deg, #4ecdc4, #44a08d); border-radius: 4px; transition: width 0.3s ease;"></div>
+            </div>
+            <p id="loading-status" style="color: #888; font-size: 14px;">Preparing to load...</p>
+        </div>
+    </div>
+
+    <!-- Loading Indicator (for cached loads) -->
+    <div id="loading-indicator" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 9998; text-align: center;">
+        <div style="width: 60px; height: 60px; border: 4px solid rgba(255,255,255,0.1); border-top-color: #4ecdc4; border-radius: 50%; animation: spin 1s linear infinite;"></div>
+        <p style="color: white; margin-top: 15px; font-size: 14px;">Loading from cache...</p>
+    </div>
+    <style>
+        @keyframes spin { to { transform: rotate(360deg); } }
+    </style>
+
     <div id="model-name">{{ file.name }}</div>
 
     <div id="container">

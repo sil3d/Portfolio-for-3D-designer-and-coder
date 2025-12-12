@@ -26,16 +26,21 @@ class File(db.Model):
     file_name = db.Column(db.String(255), nullable=False)
     
     # Binary Storage
-    banner_path = db.Column(db.LargeBinary, nullable=False)
+    banner_path = db.Column(db.LargeBinary, nullable=True)
     banner_mimetype = db.Column(db.String(50))
-    file_path_glb = db.Column(db.LargeBinary, nullable=False)
+    file_path_glb = db.Column(db.LargeBinary, nullable=True)
     file_path_glb_mimetype = db.Column(db.String(50))
-    file_path_zip = db.Column(db.LargeBinary, nullable=False)
+    file_path_zip = db.Column(db.LargeBinary, nullable=True)
     file_path_zip_mimetype = db.Column(db.String(50))
+    
+    # URL Storage
+    banner_url = db.Column(db.String(500))
+    file_path_glb_url = db.Column(db.String(500))
+    file_path_zip_url = db.Column(db.String(500))
     
     added_by = db.Column(db.String(80), nullable=False)
     location = db.Column(db.String(255))
-    year = db.Column(db.Integer)
+    year = db.Column(db.Integer, index=True)
     
     # Counters
     like_count = db.Column(db.Integer, default=0)
@@ -85,10 +90,14 @@ class HDRI(db.Model):
     __tablename__ = 'hdri'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255), nullable=False)
-    file_path = db.Column(db.LargeBinary, nullable=False)
+    file_path = db.Column(db.LargeBinary, nullable=True)
     file_path_mimetype = db.Column(db.String(50))
-    preview_path = db.Column(db.LargeBinary, nullable=False)
+    preview_path = db.Column(db.LargeBinary, nullable=True)
     preview_path_mimetype = db.Column(db.String(50))
+    
+    # URL Storage
+    file_path_url = db.Column(db.String(500))
+    preview_path_url = db.Column(db.String(500))
 
 class Video(db.Model):
     __tablename__ = 'videos'

@@ -26,17 +26,20 @@
             </div>
 
             <div class="form-group">
-                <label for="banner">Banner Image:</label>
+                <label for="banner">Banner Image (File or URL):</label>
+                <input type="text" id="banner_url" name="banner_url" placeholder="or Paste Banner URL">
                 <input type="file" id="banner" name="banner" accept="image/*">
             </div>
 
             <div class="form-group">
-                <label for="glb-file">3D Model (GLB):</label>
-                <input type="file" id="glb-file" name="glb_file" accept=".glb" required>
+                <label for="glb-file">3D Model GLB (File or URL):</label>
+                <input type="text" id="glb_url" name="glb_url" placeholder="or Paste GLB URL">
+                <input type="file" id="glb-file" name="glb_file" accept=".glb">
             </div>
 
             <div class="form-group">
-                <label for="zip-file">Zip Archive:</label>
+                <label for="zip-file">Zip Archive (File or URL):</label>
+                <input type="text" id="zip_url" name="zip_url" placeholder="or Paste Zip URL">
                 <input type="file" id="zip-file" name="zip_file" accept=".zip">
             </div>
 

@@ -28,3 +28,6 @@ class Config:
     
     # Flask-Limiter Configuration
     RATELIMIT_STORAGE_URI = "memory://"
+
+    # Cache Control (1 year)
+    SEND_FILE_MAX_AGE_DEFAULT = 31536000

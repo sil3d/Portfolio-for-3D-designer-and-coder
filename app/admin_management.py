@@ -4,7 +4,7 @@ import io
 from app.extensions import db, limiter
 from flask_login import login_required
 from app.models import File, HDRI, GalleryFile, Download
-from app.compression_utils import compress_file, decompress_file
+from app.utils import compress_file, decompress_file
 from sqlalchemy import text
 
 bp = Blueprint('admin', __name__, static_folder='static')
@@ -36,8 +36,15 @@ def update_file():
 
         new_name = request.form.get('file_name')
         new_year = request.form.get('year')
+        
+        # Files
         new_banner_file = request.files.get('banner')
         new_glb_file = request.files.get('glb_file')
+        
+        # URLs
+        new_banner_url = request.form.get('banner_url')
+        new_glb_url = request.form.get('glb_url')
+        new_zip_url = request.form.get('zip_url')
 
         if new_name:
             file_record.file_name = new_name
@@ -45,13 +52,25 @@ def update_file():
         if new_year:
             file_record.year = int(new_year)
 
+        # Update URLs if provided
+        if new_banner_url:
+             file_record.banner_url = new_banner_url
+        if new_glb_url:
+             file_record.file_path_glb_url = new_glb_url
+        if new_zip_url:
+             file_record.file_path_zip_url = new_zip_url
+
+        # Check files (override URLs if file uploaded? or clear URL? Logic: File replaces file content. URL replaces URL context.)
+        # If user uploads a file, we probably want to prioritize it, but sticking to existing logic.
         if new_banner_file:
             file_record.banner_path = compress_file(new_banner_file.read())
             file_record.banner_mimetype = new_banner_file.mimetype
+            # file_record.banner_url = None # Optional: Clear URL if file uploaded
 
         if new_glb_file:
             file_record.file_path_glb = compress_file(new_glb_file.read())
             file_record.file_path_glb_mimetype = new_glb_file.mimetype
+            # file_record.file_path_glb_url = None
 
         db.session.commit()
         return jsonify({"message": "File updated successfully.", "success": True}), 200
