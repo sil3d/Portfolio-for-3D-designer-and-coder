@@ -25,7 +25,7 @@
     const ctx = canvas.getContext('2d');
     let width, height;
     let particles = [];
-
+    
     // Configuration
     const config = {
         amount: 300,              // Number of particles (desktop)

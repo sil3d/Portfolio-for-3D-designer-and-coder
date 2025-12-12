@@ -4,7 +4,7 @@
     flex-direction: row-reverse;
     justify-content: center;
     gap: 10px;
-    font-size: 3rem;
+    font-size: 5rem;
     unicode-bidi: bidi-override;
     direction: rtl;
 }
@@ -14,7 +14,7 @@
 }
 
 .star-rating label.star {
-    color: rgba(255, 255, 255, 0.2);
+    color: rgba(26, 25, 25, 0.2);
     cursor: pointer;
     transition: all 0.3s ease;
     text-shadow: 0 0 10px rgba(41, 121, 255, 0.3);
@@ -83,24 +83,24 @@
 .rating-card-name {
     color: var(--text-color);
     font-weight: 600;
-    font-size: 1.1rem;
+    font-size: 1.5rem;
 }
 
 .rating-card-stars {
     color: #ffd700;
-    font-size: 1.2rem;
+    font-size: 1.5rem;
     letter-spacing: 2px;
 }
 
 .rating-card-message {
-    color: rgba(255, 255, 255, 0.8);
+    color: rgba(0, 0, 0, 0.8);
     line-height: 1.6;
     margin-bottom: 10px;
 }
 
 .rating-card-date {
-    color: rgba(255, 255, 255, 0.5);
-    font-size: 0.85rem;
+    color: rgba(0, 0, 0, 0.5);
+    font-size: 0.95rem;
     text-align: right;
 }
 
@@ -128,7 +128,7 @@
 .form-control {
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.1);
-    color: #fff;
+    color: #383838;
     border-radius: 8px;
     padding: 12px 15px;
 }
@@ -137,7 +137,7 @@
     background: rgba(255, 255, 255, 0.1);
     border-color: var(--accent-color);
     box-shadow: 0 0 10px rgba(41, 121, 255, 0.2);
-    color: #fff;
+    color: #383838;
     outline: none;
 }
 

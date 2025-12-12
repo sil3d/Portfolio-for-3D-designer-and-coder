@@ -1,5 +1,6 @@
 from flask import (Blueprint, jsonify, Response, redirect, url_for,
                    request, session, send_from_directory, render_template, send_file, abort)
+import os
 from app.extensions import db, limiter
 from app.models import File, GalleryFile, HDRI, Comment, Like, Download
 from flask_login import login_required, current_user
@@ -352,7 +353,14 @@ def gallery():
 
 @bp.route('/storyline')
 def storyline():
-    return render_template('storyline.html')
+    images_dir = os.path.join(bp.static_folder, 'images', 'storyline')
+    gallery_images = []
+    if os.path.exists(images_dir):
+        gallery_images = [f for f in os.listdir(images_dir) if f.lower().endswith(('.png', '.jpg', '.jpeg', '.gif', '.webp', '.mp4', '.mkv', '.mov'))]
+        # Sort specifically to put 'Stars Field' first if it exists, or just alphabetical
+        gallery_images.sort()
+        
+    return render_template('storyline.html', gallery_images=gallery_images)
 
 @bp.route('/download', methods=['POST'])
 def download_file():

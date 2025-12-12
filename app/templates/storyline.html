@@ -71,31 +71,32 @@
             <div class="col-md-6 story-text-col pl-md-5">
                 <h2 class="section-title mb-3">Innovation & Impact</h2>
                 <div class="glass-card p-4">
-                    <p class="lead">Today, my focus is on innovation that matters. Building autonomous systems, drones, and AI-driven solutions. It's not just about making things look good—it's about making them work beautifully.</p>
+                    <p class="lead">Today, my focus is on innovation that matters. Building autonomous systems, drones, and AI-driven solutions. It's not just about making things look good it's about making them work beautifully.</p>
                 </div>
             </div>
         </div>
 
-         <!-- Story Point 4 (Example Gallery Grid for more dynamic feel) -->
+         <!-- Dynamic Gallery Grid -->
          <div class="row mt-5">
              <div class="col-12 text-center mb-5">
                  <h2 class="section-title">Gallery of Moments</h2>
+                 <p class="text-muted">A collection of milestones and creations.</p>
              </div>
-             <div class="col-md-4 mb-4 story-point hidden-scroll stagger-1">
-                 <div class="glass-card p-0 overflow-hidden h-100 floating-anim delay-2">
-                     <img src="{{ url_for('static', filename='images_years/2024.jpg') }}" class="img-fluid w-100 h-100 object-fit-cover transition-zoom">
+             
+             {% for media in gallery_images %}
+             <div class="col-md-4 mb-4 story-point hidden-scroll">
+                 <div class="glass-card p-0 overflow-hidden h-100 floating-anim" style="animation-delay: {{ loop.index0 * 0.2 }}s;">
+                    {% if media.lower().endswith(('.mp4', '.mkv', '.mov')) %}
+                        <video controls class="img-fluid w-100 h-100 object-fit-cover">
+                            <source src="{{ url_for('static', filename='images/storyline/' + media) }}" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                    {% else %}
+                        <img src="{{ url_for('static', filename='images/storyline/' + media) }}" class="img-fluid w-100 h-100 object-fit-cover transition-zoom" loading="lazy" alt="Story Image">
+                    {% endif %}
                  </div>
              </div>
-             <div class="col-md-4 mb-4 story-point hidden-scroll stagger-2">
-                 <div class="glass-card p-0 overflow-hidden h-100 floating-anim">
-                     <img src="{{ url_for('static', filename='images_years/2024.jpg') }}" class="img-fluid w-100 h-100 object-fit-cover transition-zoom">
-                 </div>
-             </div>
-             <div class="col-md-4 mb-4 story-point hidden-scroll stagger-3">
-                 <div class="glass-card p-0 overflow-hidden h-100 floating-anim delay-1">
-                     <img src="{{ url_for('static', filename='images_years/2024.jpg') }}" class="img-fluid w-100 h-100 object-fit-cover transition-zoom">
-                 </div>
-             </div>
+             {% endfor %}
          </div>
 
     </div>
