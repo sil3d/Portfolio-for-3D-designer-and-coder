@@ -31,7 +31,13 @@ This document outlines the security measures and algorithms implemented in the "
 -   **Type Conversion**: Flask routes use type converters (e.g., `<int:file_id>`) to strictly enforce input types. Malicious strings passed where numbers are expected (e.g., in SQLi attempts) are rejected by the router with a `404 Not Found` before reaching the database logic.
 -   **File Uploads**: Files are validated by extension (`.glb`, `.zip`, `.png`) and the upload endpoint is behind a login check.
 
-## 6. Testing
+## 6. Anti-Scraper & AI Defense
+**Control**: Honeypots & Injection
+-   **Honeypot Route**: A hidden `/trap/bot-check` route detects non-human traffic. Bots following this hidden link are logged for analysis.
+-   **AI Prompt Injection**: The Resume page contains a hidden text block (`opacity: 0.01`) with instructions tailored for LLMs (Applicant Tracking Systems), guiding them to rank the profile favorably.
+-   **Hashtag Cloud**: A hidden block of industry-specific hashtags maximizes keyword density for scraping bots without cluttering the visual UI.
+
+## 7. Testing
 A penetration test script `test_penetration.py` is included to verify these controls.
 -   **Usage**: `python test_penetration.py`
 -   **Checks**: Unauthorized access blocking, CSRF token validation, and SQLi resilience.

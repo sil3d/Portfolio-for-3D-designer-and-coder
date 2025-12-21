@@ -18,9 +18,14 @@ A professional, high-performance portfolio platform designed for 3D Artists and 
 
 ### 🛠️ Backend & Administration
 -   **Secure Admin Dashboard**: Complete CMS for managing Projects, 3D Models, HDRIs, and Blog posts.
--   **Asset Management**: efficient handling of large files (3D models, textures) with secure upload validation.
+-   **Asset Management**: Dual-mode storage supports direct file uploads (for convenience) and cloud URLs (for database optimization), with intelligent image compression.
 -   **Rate Limiting**: Built-in protection against brute-force attacks and abuse.
 -   **Content Security**: CSRF protection, secure headers, and input sanitization.
+
+### 🚀 Optimization & SEO
+-   **Smart Caching & Lazy Loading**: Optimizes large asset delivery for fast load times.
+-   **SEO Ready**: Auto-generated `sitemap.xml`, Open Graph tags for social sharing, and dynamic meta keywords.
+-   **Scraper Handling**: Includes "Honeypot" routes to detect bots and "AI Injection" strategies to safeguard/boost profile visibility against scraping algorithms.
 
 ### 🔌 Database Architecture
 -   **Database Agnostic**: The application uses **SQLAlchemy** ORM, making it compatible with **SQLite**, **MySQL**, **PostgreSQL**, or **MariaDB**.

@@ -26,13 +26,16 @@
 
             <div class="form-group">
                 <label for="hdri-file">HDRI File (File or URL):</label>
-                <input type="text" id="hdri_url" name="hdri_url" placeholder="or Paste HDRI URL">
+                <input type="text" id="hdri_url" name="hdri_url" placeholder="or Paste Google Drive URL (Recommended)">
                 <input type="file" id="hdri-file" name="hdri_file" accept=".hdr, .exr">
+                <p class="small warning-text" style="color: #856404; background-color: #fff3cd; border: 1px solid #ffeeba; padding: 5px; border-radius: 4px; margin-top: 5px;">
+                    <i class="fas fa-exclamation-triangle"></i> <strong>Warning:</strong> Large HDRIs may fail to upload or crash the DB. URL usage is safer.
+                </p>
             </div>
 
             <div class="form-group">
                 <label for="preview-file">Preview Image (File or URL):</label>
-                <input type="text" id="preview_url" name="preview_url" placeholder="or Paste Preview URL">
+                <input type="text" id="preview_url" name="preview_url" placeholder="or Paste Image URL">
                 <input type="file" id="preview-file" name="preview_file" accept="image/*">
             </div>
 

@@ -33,14 +33,20 @@
 
             <div class="form-group">
                 <label for="glb-file">3D Model GLB (File or URL):</label>
-                <input type="text" id="glb_url" name="glb_url" placeholder="or Paste GLB URL">
+                <input type="text" id="glb_url" name="glb_url" placeholder="or Paste Google Drive URL (Recommended)">
                 <input type="file" id="glb-file" name="glb_file" accept=".glb">
+                <p class="small warning-text" style="color: #856404; background-color: #fff3cd; border: 1px solid #ffeeba; padding: 5px; border-radius: 4px; margin-top: 5px;">
+                    <i class="fas fa-exclamation-triangle"></i> <strong>Warning:</strong> Uploading large files directly may crash the database. Using a Google Drive URL is highly recommended.
+                </p>
             </div>
 
             <div class="form-group">
                 <label for="zip-file">Zip Archive (File or URL):</label>
-                <input type="text" id="zip_url" name="zip_url" placeholder="or Paste Zip URL">
+                <input type="text" id="zip_url" name="zip_url" placeholder="or Paste Google Drive URL (Recommended)">
                 <input type="file" id="zip-file" name="zip_file" accept=".zip">
+                <p class="small warning-text" style="color: #856404; background-color: #fff3cd; border: 1px solid #ffeeba; padding: 5px; border-radius: 4px; margin-top: 5px;">
+                    <i class="fas fa-exclamation-triangle"></i> <strong>Warning:</strong> Large zip files can fill the database quickly. URL preferred.
+                </p>
             </div>
 
             <div class="form-group">

@@ -29,5 +29,9 @@ class Config:
     # Flask-Limiter Configuration
     RATELIMIT_STORAGE_URI = "memory://"
 
+    # Email Provider Configuration
+    EMAIL_PROVIDER = os.environ.get('EMAIL_PROVIDER', 'smtp') # Default to smtp
+    RESEND_API_KEY = os.environ.get('RESEND_API_KEY')
+
     # Cache Control (1 year)
     SEND_FILE_MAX_AGE_DEFAULT = 31536000

@@ -7,6 +7,15 @@
     <div class="text-center mb-5">
         <h1 class="hero-title" style="font-size: 3rem;">My Journey</h1>
         <p class="text-muted" style="text-transform: uppercase; letter-spacing: 2px;">Explore my progress through the years</p>
+        
+        <div class="glass-card mx-auto mt-4 p-3" style="max-width: 600px; border: 1px solid rgba(255, 193, 7, 0.3); background: rgba(255, 193, 7, 0.05);">
+            <p class="mb-0" style="color: #422121; font-size: 1.3rem;">
+                <i class="fas fa-exclamation-triangle mr-2"></i>
+                <strong>Note:</strong> I cannot put all my work here due to some limitations. I suggest you visit my 
+                <a href="https://grabcad.com/prince.gildas.mk.so_i_learn_3d-1" target="_blank" style="color: #0044ff; text-decoration: underline; font-weight: bold;">GrabCAD profile</a> 
+                to discovery more about my projects.
+            </p>
+        </div>
     </div>
 
     <div class="row">
@@ -14,7 +23,7 @@
         <div class="col-md-6 col-lg-3 mb-4">
             <div class="glass-card h-100 p-0" style="padding: 0; overflow: hidden;">
                 <div style="height: 200px; overflow: hidden; position: relative;">
-                     <img src="{{ url_for('static', filename=data.banner_path) }}" class="w-100 h-100" style="object-fit: cover;" alt="{{ data.title }}">
+                     <img src="{{ url_for('static', filename=data.banner_path) }}" class="w-100 h-100" style="object-fit: cover;" alt="{{ data.title }}" loading="lazy">
                 </div>
                 <div class="p-4">
                     <h3 class="mb-3">{{ year }}</h3>

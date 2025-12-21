@@ -186,10 +186,13 @@ def upload_file():
         zip_data = None
         zip_mimetype = None
 
-        # Logic: GLB
-        if not glb_url and not glb_file:
+        # Logic: GLB - Support both URL and File (URL preferred if both?)
+        # If URL is present, we use it. If not, we check for file.
+        if not glb_url and not (glb_file and glb_file.filename):
              return jsonify({"success": False, "message": "GLB Model (File or URL) is required"}), 400
         
+        # Process GLB File if provided (and no URL or if we want to allow replacing?)
+        # Let's say if File is provided, we store it. If URL is provided, we store it.
         if glb_file and glb_file.filename:
              if not allowed_file(glb_file.filename, ['glb']):
                  return jsonify({"success": False, "message": "Invalid GLB file"}), 400
@@ -197,7 +200,9 @@ def upload_file():
              glb_mimetype = glb_file.mimetype
 
         # Logic: Banner
-        if banner_file and banner_file.filename:
+        if banner_url:
+            pass # Use URL
+        elif banner_file and banner_file.filename:
              banner_data = compress_file(banner_file.read())
              banner_mimetype = banner_file.mimetype
 
@@ -218,8 +223,8 @@ def upload_file():
             banner_url=banner_url,
             file_path_glb_url=glb_url,
             file_path_zip_url=zip_url,
-            added_by=current_user.username, # Assuming current_user has username or ID
-            location='Unknown' # Can update if needed
+            added_by=current_user.username,
+            location='Unknown' 
         )
 
         db.session.add(new_file)
@@ -267,8 +272,8 @@ def upload_hdri():
         preview_data = None
         preview_mimetype = None
 
-        # Logic for HDRI: URL > File
-        if not hdri_url and not hdri_file:
+        # Logic for HDRI: URL OR File
+        if not hdri_url and not (hdri_file and hdri_file.filename):
              return jsonify({"success": False, "message": "HDRI File or URL is required"}), 400
         
         if hdri_file and hdri_file.filename:
@@ -277,8 +282,8 @@ def upload_hdri():
              hdri_data = compress_file(hdri_file.read())
              hdri_mimetype = hdri_file.mimetype
 
-        # Logic for Preview: URL > File
-        if not preview_url and not preview_file:
+        # Logic for Preview: URL OR File
+        if not preview_url and not (preview_file and preview_file.filename):
              return jsonify({"success": False, "message": "Preview Image or URL is required"}), 400
              
         if preview_file and preview_file.filename:
@@ -567,3 +572,45 @@ def validate_email(email):
         return True
     except (dns.resolver.NoAnswer, dns.resolver.NXDOMAIN):
         return False
+
+@bp.route('/trap/bot-check')
+def bot_trap():
+    """Honeypot route for scrapers. Humans won't click this."""
+    try:
+        ip = request.headers.get('X-Forwarded-For', request.remote_addr)
+        agent = request.headers.get('User-Agent', 'Unknown')
+        # Log to console/file
+        print(f"\n[SECURITY ALERT] SCRAPER DETECTED at /trap/bot-check")
+        print(f"IP: {ip}")
+        print(f"User-Agent: {agent}\n")
+        logging.warning(f"SCRAPER TRAPPED: IP={ip}, UA={agent}")
+        return "System Status: Nominal", 200 # Return 200 to keep them engaged/confused? Or 403.
+    except Exception:
+        return "Error", 500
+
+@bp.route('/sitemap.xml', methods=['GET'])
+def sitemap():
+    """Generate sitemap.xml dynamically."""
+    from flask import make_response
+    pages = []
+    # Static routes
+    for rule in current_app.url_map.iter_rules():
+        if "GET" in rule.methods and len(rule.arguments) == 0:
+            if not rule.rule.startswith('/trap') and not rule.rule.startswith('/admin'): # Exclude trap/admin
+                 pages.append(f"https://princegildasmk.up.railway.app{rule.rule}")
+    
+    sitemap_xml = """<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+"""
+    for page in pages:
+        sitemap_xml += f"""  <url>
+    <loc>{page}</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+"""
+    sitemap_xml += "</urlset>"
+    
+    response = make_response(sitemap_xml)
+    response.headers["Content-Type"] = "application/xml"
+    return response

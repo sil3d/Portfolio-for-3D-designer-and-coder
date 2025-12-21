@@ -36,9 +36,10 @@ The app uses Gmail SMTP to send 2FA codes and contact form messages. logic uses 
 ## 2. Creating an Admin User
 Run this command from the project root directory:
 
-```powershell
-python -m app.register_admin_user
-```
+**powershell**
+
+# python -m app.register_admin_user
+
 
 make sure to use you real email because the admin will be sent a 2FA code.
 *Follow the prompts to set your Admin Email and Password.*
@@ -55,3 +56,13 @@ make sure to use you real email because the admin will be sent a 2FA code.
 - **Upload Model**: Add new GLB files with banners.
 - **Upload HDRI**: Add HDR environment maps.
 - **Manage Files**: Edit or delete existing content.
+
+## 5. Optimization & Best Practices
+### Asset Storage
+-   **URL vs. File**: While you *can* upload large files (GLB, Zip) directly, it is **highly recommended** to use Google Drive URLs to prevent database bloat.
+-   **Warnings**: The admin interface will warn you if you attempt a large file upload.
+
+### SEO & Scrapers
+-   **Sitemap**: Your sitemap is available at `/sitemap.xml`. Submit this URL to Google Search Console to speed up indexing.
+-   **Scraper Logs**: Check the server console logs for `[SECURITY ALERT] SCRAPER DETECTED` to see if bots are hitting your honeypot trap.
+

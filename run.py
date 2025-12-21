@@ -25,6 +25,28 @@ def check_db_connection():
             print(colored(f"   Error: {str(e)}\n", 'red'))
             # sys.exit(1) # Optional: Stop server if DB fails
 
+def check_email_config():
+    """Check and display Email configuration on startup."""
+    import os
+    provider = os.getenv('EMAIL_PROVIDER', 'smtp').upper()
+    print(colored(f"\n📧 EMAIL SYSTEM: {provider}", 'cyan', attrs=['bold']))
+    
+    if provider == 'RESEND':
+        key = os.getenv('RESEND_API_KEY')
+        if not key:
+             print(colored("   ⚠️  RESEND_API_KEY is missing via env vars!", 'yellow'))
+        else:
+             print(colored("   ✅ API Key loaded", 'green'))
+             
+    elif provider == 'SMTP':
+        # Check specific clouds that block SMTP
+        if os.getenv('RAILWAY_ENVIRONMENT'):
+            print(colored("   ⚠️  WARNING: You are on Railway which blocks SMTP port 587.", 'yellow'))
+            print(colored("   👉 Switch to 'EMAIL_PROVIDER=resend' in variables.", 'yellow'))
+        else:
+            print(colored("   ✅ Standard SMTP mode ready", 'green'))
+
+
 # Définir une route pour les erreurs 404
 @app.errorhandler(404)
 def page_not_found(e):
@@ -33,4 +55,5 @@ def page_not_found(e):
 
 if __name__ == "__main__":
     check_db_connection()
+    check_email_config()
     app.run(debug=True)
