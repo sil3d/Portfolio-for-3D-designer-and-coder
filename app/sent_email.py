@@ -32,67 +32,21 @@ def contact():
         if not validate_email(email):
             return jsonify({'status': 'error', 'message': 'Invalid email address.'}), 400
 
-        # Email Provider Logic
-        email_provider = os.getenv('EMAIL_PROVIDER', 'smtp').lower()
+        # Use centralized email logic
+        from app.utils import send_mail
+        
+        success = send_mail(
+            subject=f"New Contact: {name}",
+            recipient=os.getenv('SMTP_USER'), # Send to self
+            body_text=f"Name: {name}\nEmail: {email}\nMessage: {message}",
+            body_html=f"<p><strong>Name:</strong> {name}</p><p><strong>Email:</strong> {email}</p><p><strong>Message:</strong><br>{message}</p>",
+            reply_to=email,
+            sender_name="Portfolio Contact"
+        )
 
-        if email_provider == 'resend':
-            import resend
-            try:
-                api_key = os.getenv('RESEND_API_KEY')
-                if not api_key:
-                     return jsonify({'status': 'error', 'message': 'Resend API Key missing.'}), 500
-                
-                print("DEBUG: Sending via Resend API...", flush=True)
-                resend.api_key = api_key
-                
-                # Resend requires a verified sender domain or 'onboarding@resend.dev' for testing
-                # User needs to verify their domain in Resend dashboard
-                sender_email = "onboarding@resend.dev" # Default for testing, User should change this
-                
-                params = {
-                    "from": f"Portfolio Contact <{sender_email}>",
-                    "to": [os.getenv('SMTP_USER')], # Send to self
-                    "subject": f"New Contact: {name}",
-                    "html": f"<p><strong>Name:</strong> {name}</p><p><strong>Email:</strong> {email}</p><p><strong>Message:</strong><br>{message}</p>",
-                    "reply_to": email
-                }
-
-                email_req = resend.Emails.send(params)
-                print(f"DEBUG: Resend response: {email_req}", flush=True)
-                return jsonify({'status': 'success', 'message': 'Message sent (Resend)!'}), 200
-
-            except Exception as e:
-                 print(f"ERROR: Resend failed: {e}", flush=True)
-                 return jsonify({'status': 'error', 'message': f'Resend Error: {str(e)}'}), 500
-
-        else: 
-            # Default SMTP (Gmail, etc.)
-            smtp_server = os.getenv('SMTP_SERVER')
-            smtp_port = int(os.getenv('SMTP_PORT'))
-            smtp_user = os.getenv('SMTP_USER')
-            smtp_password = os.getenv('SMTP_PASSWORD')
-
-            try:
-                print(f"DEBUG: Connecting to SMTP {smtp_server}:{smtp_port}...", flush=True)
-                
-                # Force IPv4 Resolution to avoid IPv6 timeouts
-                import socket
-                raw_ip = socket.getaddrinfo(smtp_server, smtp_port, family=socket.AF_INET, proto=socket.IPPROTO_TCP)[0][4][0]
-                print(f"DEBUG: Resolved {smtp_server} to IPv4: {raw_ip}", flush=True)
-
-                with smtplib.SMTP(raw_ip, smtp_port, timeout=10) as server:
-                    print("DEBUG: Connection established. Starting TLS...", flush=True)
-                    server.starttls()
-                    print("DEBUG: TLS started. Logging in...", flush=True)
-                    server.login(smtp_user, smtp_password)
-                    print("DEBUG: Logged in. Sending mail...", flush=True)
-                    subject = f"New Contact Form Submission from {name}"
-                    body = f"Name: {name}\nEmail: {email}\nMessage: {message}"
-                    message = f"Subject: {subject}\n\n{body}"
-                    server.sendmail(smtp_user, smtp_user, message)
-                    print("DEBUG: Mail sent successfully.", flush=True)
-                    return jsonify({'status': 'success', 'message': 'Your message has been sent successfully!'}), 200
-            except Exception as e:
-                return jsonify({'status': 'error', 'message': f'An error occurred: {e}'}), 500
+        if success:
+            return jsonify({'status': 'success', 'message': 'Your message has been sent successfully!'}), 200
+        else:
+            return jsonify({'status': 'error', 'message': 'Failed to send email. Please try again later.'}), 500
 
     return render_template('contact/contact.html')

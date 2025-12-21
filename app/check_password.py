@@ -20,27 +20,21 @@ LOGIN_SECRET_KEY = os.getenv("LOGIN_SECRET_KEY")
 bp = Blueprint('ckeck_password', __name__, static_folder='static')
 
 def send_verification_email(recipient_email, verification_code):
-    smtp_server = os.getenv('SMTP_SERVER')
-    smtp_port = int(os.getenv('SMTP_PORT'))
-    smtp_user = os.getenv('SMTP_USER')
-    smtp_password = os.getenv('SMTP_PASSWORD')
-
-    message = MIMEMultipart()
-    message['From'] = smtp_user
-    message['To'] = recipient_email
-    message['Subject'] = 'Your Verification Code'
-
+    from app.utils import send_mail
+    subject = 'Your Verification Code'
     body = f'Your verification code is {verification_code}.'
-    message.attach(MIMEText(body, 'plain'))
-
-    try:
-        with smtplib.SMTP(smtp_server, smtp_port) as server:
-            server.starttls()
-            server.login(smtp_user, smtp_password)
-            server.send_message(message)
-        print("Email sent successfully.")
-    except Exception as e:
-        print(f"Error sending email: {str(e)}")
+    
+    success = send_mail(
+        subject=subject,
+        recipient=recipient_email,
+        body_text=body,
+        sender_name="Portfolio Auth"
+    )
+    
+    if success:
+        print("Verification email sent successfully.")
+    else:
+        print("Failed to send verification email.")
 
 @bp.route('/admin/login', methods=['GET', 'POST'])
 @limiter.limit("5 per minute")
