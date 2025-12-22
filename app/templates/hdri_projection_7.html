@@ -35,7 +35,7 @@
     {% include 'navbar1.html' %}
 
     <!-- First Load Warning Modal -->
-    <div id="first-load-warning" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 9999; display: flex; justify-content: center; align-items: center; flex-direction: column;">
+    <div id="first-load-warning" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 9999; justify-content: center; align-items: center; flex-direction: column;">
         <div style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); padding: 40px; border-radius: 20px; text-align: center; max-width: 500px; box-shadow: 0 20px 60px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1);">
             <i class="fas fa-exclamation-triangle" style="font-size: 60px; color: #f39c12; margin-bottom: 20px;"></i>
             <h2 style="color: white; margin-bottom: 15px; font-size: 24px;">⚡ First Time Loading</h2>
@@ -50,6 +50,11 @@
             <p id="loading-status" style="color: #888; font-size: 14px;">Preparing to load...</p>
         </div>
     </div>
+    
+    <script>
+        // Inject Model ID for JS access
+        window.CURRENT_MODEL_ID = "{{ file.id }}";
+    </script>
 
     <!-- Loading Indicator (for cached loads) -->
     <div id="loading-indicator" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 9998; text-align: center;">

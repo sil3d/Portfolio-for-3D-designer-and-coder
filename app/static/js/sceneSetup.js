@@ -142,12 +142,17 @@ export async function initScene() {
   const controls = new OrbitControls(camera, renderer.domElement);
   controls.addEventListener("change", render);
   controls.target.set(0, 2, 0);
+  
+  // Set initial camera position FAR away for dramatic entrance
+  // Logic: updateCameraDistance will tween it to the correct "close" position later
+  camera.position.set(-20, 10, -30); 
+  camera.lookAt(0, 2, 0);
   controls.maxPolarAngle = THREE.MathUtils.degToRad(90);
   controls.maxDistance = 80;
   controls.minDistance = 2;
   controls.enablePan = true;
   controls.update();
-  updateCameraDistance(); // Appel de la fonction pour ajuster la distance de la caméra
+  // removed automatic call: updateCameraDistance(); 
 
   document.getElementById("container").appendChild(renderer.domElement);
   // GUI is already appended via constructor container option
@@ -245,5 +250,5 @@ export async function initScene() {
 
   await loadHDRIList();
 
-  return { scene, camera, renderer, composer, controls, gui, stats, skybox, params, ambientLight, directionalLight, pointLight };
+  return { scene, camera, renderer, composer, controls, gui, stats, skybox, params, ambientLight, directionalLight, pointLight, updateCameraDistance };
 }

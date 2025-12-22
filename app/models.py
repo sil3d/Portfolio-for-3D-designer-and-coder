@@ -1,6 +1,7 @@
 from datetime import datetime
 from flask_login import UserMixin
 from app.extensions import db
+from sqlalchemy.dialects.mysql import LONGBLOB
 
 # db is initialized in extensions.py
 
@@ -26,11 +27,11 @@ class File(db.Model):
     file_name = db.Column(db.String(255), nullable=False)
     
     # Binary Storage
-    banner_path = db.Column(db.LargeBinary, nullable=True)
+    banner_path = db.Column(db.LargeBinary().with_variant(LONGBLOB, "mysql"), nullable=True)
     banner_mimetype = db.Column(db.String(50))
-    file_path_glb = db.Column(db.LargeBinary, nullable=True)
+    file_path_glb = db.Column(db.LargeBinary().with_variant(LONGBLOB, "mysql"), nullable=True)
     file_path_glb_mimetype = db.Column(db.String(50))
-    file_path_zip = db.Column(db.LargeBinary, nullable=True)
+    file_path_zip = db.Column(db.LargeBinary().with_variant(LONGBLOB, "mysql"), nullable=True)
     file_path_zip_mimetype = db.Column(db.String(50))
     
     # URL Storage
@@ -57,7 +58,7 @@ class GalleryFile(db.Model):
     __tablename__ = 'gallery_files'
     id = db.Column(db.Integer, primary_key=True)
     file_id = db.Column(db.Integer, db.ForeignKey('files.id'), nullable=False)
-    file_path = db.Column(db.LargeBinary, nullable=False)
+    file_path = db.Column(db.LargeBinary().with_variant(LONGBLOB, "mysql"), nullable=False)
     images_mimetype = db.Column(db.String(50))
 
 class Download(db.Model):
@@ -90,9 +91,9 @@ class HDRI(db.Model):
     __tablename__ = 'hdri'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255), nullable=False)
-    file_path = db.Column(db.LargeBinary, nullable=True)
+    file_path = db.Column(db.LargeBinary().with_variant(LONGBLOB, "mysql"), nullable=True)
     file_path_mimetype = db.Column(db.String(50))
-    preview_path = db.Column(db.LargeBinary, nullable=True)
+    preview_path = db.Column(db.LargeBinary().with_variant(LONGBLOB, "mysql"), nullable=True)
     preview_path_mimetype = db.Column(db.String(50))
     
     # URL Storage

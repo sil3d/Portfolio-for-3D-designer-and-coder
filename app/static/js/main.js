@@ -46,11 +46,8 @@ function updateLoadingStatus(text) {
 async function init() {
   try {
     // Get model ID early to check cache status
-    const urlParams = new URLSearchParams(window.location.search);
-    let modelId = urlParams.get('model_id');
-    if (!modelId) {
-      modelId = localStorage.getItem('modelId');
-    }
+    // Get model ID from injected global variable (reliable)
+    const modelId = window.CURRENT_MODEL_ID;
 
     // Show appropriate loading UI based on cache status
     const isCached = modelId ? isModelCached(modelId) : false;
@@ -67,7 +64,7 @@ async function init() {
 
     // Initialize scene
     if (!isCached) updateLoadingStatus('Setting up scene...');
-    const { scene, camera, renderer, composer, controls, gui, stats, skybox, params, ambientLight, directionalLight, pointLight } = await initScene();
+    const { scene, camera, renderer, composer, controls, gui, stats, skybox, params, ambientLight, directionalLight, pointLight, updateCameraDistance } = await initScene();
 
     if (modelId) {
       // Load main model
@@ -80,9 +77,14 @@ async function init() {
       markModelAsCached(modelId);
       
       // Hide loading UI
+      // Hide loading UI
       showFirstLoadWarning(false);
       const loader = document.getElementById('loading-indicator');
       if (loader) loader.style.display = 'none';
+      
+      // TRIGGER ENTER ANIMATION NOW
+      console.log("Model loaded. Triggering camera enter animation.");
+      updateCameraDistance();
     } else {
       console.error('Model ID is not defined in the URL or local storage.');
       showFirstLoadWarning(false);

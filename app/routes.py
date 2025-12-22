@@ -359,11 +359,11 @@ def serve_model(model_id):
                 response = proxy_external_file(config_record.file_path_glb_url, 'model/gltf-binary')
                 # Add cache headers if proxying succeeded
                 if isinstance(response, Response):
-                    response.headers['Cache-Control'] = 'public, max-age=86400'  # Cache for 24 hours
+                    response.headers['Cache-Control'] = 'public, max-age=31536000'  # Cache for 1 year (Sketchfab style)
                 return response
             elif config_record.file_path_glb:
                 response = Response(decompress_file(config_record.file_path_glb), mimetype='model/gltf-binary')
-                response.headers['Cache-Control'] = 'public, max-age=86400'  # Cache for 24 hours
+                response.headers['Cache-Control'] = 'public, max-age=31536000'  # Cache for 1 year
                 return response
             else:
                  return jsonify({"error": "Model source not found"}), 404
