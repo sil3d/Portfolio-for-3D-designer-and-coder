@@ -4,13 +4,8 @@ import { loadModel } from './modelLoader.js';
 import { setupGUI } from './guiControls.js';
 import { loadScene } from './sceneLoader.js';
 
-const scenes = [
-  "/static/scene3D/gallery_art.glb",
-  "/static/scene3D/open_space.glb",
-  "/static/scene3D/premium_space.glb",
-  "/static/scene3D/scene1_wood.glb",
-];
-
+// Scenes will be loaded dynamically
+let scenes = [];
 let currentSceneIndex = 0;
 let mainModelGroup;
 let sceneGroup;
@@ -43,11 +38,30 @@ function updateLoadingStatus(text) {
   }
 }
 
+async function loadScenesList() {
+  try {
+    const response = await fetch('/api/scenes');
+    if (response.ok) {
+      scenes = await response.json();
+      console.log("Loaded scenes:", scenes);
+    } else {
+      console.error("Failed to load scenes list, falling back to default.");
+      scenes = ["/static/scene3D/gallery_art.glb"]; // Fallback
+    }
+  } catch (error) {
+    console.error("Error loading scenes:", error);
+    scenes = ["/static/scene3D/gallery_art.glb"]; // Fallback
+  }
+}
+
 async function init() {
   try {
     // Get model ID early to check cache status
     // Get model ID from injected global variable (reliable)
     const modelId = window.CURRENT_MODEL_ID;
+
+    // Load scenes list dynamically
+    await loadScenesList();
 
     // Show appropriate loading UI based on cache status
     const isCached = modelId ? isModelCached(modelId) : false;

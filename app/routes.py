@@ -359,11 +359,13 @@ def serve_model(model_id):
                 response = proxy_external_file(config_record.file_path_glb_url, 'model/gltf-binary')
                 # Add cache headers if proxying succeeded
                 if isinstance(response, Response):
-                    response.headers['Cache-Control'] = 'public, max-age=31536000'  # Cache for 1 year (Sketchfab style)
+                    # Cache for 0 seconds (revalidate immediately) to fix corruption issues
+                    response.headers['Cache-Control'] = 'public, max-age=0' 
                 return response
             elif config_record.file_path_glb:
                 response = Response(decompress_file(config_record.file_path_glb), mimetype='model/gltf-binary')
-                response.headers['Cache-Control'] = 'public, max-age=31536000'  # Cache for 1 year
+                # Cache for 0 seconds
+                response.headers['Cache-Control'] = 'public, max-age=0'
                 return response
             else:
                  return jsonify({"error": "Model source not found"}), 404
@@ -421,19 +423,33 @@ def get_hdri_file(hdri_id):
 @bp.route('/api/gallery-images/<int:model_id>', methods=['GET'])
 def get_gallery_images(model_id):
     try:
-        gallery_files = GalleryFile.query.filter_by(file_id=model_id).all()
-        image_data_list = []
+        # Fetch just the IDs and Mimetypes to keep the payload light
+        gallery_files = GalleryFile.query.filter_by(file_id=model_id).with_entities(GalleryFile.id, GalleryFile.images_mimetype).all()
+        image_list = []
         for gf in gallery_files:
-            decompressed_data = decompress_file(gf.file_path)
-            base64_encoded = base64.b64encode(decompressed_data).decode('utf-8')
-            image_data_list.append({
-                'data': f"data:{gf.images_mimetype};base64,{base64_encoded}",
-                'mime_type': gf.images_mimetype
+            image_list.append({
+                'url': url_for('main.serve_gallery_image', image_id=gf.id),
+                'mime_type': gf.images_mimetype or 'image/jpeg'
             })
-        return jsonify(image_data_list)
+        return jsonify(image_list)
     except Exception as e:
-        print(f"Erreur: {e}")
+        logging.error(f"Error loading gallery list: {e}")
         return jsonify({'error': 'Erreur de chargement des images'}), 500
+
+@bp.route('/gallery-image/<int:image_id>')
+def serve_gallery_image(image_id):
+    try:
+        image = db.session.get(GalleryFile, image_id)
+        if hasattr(image, 'file_path') and image.file_path:
+            decompressed_data = decompress_file(image.file_path)
+            # Cache for 1 month
+            response = Response(decompressed_data, mimetype=image.images_mimetype or 'image/jpeg')
+            response.headers['Cache-Control'] = 'public, max-age=2592000'
+            return response
+        return "Image not found", 404
+    except Exception as e:
+        logging.error(f"Error serving gallery image {image_id}: {e}")
+        return "Error", 500
 
 @bp.route('/upload_page_hdri')
 def upload_page_hdri():
@@ -614,3 +630,22 @@ def sitemap():
     response = make_response(sitemap_xml)
     response.headers["Content-Type"] = "application/xml"
     return response
+
+@bp.route('/api/scenes', methods=['GET'])
+def get_scenes():
+    """Dynamically list all GLB scenes in the static/scene3D directory."""
+    try:
+        app_dir = os.path.dirname(os.path.abspath(__file__))
+        scenes_dir = os.path.join(app_dir, 'static', 'scene3D')
+        
+        scenes = []
+        if os.path.exists(scenes_dir):
+            files = [f for f in os.listdir(scenes_dir) if f.lower().endswith('.glb')]
+            # Sort for consistent order
+            files.sort() 
+            scenes = [f"/static/scene3D/{f}" for f in files]
+        
+        return jsonify(scenes)
+    except Exception as e:
+        logging.error(f"Error listing scenes: {e}")
+        return jsonify({"error": str(e)}), 500

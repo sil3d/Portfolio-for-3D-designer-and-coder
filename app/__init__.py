@@ -21,6 +21,21 @@ def create_app():
     app.config['UPLOAD_FOLDER'] = Config.UPLOAD_FOLDER
     app.config['ALLOWED_EXTENSIONS'] = {'glb', 'zip', 'png', 'jpg'}
     app.config['MAX_CONTENT_LENGTH'] = Config.MAX_CONTENT_LENGTH
+    
+    # Context Processor for Dynamic Site Info
+    @app.context_processor
+    def inject_site_info():
+        return dict(
+            my_name=app.config['MY_NAME'],
+            my_email=app.config['MY_EMAIL'],
+            website_name=app.config['WEBSITE_NAME'],
+            website_url=app.config['WEBSITE_URL'],
+            social_linkedin=app.config['SOCIAL_LINKEDIN'],
+            social_github=app.config['SOCIAL_GITHUB'],
+            social_youtube=app.config['SOCIAL_YOUTUBE'],
+            social_grabcad=app.config['SOCIAL_GRABCAD'],
+            social_instagram=app.config['SOCIAL_INSTAGRAM']
+        )
 
     # Error Handlers & Security Alerts
     from flask_wtf.csrf import CSRFError

@@ -8,7 +8,7 @@
         <img src="{{ url_for('static', filename='images/profile_placeholder.png') }}" alt="Prince Gildas MK" class="profile-img">
     </div>
     
-    <h1 class="hero-title">Prince Gildas MBAMA KOMBILA</h1>
+    <h1 class="hero-title">{{ my_name }}</h1>
     <h2 class="hero-subtitle">3D Designer | Coder | Robotics Junior Engineer</h2>
     
     <div class="hero-roles">
@@ -20,18 +20,32 @@
     </div>
 
     <div class="social-links">
-        <a href="https://grabcad.com/prince.gildas.mk.so_i_learn_3d-1" target="_blank" class="social-icon" title="GrabCAD">
+        {% if social_grabcad %}
+        <a href="{{ social_grabcad }}" target="_blank" class="social-icon" title="GrabCAD">
             <i class="fas fa-cube"></i>
         </a>
-        <a href="https://github.com/sil3d" target="_blank" class="social-icon" title="GitHub">
+        {% endif %}
+        {% if social_github %}
+        <a href="{{ social_github }}" target="_blank" class="social-icon" title="GitHub">
             <i class="fab fa-github"></i>
         </a>
-        <a href="https://www.linkedin.com/in/prince-gildas-mbama-kombila-7a34ab245/" target="_blank" class="social-icon" title="LinkedIn">
+        {% endif %}
+        {% if social_linkedin %}
+        <a href="{{ social_linkedin }}" target="_blank" class="social-icon" title="LinkedIn">
             <i class="fab fa-linkedin"></i>
         </a>
-        <a href="https://www.youtube.com/@so_i_learn_3d549" target="_blank" class="social-icon" title="YouTube (So I Learn 3D)">
+        {% endif %}
+        {% if social_youtube %}
+        <a href="{{ social_youtube }}" target="_blank" class="social-icon" title="YouTube (So I Learn 3D)">
             <i class="fab fa-youtube"></i>
         </a>
+        {% endif %}
+        {% if social_instagram %}
+         <a href="{{ social_instagram }}" target="_blank" class="social-icon" title="Instagram">
+            <i class="fab fa-instagram"></i>
+        </a>
+        {% endif %}
+        
         <!-- Additional YouTube channels if needed, maybe consolidate or add as smaller links? User asked for all. -->
         <a href="https://www.youtube.com/@LANCyt" target="_blank" class="social-icon" title="YouTube (LANC)">
             <i class="fas fa-play-circle"></i>

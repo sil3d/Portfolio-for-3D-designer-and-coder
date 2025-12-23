@@ -238,7 +238,7 @@
                     }
                     
                     const imageDataList = await response.json();
-                    images = imageDataList.map(data => data.data);
+                    images = imageDataList.map(data => data.url);
                     
                     if (images.length > 0) {
                         galleryImage.classList.remove('loading');
@@ -255,9 +255,38 @@
 
             function updateImage() {
                 if (images.length > 0) {
-                    galleryImage.src = images[currentIndex];
+                    console.log("Updating image to:", images[currentIndex]);
+                    
+                    // Show loading state if image isn't fully loaded yet
+                    galleryImage.style.opacity = '0.5';
+                    
+                    const img = new Image();
+                    img.onload = function() {
+                        galleryImage.src = this.src;
+                        galleryImage.style.opacity = '1';
+                        galleryImage.classList.remove('loading');
+                    };
+                    img.src = images[currentIndex];
+                    
                     updateCounter();
+                    preloadNearbyImages();
+                } else {
+                    console.log("No images to update.");
                 }
+            }
+            
+            function preloadNearbyImages() {
+                // Preload next 3 and previous 1 image
+                constIndicesToPreload = [];
+                for (let i = 1; i <= 3; i++) {
+                    constIndicesToPreload.push((currentIndex + i) % images.length);
+                }
+                constIndicesToPreload.push((currentIndex - 1 + images.length) % images.length);
+                
+                constIndicesToPreload.forEach(index => {
+                    const img = new Image();
+                    img.src = images[index];
+                });
             }
             
             function updateCounter() {
@@ -270,12 +299,16 @@
             }
 
             prevButton.addEventListener('click', function() {
+                console.log("Prev clicked. Current:", currentIndex);
                 currentIndex = (currentIndex - 1 + images.length) % images.length;
+                console.log("New index:", currentIndex);
                 updateImage();
             });
 
             nextButton.addEventListener('click', function() {
+                console.log("Next clicked. Current:", currentIndex);
                 currentIndex = (currentIndex + 1) % images.length;
+                console.log("New index:", currentIndex);
                 updateImage();
             });
             

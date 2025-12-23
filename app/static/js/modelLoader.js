@@ -7,8 +7,10 @@ const modelCache = new Map();
 const loadingPromises = new Map();
 
 // Initialize loaders once (reuse across loads)
+// Initialize loaders once (reuse across loads)
 const dracoLoader = new DRACOLoader();
-dracoLoader.setDecoderPath("https://www.gstatic.com/draco/v1/decoders/");
+// Use the unpkg path matching the Three.js version (v0.163.0) to ensure compatibility
+dracoLoader.setDecoderPath("https://unpkg.com/three@v0.163.0/examples/jsm/libs/draco/");
 const loader = new GLTFLoader();
 loader.setDRACOLoader(dracoLoader);
 
@@ -17,7 +19,8 @@ loader.setDRACOLoader(dracoLoader);
  * Call this early to start downloading models in the background
  */
 export async function preloadModel(modelId) {
-  const modelUrl = `/api/model/${modelId}`;
+  // Add timestamp to force fresh download (bypass corrupted cache)
+  const modelUrl = `/api/model/${modelId}?v=${Date.now()}`;
   
   // If already cached or loading, skip
   if (modelCache.has(modelUrl) || loadingPromises.has(modelUrl)) {
@@ -56,7 +59,8 @@ export async function preloadModel(modelId) {
 export async function loadModel(scene, composer, skybox, params, modelId) {
   console.log('Loading model with ID:', modelId);
 
-  const modelUrl = `/api/model/${modelId}`;
+  // Add timestamp to force fresh download (bypass corrupted cache)
+  const modelUrl = `/api/model/${modelId}?v=${Date.now()}`;
 
   // Check if model is in cache
   let gltf = modelCache.get(modelUrl);

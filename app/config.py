@@ -35,3 +35,16 @@ class Config:
 
     # Cache Control (1 year)
     SEND_FILE_MAX_AGE_DEFAULT = 31536000
+
+    # Site Information (Dynamic Content)
+    MY_NAME = os.environ.get('MY_NAME')
+    MY_EMAIL = os.environ.get('MY_EMAIL')
+    WEBSITE_NAME = os.environ.get('WEBSITE_NAME')
+    WEBSITE_URL = os.environ.get('WEBSITE_URL')
+    
+    # Social Media Links
+    SOCIAL_LINKEDIN = os.environ.get('SOCIAL_LINKEDIN')
+    SOCIAL_GITHUB = os.environ.get('SOCIAL_GITHUB')
+    SOCIAL_YOUTUBE = os.environ.get('SOCIAL_YOUTUBE')
+    SOCIAL_GRABCAD = os.environ.get('SOCIAL_GRABCAD')
+    SOCIAL_INSTAGRAM = os.environ.get('SOCIAL_INSTAGRAM')
