@@ -91,12 +91,12 @@
          <div class="row mt-5">
              <div class="col-12 text-center mb-5">
                  <h2 class="section-title">Gallery of Moments</h2>
-                 <p class="text-muted">A collection of milestones and creations.</p>
+                 <p class="text-muted">Click on any image or video to view details.</p>
              </div>
              
              {% for media in gallery_images %}
              <div class="col-md-4 mb-4 story-point hidden-scroll">
-                 <div class="glass-card p-0 overflow-hidden h-100 floating-anim" style="animation-delay: {{ loop.index0 * 0.2 }}s;">
+                 <div class="glass-card p-0 overflow-hidden h-100 floating-anim gallery-item-card" style="animation-delay: {{ loop.index0 * 0.2 }}s; cursor: pointer;" data-index="{{ loop.index0 }}">
                     {% if media.lower().endswith(('.mp4', '.mkv', '.mov')) %}
                         <video controls class="img-fluid w-100 h-100 object-fit-cover">
                             <source src="{{ url_for('static', filename='images/storyline/' + media) }}" type="video/mp4">
@@ -105,11 +105,56 @@
                     {% else %}
                         <img src="{{ url_for('static', filename='images/storyline/' + media) }}" class="img-fluid w-100 h-100 object-fit-cover transition-zoom" loading="lazy" alt="Story Image">
                     {% endif %}
+                    <div class="gallery-overlay">
+                        <i class="fas fa-expand-alt"></i>
+                    </div>
                  </div>
              </div>
              {% endfor %}
          </div>
 
+    </div>
+</div>
+
+<!-- Full Page Modal for Gallery Items -->
+<div id="gallery-modal" class="gallery-modal">
+    <button class="modal-close" id="modal-close">
+        <i class="fas fa-times"></i>
+    </button>
+    
+    <div class="modal-content-wrapper">
+        <div class="modal-split-layout">
+            <!-- Left: Media -->
+            <div class="modal-media-section">
+                <div id="modal-media-container" class="media-container">
+                    <!-- Media will be injected here -->
+                </div>
+            </div>
+            
+            <!-- Right: Text Content -->
+            <div class="modal-text-section">
+                <div class="text-content-inner">
+                    <h2 class="modal-title" id="modal-title">Project Title</h2>
+                    <div class="modal-meta" id="modal-meta">
+                        <span class="meta-badge"><i class="fas fa-calendar mr-2"></i>Year</span>
+                        <span class="meta-badge"><i class="fas fa-tag mr-2"></i>Category</span>
+                    </div>
+                    <div class="modal-description" id="modal-description">
+                        <p>Project description will appear here.</p>
+                    </div>
+                    
+                    <!-- Navigation Buttons -->
+                    <div class="modal-navigation">
+                        <button class="nav-btn" id="prev-btn">
+                            <i class="fas fa-chevron-left"></i> Previous
+                        </button>
+                        <button class="nav-btn" id="next-btn">
+                            Next <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 {% endblock %}
@@ -135,6 +180,144 @@
 
         const hiddenElements = document.querySelectorAll('.hidden-scroll');
         hiddenElements.forEach((el) => observer.observe(el));
+
+        // Gallery Modal Functionality
+        const galleryModal = document.getElementById('gallery-modal');
+        const modalClose = document.getElementById('modal-close');
+        const modalMediaContainer = document.getElementById('modal-media-container');
+        const modalTitle = document.getElementById('modal-title');
+        const modalDescription = document.getElementById('modal-description');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const galleryCards = document.querySelectorAll('.gallery-item-card');
+
+        let currentIndex = 0;
+
+        // Gallery item data - You can customize these titles and descriptions
+        const galleryData = [
+            {
+                title: "The Beginning",
+                description: "This marks the start of my journey in 3D design and engineering. Every complex project starts with simple foundations, and this is where I learned the fundamentals that would shape my career.",
+                year: "2022",
+                category: "Foundation"
+            },
+            {
+                title: "First Complex Assembly",
+                description: "Moving beyond basic shapes, I started creating complex mechanical assemblies. This project taught me the importance of precision and how every component must work in harmony.",
+                year: "2022",
+                category: "Mechanical Design"
+            },
+            {
+                title: "Robotics Integration",
+                description: "Combining mechanical design with electronics and programming marked a turning point. I began building systems that could move, sense, and respond to their environment.",
+                year: "2023",
+                category: "Robotics"
+            },
+            {
+                title: "AI-Powered Systems",
+                description: "Integrating AI and computer vision into physical systems opened up new possibilities. These projects demonstrated the power of combining software intelligence with mechanical precision.",
+                year: "2023",
+                category: "AI Integration"
+            },
+            {
+                title: "Competition Success",
+                description: "Achieving recognition in international competitions validated my approach and pushed me to reach higher standards. These experiences taught me to work under pressure and deliver excellence.",
+                year: "2024",
+                category: "Achievement"
+            },
+            {
+                title: "Professional Projects",
+                description: "Working on real-world engineering challenges for startups and companies. These projects required balancing innovation with practical constraints and delivering production-ready solutions.",
+                year: "2024",
+                category: "Professional"
+            }
+        ];
+
+        // Extend gallery data if there are more items
+        while (galleryData.length < galleryCards.length) {
+            galleryData.push({
+                title: `Project ${galleryData.length + 1}`,
+                description: "An important milestone in my engineering journey, showcasing technical skills and creative problem-solving.",
+                year: "2024",
+                category: "Engineering"
+            });
+        }
+
+        function openModal(index) {
+            currentIndex = index;
+            updateModalContent();
+            galleryModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            galleryModal.classList.remove('active');
+            document.body.style.overflow = '';
+            // Pause any videos
+            const videos = modalMediaContainer.querySelectorAll('video');
+            videos.forEach(v => v.pause());
+        }
+
+        function updateModalContent() {
+            const card = galleryCards[currentIndex];
+            const data = galleryData[currentIndex];
+            
+            // Update text content
+            modalTitle.textContent = data.title;
+            modalDescription.innerHTML = `<p>${data.description}</p>`;
+            
+            // Update media
+            const mediaElement = card.querySelector('img, video');
+            modalMediaContainer.innerHTML = '';
+            
+            if (mediaElement.tagName === 'VIDEO') {
+                const video = document.createElement('video');
+                video.controls = true;
+                video.autoplay = true;
+                video.className = 'modal-media';
+                const source = document.createElement('source');
+                source.src = mediaElement.querySelector('source').src;
+                source.type = 'video/mp4';
+                video.appendChild(source);
+                modalMediaContainer.appendChild(video);
+            } else {
+                const img = document.createElement('img');
+                img.src = mediaElement.src;
+                img.className = 'modal-media';
+                img.alt = data.title;
+                modalMediaContainer.appendChild(img);
+            }
+        }
+
+        function navigate(direction) {
+            currentIndex += direction;
+            if (currentIndex < 0) currentIndex = galleryCards.length - 1;
+            if (currentIndex >= galleryCards.length) currentIndex = 0;
+            updateModalContent();
+        }
+
+        // Event Listeners
+        galleryCards.forEach((card, index) => {
+            card.addEventListener('click', () => openModal(index));
+        });
+
+        modalClose.addEventListener('click', closeModal);
+        prevBtn.addEventListener('click', () => navigate(-1));
+        nextBtn.addEventListener('click', () => navigate(1));
+
+        // Close on outside click
+        galleryModal.addEventListener('click', (e) => {
+            if (e.target === galleryModal) closeModal();
+        });
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (!galleryModal.classList.contains('active')) return;
+            
+            if (e.key === 'Escape') closeModal();
+            if (e.key === 'ArrowLeft') navigate(-1);
+            if (e.key === 'ArrowRight') navigate(1);
+        });
     });
 </script>
 <style>
@@ -222,5 +405,259 @@
     .object-fit-cover { object-fit: cover; }
     .transition-zoom { transition: transform 0.8s ease; }
     .glass-card:hover .transition-zoom { transform: scale(1.1); }
+
+    /* Gallery Card Enhancements */
+    .gallery-item-card {
+        position: relative;
+        transition: transform 0.3s ease;
+    }
+
+    .gallery-item-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 40px rgba(138, 43, 226, 0.3);
+    }
+
+    .gallery-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.7);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .gallery-overlay i {
+        font-size: 3rem;
+        color: white;
+    }
+
+    .gallery-item-card:hover .gallery-overlay {
+        opacity: 1;
+    }
+
+    /* Full Page Gallery Modal */
+    .gallery-modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.98);
+        z-index: 10000;
+        display: none;
+        opacity: 0;
+        transition: opacity 0.4s ease;
+    }
+
+    .gallery-modal.active {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 1;
+    }
+
+    .modal-close {
+        position: absolute;
+        top: 30px;
+        right: 30px;
+        background: rgba(255, 255, 255, 0.1);
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        color: white;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        font-size: 1.5rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        z-index: 10001;
+    }
+
+    .modal-close:hover {
+        background: var(--accent-color);
+        transform: rotate(90deg);
+    }
+
+    .modal-content-wrapper {
+        width: 100%;
+        height: 100%;
+        padding: 80px 40px 40px;
+    }
+
+    .modal-split-layout {
+        display: grid;
+        grid-template-columns: 1.2fr 1fr;
+        gap: 40px;
+        height: 100%;
+        max-width: 1600px;
+        margin: 0 auto;
+    }
+
+    /* Left: Media Section */
+    .modal-media-section {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(0, 0, 0, 0.5);
+        border-radius: 20px;
+        padding: 20px;
+        backdrop-filter: blur(10px);
+    }
+
+    .media-container {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .modal-media {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+        border-radius: 10px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        animation: modalMediaFade 0.5s ease;
+    }
+
+    @keyframes modalMediaFade {
+        from {
+            opacity: 0;
+            transform: scale(0.9);
+        }
+        to {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+
+    /* Right: Text Section */
+    .modal-text-section {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 40px;
+        color: white;
+        animation: modalTextSlide 0.6s ease;
+    }
+
+    @keyframes modalTextSlide {
+        from {
+            opacity: 0;
+            transform: translateX(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    .text-content-inner {
+        max-width: 600px;
+    }
+
+    .modal-title {
+        font-size: 3rem;
+        font-weight: 700;
+        margin-bottom: 20px;
+        background: linear-gradient(135deg, #fff, var(--accent-color));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .modal-meta {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 30px;
+    }
+
+    .meta-badge {
+        background: rgba(138, 43, 226, 0.2);
+        border: 1px solid rgba(138, 43, 226, 0.5);
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        color: rgba(255, 255, 255, 0.9);
+    }
+
+    .modal-description {
+        font-size: 1.2rem;
+        line-height: 1.8;
+        color: rgba(255, 255, 255, 0.85);
+        margin-bottom: 40px;
+    }
+
+    .modal-navigation {
+        display: flex;
+        gap: 20px;
+    }
+
+    .nav-btn {
+        background: rgba(255, 255, 255, 0.1);
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        color: white;
+        padding: 12px 30px;
+        border-radius: 30px;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .nav-btn:hover {
+        background: var(--accent-color);
+        border-color: var(--accent-color);
+        transform: translateY(-2px);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 1024px) {
+        .modal-split-layout {
+            grid-template-columns: 1fr;
+            grid-template-rows: 1fr auto;
+        }
+
+        .modal-text-section {
+            padding: 20px;
+        }
+
+        .modal-title {
+            font-size: 2rem;
+        }
+
+        .modal-description {
+            font-size: 1rem;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .modal-content-wrapper {
+            padding: 60px 20px 20px;
+        }
+
+        .modal-close {
+            top: 15px;
+            right: 15px;
+            width: 40px;
+            height: 40px;
+        }
+
+        .modal-navigation {
+            flex-direction: column;
+        }
+
+        .nav-btn {
+            width: 100%;
+            justify-content: center;
+        }
+    }
 </style>
 {% endblock %}

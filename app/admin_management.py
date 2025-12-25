@@ -14,7 +14,9 @@ def vacuum_database():
     try:
         # VACUUM must be run outside a transaction
         connection = db.engine.raw_connection()
-        connection.execute("VACUUM")
+        cursor = connection.cursor()
+        cursor.execute("VACUUM")
+        cursor.close()
         connection.close()
     except Exception as e:
         logging.warning(f"Could not vacuum database: {e}")
@@ -155,9 +157,11 @@ def delete_gallery_image(gallery_id):
 def preview_hdri(hdri_id):
     hdri = db.session.get(HDRI, hdri_id)
     if hdri:
+        # Default to image/jpeg if mimetype is not set
+        mimetype = hdri.preview_path_mimetype if hdri.preview_path_mimetype else 'image/jpeg'
         return send_file(
             io.BytesIO(decompress_file(hdri.preview_path)),
-            mimetype=hdri.preview_path_mimetype,
+            mimetype=mimetype,
             as_attachment=False
         )
     return "Preview not found", 404

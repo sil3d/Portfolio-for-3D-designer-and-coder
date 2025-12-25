@@ -643,7 +643,14 @@ def get_scenes():
             files = [f for f in os.listdir(scenes_dir) if f.lower().endswith('.glb')]
             # Sort for consistent order
             files.sort() 
-            scenes = [f"/static/scene3D/{f}" for f in files]
+            
+            # Add cache busting with file modification time
+            for f in files:
+                file_path = os.path.join(scenes_dir, f)
+                # Get file modification timestamp for cache busting
+                mtime = int(os.path.getmtime(file_path))
+                scene_url = f"/static/scene3D/{f}?v={mtime}"
+                scenes.append(scene_url)
         
         return jsonify(scenes)
     except Exception as e:

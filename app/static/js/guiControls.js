@@ -72,24 +72,52 @@ export function setupGUI(gui, scene, camera, renderer, composer, controls, stats
       // Ajouter les contrôles GUI pour l'objet sélectionné
       const objectGui = gui.addFolder(clickedObject.name);
 
-      // Assurez-vous que les changements sont appliqués immédiatement
-      objectGui
-        .addColor(clickedObject.material, "color")
-        .name("Couleur")
-        .onChange(() => render());
-      objectGui
-        .add(clickedObject.material, "metalness", 0, 1)
-        .name("Métal")
-        .onChange(() => render());
-      objectGui
-        .add(clickedObject.material, "roughness", 0, 1)
-        .name("Rugosité")
-        .onChange(() => render());
-      objectGui
-        .add(clickedObject.material, "opacity", 0, 1)
-        .name("Opacité")
-        .setValue(0.9) // Définir une valeur par défaut
-        .onChange(() => render());
+      // Check if material exists and has required properties
+      if (!clickedObject.material) {
+        console.warn("Clicked object has no material");
+        return;
+      }
+
+      const mat = clickedObject.material;
+
+      // Color control (available on all material types)
+      if (mat.color !== undefined) {
+        objectGui
+          .addColor(mat, "color")
+          .name("Couleur")
+          .onChange(() => render());
+      }
+
+      // Metalness/Roughness only exist on MeshStandardMaterial and MeshPhysicalMaterial
+      if (mat.metalness !== undefined) {
+        objectGui
+          .add(mat, "metalness", 0, 1)
+          .name("Métal")
+          .onChange(() => render());
+      } else {
+        console.log(`Material type "${mat.type}" doesn't have metalness property`);
+      }
+
+      if (mat.roughness !== undefined) {
+        objectGui
+          .add(mat, "roughness", 0, 1)
+          .name("Rugosité")
+          .onChange(() => render());
+      } else {
+        console.log(`Material type "${mat.type}" doesn't have roughness property`);
+      }
+
+      // Opacity (available on materials with transparency)
+      if (mat.opacity !== undefined) {
+        objectGui
+          .add(mat, "opacity", 0, 1)
+          .name("Opacité")
+          .onChange((value) => {
+            mat.transparent = value < 1;
+            mat.needsUpdate = true;
+            render();
+          });
+      }
 
       // Ajouter la possibilité de cacher ou montrer l'objet
       objectGui

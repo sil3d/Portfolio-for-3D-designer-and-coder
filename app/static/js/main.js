@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import { initScene } from './sceneSetup.js';
-import { loadModel } from './modelLoader.js';
+import { loadModel } from './ultraOptimizedLoader.js'; // Ultra-optimized: KTX2 + Multi-threading + 3-stage LOD
 import { setupGUI } from './guiControls.js';
 import { loadScene } from './sceneLoader.js';
 
