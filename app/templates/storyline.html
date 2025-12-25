@@ -6,7 +6,7 @@
 <!-- Video Hero Section -->
 <div class="story-hero">
     <video autoplay muted loop playsinline class="story-video-bg">
-        <source src="{{ url_for('static', filename='videos/story_intro.mp4') }}" type="video/mp4"> 
+        <source src="{{ url_for('static', filename='Intro/Intro.mp4') }}" type="video/mp4"> 
         <!-- Fallback if video is missing or loading -->
         Your browser does not support the video tag.
     </video>
@@ -17,19 +17,30 @@
         
         <div class="d-flex justify-content-center flex-wrap gap-3">
             <a href="#timeline-start" class="btn-premium mr-3 animate-btn">Explore My Story</a>
-            <a href="https://grabcad.com/prince.gildas.mk.so_i_learn_3d-1" target="_blank" class="btn-outline-premium text-white border-white mr-3 animate-btn">
+            {% if social_grabcad %}
+            <a href="{{ social_grabcad }}" target="_blank" class="btn-outline-premium text-white border-white mr-3 animate-btn">
                 <i class="fas fa-cube mr-2"></i> GrabCAD
             </a>
-            <a href="https://www.linkedin.com/in/prince-gildas-mbama-kombila-7a34ab245/" target="_blank" class="btn-outline-premium text-white border-white animate-btn">
+            {% endif %}
+            {% if social_linkedin %}
+            <a href="{{ social_linkedin }}" target="_blank" class="btn-outline-premium text-white border-white animate-btn">
                 <i class="fab fa-linkedin mr-2"></i> LinkedIn
             </a>
+            {% endif %}
+        </div>
+             <!-- Professional Note -->
+        <div class="text-center mb-5 animate-btn">
+            <p class="text" style="font-size:1.6rem; color: rgba(255, 255, 255, 0.5); ">
+                <i class="fas fa-info-circle mr-2"></i> Professional Jobs cannot be posted here due to NDA and confidentiality agreements.
+            </p>
         </div>
     </div>
 </div>
 
 <!-- Dynamic Gallery Timeline -->
-<div id="timeline-start" class="container-fluid py-5" style="background: var(--bg-color); position: relative; z-index: 2;">
+<div id="timeline-start" class="container-fluid py-3" style="background: var(--bg-color); position: relative; z-index: 2;">
     <div class="container">
+
         
         <!-- Story Point 1 -->
         <div class="row align-items-center mb-5 story-point hidden-scroll">

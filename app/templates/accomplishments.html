@@ -4,23 +4,23 @@
 
 {% block content %}
 <div class="container py-5">
-    <h1 class="hero-title text-center mb-5" style="font-size: 2.5rem;">Accomplishments & Awards</h1>
+    <h1 class="hero-title text-center mb-5 fade-in-up" style="font-size: 2.5rem;">Accomplishments & Awards</h1>
     
     <div class="row">
         <!-- Card 1 -->
-        <div class="col-md-6 mb-4">
+        <div class="col-md-6 mb-4 accomplishment-card" data-delay="0">
             <div class="glass-card h-100">
                 <div class="card-body">
-                    <h5 class="card-title text-accent"><i class="fas fa-trophy mr-2"></i> 1st Place - PARC Robotics 2025</h5>
+                    <h5 class="card-title text-accent"><i class="fas fa-trophy mr-2"></i> 1st Place - PARC Robotics 2025 Senegal</h5>
                     <h6 class="card-subtitle mb-2 text-muted">Engineering League</h6>
-                    <p class="card-text">Won 1st place and a $1000 prize as a Design Assistant & Competitor. Demonstrated advanced robotics engineering skills.<a href="https://www.linkedin.com/posts/prince-gildas-mbama-kombila-7a34ab245_parc2025-fusion360-blender-ugcPost-7381284581146071040-f3O9?utm_source=share&utm_medium=member_desktop&rcm=ACoAADzDeKsBvP7rF_Dgh_nyCOEU47y3C3r2cqQ">POST</a>
+                    <p class="card-text">Won 1st place and a $1000 prize as Competitor in engineering league (design). Demonstrated advanced robotics engineering skills.<a href="https://www.linkedin.com/posts/prince-gildas-mbama-kombila-7a34ab245_parc2025-fusion360-blender-ugcPost-7381284581146071040-f3O9?utm_source=share&utm_medium=member_desktop&rcm=ACoAADzDeKsBvP7rF_Dgh_nyCOEU47y3C3r2cqQ">POST</a>
 </p>
                 </div>
             </div>
         </div>
 
         <!-- Card 2 -->
-        <div class="col-md-6 mb-4">
+        <div class="col-md-6 mb-4 accomplishment-card" data-delay="100">
             <div class="glass-card h-100">
                 <div class="card-body">
                     <h5 class="card-title text-accent"><i class="fas fa-video mr-2"></i> Drone Show Designer</h5>
@@ -32,32 +32,34 @@
         </div>
 
         <!-- Card 3 -->
-        <div class="col-md-6 mb-4">
+        <div class="col-md-6 mb-4 accomplishment-card" data-delay="200">
             <div class="glass-card h-100">
                 <div class="card-body">
                     <h5 class="card-title text-accent"><i class="fas fa-cubes mr-2"></i> GrabCAD Recognition</h5>
                     <h6 class="card-subtitle mb-2 text-muted">Community Impact</h6>
-                    <p class="card-text">Achieved a good portfolio status with 29,000+ downloads, 9,000+ score, and 500+ followers.<a href="https://grabcad.com/prince.gildas.mk.so_i_learn_3d-1">Grabcad</a>
+                    <p class="card-text">Achieved a good portfolio status with 29,000+ downloads, 9,000+ score, and 500+ followers.{% if social_grabcad %}<a href="{{ social_grabcad }}">Grabcad</a>{% endif %}
 </p>
                 </div>
             </div>
         </div>
-                <div class="col-md-6 mb-4">
+        
+        <!-- Card 4 -->
+        <div class="col-md-6 mb-4 accomplishment-card" data-delay="300">
             <div class="glass-card h-100">
                 <div class="card-body">
                     <h5 class="card-title text-accent"><i class="fas fa-cubes mr-2"></i> DEFINSPACE WINNER </h5>
-                    <h6 class="card-subtitle mb-2 text-muted">WiNNER OF NATIONAL CHALLENGE</h6>
-                    <p class="card-text">Proud of winning the national challenge of DEFINSPACE 2025 1000000 FCFA price <a href="https://www.linkedin.com/posts/daustorg_definspace2025-ases-cde-activity-7383492727528792065-3uYI?utm_source=share&utm_medium=member_desktop&rcm=ACoAADzDeKsBvP7rF_Dgh_nyCOEU47y3C3r2cqQ">POST</a>
+                    <h6 class="card-subtitle mb-2 text-muted">WiNNER OF NATIONAL CHALLENGE 2025</h6>
+                    <p class="card-text">Proud of winning the national challenge of DEFINSPACE 2025 1000000 FCFA price in Senegal <a href="https://www.linkedin.com/posts/daustorg_definspace2025-ases-cde-activity-7383492727528792065-3uYI?utm_source=share&utm_medium=member_desktop&rcm=ACoAADzDeKsBvP7rF_Dgh_nyCOEU47y3C3r2cqQ">POST</a>
 </p>
                 </div>
             </div>
         </div>
 
-                <!-- Card 3 -->
-        <div class="col-md-6 mb-4">
+        <!-- Card 5 -->
+        <div class="col-md-6 mb-4 accomplishment-card" data-delay="400">
             <div class="glass-card h-100">
                 <div class="card-body">
-                    <h5 class="card-title text-accent"><i class="fas fa-cubes mr-2"></i> Bronze Medaille - WRO</h5>
+                    <h5 class="card-title text-accent"><i class="fas fa-cubes mr-2"></i> Bronze Medaille - WRO Singapore 2025</h5>
                     <h6 class="card-subtitle mb-2 text-muted">Coach for SKYLINK TEAM SENEGAL</h6>
                     <p class="card-text">With 1 months of preparation, I coached the SKYLINK TEAM SENEGAL to achieve a bronze medaille in the WRO competition, instead of 1 years thanks to <a href="https://www.linkedin.com/in/fatoumata-niang-niox-41611a295/">FATOUMATA NIANG NIOX</a>
  and<a href="https://www.linkedin.com/company/acceent-sn/">ACCEENT</a>
@@ -66,8 +68,8 @@
             </div>
         </div>
 
-        <!-- Card 4 -->
-        <div class="col-md-6 mb-4">
+        <!-- Card 6 -->
+        <div class="col-md-6 mb-4 accomplishment-card" data-delay="500">
             <div class="glass-card h-100">
                 <div class="card-body">
                     <h5 class="card-title text-accent"><i class="fas fa-chalkboard-teacher mr-2"></i> Workshop Leadership</h5>
@@ -78,4 +80,90 @@
         </div>
     </div>
 </div>
+
+<style>
+    /* Initial state for cards */
+    .accomplishment-card {
+        opacity: 0;
+        transform: translateY(40px) scale(0.95);
+        transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    
+    /* Visible state when scrolled into view */
+    .accomplishment-card.visible {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+    
+    /* Title fade-in animation */
+    .fade-in-up {
+        opacity: 0;
+        animation: fadeInUp 0.8s ease-out forwards;
+    }
+    
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    /* Enhanced hover effect for cards */
+    .accomplishment-card .glass-card {
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .accomplishment-card .glass-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+        transition: left 0.5s;
+    }
+    
+    .accomplishment-card .glass-card:hover::before {
+        left: 100%;
+    }
+    
+    .accomplishment-card .glass-card:hover {
+        transform: translateY(-10px) scale(1.02);
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Intersection Observer for scroll animations
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const delay = entry.target.dataset.delay || 0;
+                    setTimeout(() => {
+                        entry.target.classList.add('visible');
+                    }, delay);
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+        
+        // Observe all accomplishment cards
+        const cards = document.querySelectorAll('.accomplishment-card');
+        cards.forEach(card => observer.observe(card));
+    });
+</script>
 {% endblock %}

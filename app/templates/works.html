@@ -12,7 +12,11 @@
             <p class="mb-0" style="color: #422121; font-size: 1.3rem;">
                 <i class="fas fa-exclamation-triangle mr-2"></i>
                 <strong>Note:</strong> I cannot put all my work here due to some limitations. I suggest you visit my 
-                <a href="https://grabcad.com/prince.gildas.mk.so_i_learn_3d-1" target="_blank" style="color: #0044ff; text-decoration: underline; font-weight: bold;">GrabCAD profile</a> 
+                {% if social_grabcad %}
+                <a href="{{ social_grabcad }}" target="_blank" style="color: #0044ff; text-decoration: underline; font-weight: bold;">GrabCAD profile</a> 
+                {% else %}
+                GrabCAD profile
+                {% endif %}
                 to discovery more about my projects.
             </p>
         </div>

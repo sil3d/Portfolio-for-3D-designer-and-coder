@@ -8,14 +8,14 @@ RESEND_API_KEY=re_123456789
 SMTP_USER=contact@example.com
 
 # Personal Information (Dynamic Content)
-MY_NAME="Prince Gildas MBAMA KOMBILA"
-MY_EMAIL="contact@example.com"
-WEBSITE_NAME="So I Learn 3D"
-WEBSITE_URL="https://princegildasmk.up.railway.app/"
+MY_NAME=""
+MY_EMAIL=""
+WEBSITE_NAME=""
+WEBSITE_URL=""
 
 # Social Media Links (Leave empty to hide)
-SOCIAL_LINKEDIN="https://www.linkedin.com/in/prince-gildas-mbama-kombila-7a34ab245/"
-SOCIAL_GITHUB="https://github.com/sil3d"
-SOCIAL_YOUTUBE="https://www.youtube.com/@so_i_learn_3d549"
-SOCIAL_GRABCAD="https://grabcad.com/prince.gildas.mk.so_i_learn_3d-1"
+SOCIAL_LINKEDIN=""
+SOCIAL_GITHUB=""
+SOCIAL_YOUTUBE=""
+SOCIAL_GRABCAD=""
 SOCIAL_INSTAGRAM=""

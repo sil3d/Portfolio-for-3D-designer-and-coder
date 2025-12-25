@@ -1,11 +1,11 @@
 :root {
-    --bg-color: #969494;
+    --bg-color: #c5c2c2;
     /* New User Preference: Light Grey */
-    --text-color: #1a1a1a;
+    --text-color: #2b5fad;
     /* Dark Grey for Light Background */
-    --accent-color: #2979ff;
+    --accent-color: #000000;
     /* Electric Blue */
-    --accent-hover: #0056D2;
+    --accent-hover: #0886cf;
     /* Darker blue for hover */
     --card-bg: rgba(255, 255, 255, 0.4);
     /* Lighter glass for light background */
@@ -32,7 +32,7 @@ h4,
 h5,
 h6 {
     font-family: var(--font-heading);
-    color: #000000;
+    color: #0d84d3;
     /* User Request: Black headers */
     letter-spacing: -0.5px;
 }
@@ -204,12 +204,12 @@ a:hover {
     color: var(--accent-color);
     padding: 0.7rem 1.4rem;
     border-radius: 50px;
-    border: 1px solid rgba(41, 121, 255, 0.3);
+    border: 1px solid rgba(0, 0, 0, 0.3);
     font-weight: 600;
     text-transform: uppercase;
     font-size: 0.95rem;
     letter-spacing: 1px;
-    box-shadow: 0 0 10px rgba(41, 121, 255, 0.1);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 /* Social Icons */

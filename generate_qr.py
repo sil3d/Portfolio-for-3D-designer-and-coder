@@ -1,8 +1,16 @@
 
 import requests
 import os
+from dotenv import load_dotenv
 
-url = "https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://princegildasmk.up.railway.app/"
+# Load environment variables
+load_dotenv()
+
+# Get website URL from environment variable
+website_url = os.getenv('WEBSITE_URL')
+
+url = f"https://api.qrserver.com/v1/create-qr-code/?size=150x150&data={website_url}"
+
 # Ensure directory exists
 output_dir = r"d:\portfolio\code\Projet Portfolio\Portfolio\Portofolio\portfolio\app\static\images"
 if not os.path.exists(output_dir):
@@ -10,7 +18,7 @@ if not os.path.exists(output_dir):
 
 output_path = os.path.join(output_dir, "qr_portfolio.png")
 
-print(f"Downloading QR code to {output_path}...")
+print(f"Downloading QR code for {website_url} to {output_path}...")
 try:
     response = requests.get(url, timeout=10)
     if response.status_code == 200:

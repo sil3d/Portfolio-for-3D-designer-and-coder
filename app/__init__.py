@@ -25,6 +25,22 @@ def create_app():
     # Context Processor for Dynamic Site Info
     @app.context_processor
     def inject_site_info():
+        import os
+        import time
+        
+        def auto_version(filename):
+            """Generate cache-busting version based on file modification time"""
+            try:
+                filepath = os.path.join(app.static_folder, filename)
+                if os.path.exists(filepath):
+                    mtime = os.path.getmtime(filepath)
+                    return int(mtime)
+                # In development, use current timestamp if file doesn't exist
+                return int(time.time())
+            except Exception:
+                # Fallback to timestamp
+                return int(time.time())
+        
         return dict(
             my_name=app.config['MY_NAME'],
             my_email=app.config['MY_EMAIL'],
@@ -34,7 +50,8 @@ def create_app():
             social_github=app.config['SOCIAL_GITHUB'],
             social_youtube=app.config['SOCIAL_YOUTUBE'],
             social_grabcad=app.config['SOCIAL_GRABCAD'],
-            social_instagram=app.config['SOCIAL_INSTAGRAM']
+            social_instagram=app.config['SOCIAL_INSTAGRAM'],
+            auto_version=auto_version
         )
 
     # Error Handlers & Security Alerts

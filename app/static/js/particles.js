@@ -105,7 +105,7 @@
     function initParticles() {
         particles = [];
         let nb = config.amount;
-        if (window.innerWidth < 768) nb = Math.floor(nb / 2); // Less on mobile
+        if (window.innerWidth < 768) nb = Math.floor(nb / 4); // Even less on mobile (1/4 of desktop)
 
         for (let i = 0; i < nb; i++) {
             particles.push(new Particle());

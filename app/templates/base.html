@@ -24,7 +24,7 @@
     
     <!-- Performance Hints -->
     <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link rel="preload" href="{{ url_for('static', filename='css/style.css') }}" as="style">
+    <link rel="preload" href="{{ url_for('static', filename='css/style.css') + '?v=' + auto_version('css/style.css')|string }}" as="style">
     <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" as="style">
     <link rel="preload" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" as="style">
 
@@ -35,14 +35,12 @@
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <!-- Custom CSS with automatic cache busting -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') + '?v=' + auto_version('css/style.css')|string }}">
 
     <style>
         body {
-            font-family: 'Outfit', sans-serif; /* Update to use Outfit */
-            background-color: #0f1115;      /* Match premium dark theme */
-            color: #e0e0e0;
+            font-family: 'Outfit', sans-serif;
             display: flex;
             flex-direction: column;
             min-height: 100vh;
@@ -68,8 +66,8 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <!-- Particles.js -->
-    <script src="{{ url_for('static', filename='js/particles.js') }}"></script>
+    <!-- Particles.js with automatic cache busting -->
+    <script src="{{ url_for('static', filename='js/particles.js') + '?v=' + auto_version('js/particles.js')|string }}"></script>
     
     <!-- Mobile navbar toggle fix -->
     <script>
