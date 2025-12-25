@@ -1,16 +1,11 @@
 :root {
-    --bg-color: #c5c2c2;
-    /* New User Preference: Light Grey */
-    --text-color: #2b5fad;
-    /* Dark Grey for Light Background */
-    --accent-color: #000000;
-    /* Electric Blue */
-    --accent-hover: #0886cf;
-    /* Darker blue for hover */
-    --card-bg: rgba(255, 255, 255, 0.4);
-    /* Lighter glass for light background */
-    --card-border: rgba(255, 255, 255, 0.6);
-    --glass-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    --bg-color: #f0f0f0; /* Slightly darker than pure white for less eye strain */
+    --text-color: #111111; /* Nearly black for maximum contrast */
+    --accent-color: #004ecc; /* Darker, high-contrast blue */
+    --accent-hover: #002e7a;
+    --card-bg: rgba(255, 255, 255, 0.95); /* More opaque for better readability */
+    --card-border: rgba(0, 0, 0, 0.15);
+    --glass-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
     --font-heading: 'Outfit', sans-serif;
     --font-body: 'Outfit', sans-serif;
 }
@@ -19,8 +14,8 @@ body {
     background-color: var(--bg-color);
     color: var(--text-color);
     font-family: var(--font-body);
-    font-size: 1.15rem;
-    /* Increased base font size for better readability */
+    font-size: 1.25rem; /* Increased significantly */
+    line-height: 1.6;
     margin: 0;
     overflow-x: hidden;
 }
@@ -32,9 +27,10 @@ h4,
 h5,
 h6 {
     font-family: var(--font-heading);
-    color: #0d84d3;
-    /* User Request: Black headers */
+    color: #000000; /* Absolute black */
+    font-weight: 800; /* Boldest possible */
     letter-spacing: -0.5px;
+    line-height: 1.2;
 }
 
 a {
