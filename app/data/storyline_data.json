@@ -1,0 +1,674 @@
+[
+    {
+        "title": "Student projet",
+        "description": "Some student projet for SENELEC",
+        "media_url": "/static/images/storyline/Screenshot 2024-12-31 111130.png",
+        "is_video": false,
+        "order": 0
+    },
+    {
+        "title": "Concept",
+        "description": "Render using keyshot pro ",
+        "media_url": "/static/images/storyline/cccc.bip.60.png",
+        "is_video": false,
+        "order": 0
+    },
+    {
+        "title": "Concept",
+        "description": "Render using keyshot pro ",
+        "media_url": "/static/images/storyline/cccc.bip.61.png",
+        "is_video": false,
+        "order": 0
+    },
+    {
+        "title": "Our spary system",
+        "description": "2D drawing",
+        "media_url": "/static/images/storyline/Screenshot 2025-07-10 001704.png",
+        "is_video": false,
+        "order": 0
+    },
+    {
+        "title": "Our spary system",
+        "description": "2D drawing",
+        "media_url": "/static/images/storyline/Screenshot 2025-07-10 001704.png",
+        "is_video": false,
+        "order": 0
+    },
+    {
+        "title": "SINGAPORE",
+        "description": "SINGAPORE shooting using Iphone  11",
+        "media_url": "/static/images/storyline/IMG_1349.JPG",
+        "is_video": false,
+        "order": 0
+    },
+    {
+        "title": "Drone show",
+        "description": "drone show design using blender",
+        "media_url": "/static/images/storyline/PXL_20230920_203502238.mp4",
+        "is_video": true,
+        "order": 0
+    },
+    {
+        "title": "AIDEN",
+        "description": "This is rendering of AIDEN  using Blender",
+        "media_url": "/static/images/storyline/Unrrtitled.png",
+        "is_video": false,
+        "order": 0
+    },
+    {
+        "title": "AIDEN",
+        "description": "This is rendering of AIDEN  using Blender",
+        "media_url": "/static/images/storyline/Unrrfftitled.png",
+        "is_video": false,
+        "order": 0
+    },
+    {
+        "title": "2D Drawing",
+        "description": "SENFRAIS 3D design",
+        "media_url": "/static/images/storyline/Screenshot 2025-11-03 162440.png",
+        "is_video": false,
+        "order": 0
+    },
+    {
+        "title": "AIDEN",
+        "description": "This is rendering of AIDEN  using Blender",
+        "media_url": "/static/images/storyline/Unrrfftifftled.png",
+        "is_video": false,
+        "order": 0
+    },
+    {
+        "title": "Student projet",
+        "description": "Some student projet for SENELEC",
+        "media_url": "/static/images/storyline/Screenshot 2024-12-31 111130.png",
+        "is_video": false,
+        "order": 0
+    },
+    {
+        "title": "Custom electronic circuit for the car",
+        "description": "My RC CAR projet the idea is to learn how autonomious car works from scratch",
+        "media_url": "/static/images/storyline/car_bb.png",
+        "is_video": false,
+        "order": 0
+    },
+    {
+        "title": "Student projet",
+        "description": "Some student projet for SENELEC",
+        "media_url": "/static/images/storyline/Screenshot 2024-12-31 103308.png",
+        "is_video": false,
+        "order": 0
+    },
+    {
+        "title": "Student projet",
+        "description": "Some student projet for SENELEC",
+        "media_url": "/static/images/storyline/Recording 2024-12-26 163434.mp4",
+        "is_video": true,
+        "order": 0
+    },
+    {
+        "title": "PARC 2025 START LEAGUE",
+        "description": "Rendering of the field",
+        "media_url": "/static/images/storyline/Stars Field_ PARC 2025 v13 v9dfdf.png",
+        "is_video": false,
+        "order": 0
+    },
+    {
+        "title": "PARC 2025 START LEAGUE",
+        "description": "Rendering of the field",
+        "media_url": "/static/images/storyline/Screenshot 2025-07-09 095948.png",
+        "is_video": false,
+        "order": 0
+    },
+    {
+        "title": "3D in Fusion 360",
+        "description": "3D of our spray mechanism for PARC 2025",
+        "media_url": "/static/images/storyline/Screenshot 2025-07-17 173005.png",
+        "is_video": false,
+        "order": 0
+    },
+    {
+        "title": "WRO IN SINGAPORE",
+        "description": "",
+        "media_url": "/static/images/storyline/IMG-20251127-WA0101.jpg",
+        "is_video": false,
+        "order": 0
+    },
+    {
+        "title": "Testing the steering mechanism",
+        "description": "My RC CAR projet the idea is to learn how autonomious car works from scratch",
+        "media_url": "/static/images/storyline/VID-20250803-WA0000.mp4",
+        "is_video": true,
+        "order": 0
+    },
+    {
+        "title": "My RC CAR projet the idea is to learn how autonomious car works from scratch",
+        "description": "Coding person detection and optimize it for edge devices on raspberry pi 4 getting 8-10 fps max using yolo v8 onnx ",
+        "media_url": "/static/images/storyline/Screenshot 2025-08-30 202308.png",
+        "is_video": false,
+        "order": 0
+    },
+    {
+        "title": "Coding person detection and optimize it for edge devices on raspberry pi 4 getting 8-10 fps max using yolo v8 onnx ",
+        "description": "My RC CAR projet the idea is to learn how autonomious car works from scratch",
+        "media_url": "/static/images/storyline/Screenshot 2025-08-29 224116.png",
+        "is_video": false,
+        "order": 0
+    },
+    {
+        "title": "Coding person detection and optimize it for edge devices on raspberry pi 4 getting 8-10 fps max using yolo v8 onnx ",
+        "description": "My RC CAR projet the idea is to learn how autonomious car works from scratch",
+        "media_url": "/static/images/storyline/Screenshot 2025-08-31 003940.png",
+        "is_video": false,
+        "order": 0
+    },
+    {
+        "title": "DJI AIR 2S",
+        "description": "some drone shooting",
+        "media_url": "/static/images/storyline/dji_fly_20231120_010250_556_1700444695630_hyperlapse.mp4",
+        "is_video": true,
+        "order": 0
+    },
+    {
+        "title": "RC plane simulation",
+        "description": "Simulation made with XFLR5",
+        "media_url": "/static/images/storyline/xlfr5.mp4",
+        "is_video": true,
+        "order": 0
+    },
+    {
+        "title": "Moto concept",
+        "description": "render using keyshot pro",
+        "media_url": "/static/images/storyline/bike 4.0 v112dsyu.png",
+        "is_video": false,
+        "order": 0
+    },
+    {
+        "title": "Aston Martin",
+        "description": "Render using Keysot pro",
+        "media_url": "/static/images/storyline/aston martin.72.png",
+        "is_video": false,
+        "order": 0
+    },
+    {
+        "title": "My logo",
+        "description": "Animation Using After effect",
+        "media_url": "/static/images/storyline/logo_anamiation.mp4",
+        "is_video": true,
+        "order": 0
+    },
+    {
+        "title": "3D Rendering",
+        "description": "3D rendering using keyshot pro",
+        "media_url": "/static/images/storyline/mustang.6.png",
+        "is_video": false,
+        "order": 0
+    },
+    {
+        "title": "3D Rendering",
+        "description": "3D rendering using keyshot pro",
+        "media_url": "/static/images/storyline/aston martin.77.png",
+        "is_video": false,
+        "order": 0
+    },
+    {
+        "title": "3D Rendering",
+        "description": "3D rendering using keyshot pro",
+        "media_url": "/static/images/storyline/aston martin.bip.28.png",
+        "is_video": false,
+        "order": 0
+    },
+    {
+        "title": "3D Rendering",
+        "description": "3D rendering using keyshot pro",
+        "media_url": "/static/images/storyline/audi.196.png",
+        "is_video": false,
+        "order": 0
+    },
+    {
+        "title": "3D rendering",
+        "description": "3D rendering using keyshot pro",
+        "media_url": "/static/images/storyline/audi2.210.png",
+        "is_video": false,
+        "order": 0
+    },
+    {
+        "title": "Rendering",
+        "description": "3D rendering using keyshot pro",
+        "media_url": "/static/images/background.png",
+        "is_video": false,
+        "order": 0
+    },
+    {
+        "title": "Daust impact",
+        "description": "Picture with 2 very importants members of Armée de l'air de Thies",
+        "media_url": "/static/images/storyline/IMG_20250515_072555.jpg",
+        "is_video": false,
+        "order": 0
+    },
+    {
+        "title": "PARC COMPETION 2025 WINNER",
+        "description": "This in animation made with blender to showcase our spray system",
+        "media_url": "/static/images/storyline/0001-0335.mp4",
+        "is_video": true,
+        "order": 0
+    },
+    {
+        "title": "Drawing",
+        "description": "My RC CAR projet the idea is to learn how autonomious car works from scratch",
+        "media_url": "/static/images/storyline/IMG_20250630_230047.jpg",
+        "is_video": false,
+        "order": 0
+    },
+    {
+        "title": "Drawing",
+        "description": "My RC CAR projet the idea is to learn how autonomious car works from scratch",
+        "media_url": "/static/images/storyline/IMG_20250630_230026.jpg",
+        "is_video": false,
+        "order": 0
+    },
+    {
+        "title": "Drawing",
+        "description": "My RC CAR projet the idea is to learn how autonomious car works from scratch",
+        "media_url": "/static/images/storyline/IMG_20250630_230006.jpg",
+        "is_video": false,
+        "order": 0
+    },
+    {
+        "title": "3D printing in progress",
+        "description": "My RC CAR projet the idea is to learn how autonomious car works from scratch",
+        "media_url": "/static/images/storyline/IMG_20250518_202833.jpg",
+        "is_video": false,
+        "order": 0
+    },
+    {
+        "title": "RC CAR",
+        "description": "My RC CAR projet the idea is to learn how autonomious car works from scratch",
+        "media_url": "/static/images/storyline/IMG_20250806_111536.jpg",
+        "is_video": false,
+        "order": 0
+    },
+    {
+        "title": "RC CAR",
+        "description": "My RC CAR projet the idea is to learn how autonomious car works from scratch",
+        "media_url": "/static/images/storyline/DSC_0338.JPG",
+        "is_video": false,
+        "order": 0
+    },
+    {
+        "title": "RC CAR",
+        "description": "My RC CAR projet the idea is to learn how autonomious car works from scratch",
+        "media_url": "/static/images/storyline/DSC_0336.JPG",
+        "is_video": false,
+        "order": 0
+    },
+    {
+        "title": "Certificate",
+        "description": "Certifacate from DAUST",
+        "media_url": "/static/images/storyline/DSC_0268.JPG",
+        "is_video": false,
+        "order": 0
+    },
+    {
+        "title": "ELECTRICAL PROJET",
+        "description": "projet in high school",
+        "media_url": "/static/images/storyline/VID_20220204_195601.mp4",
+        "is_video": true,
+        "order": 0
+    },
+    {
+        "title": "Custom electronic for the controller",
+        "description": "My RC CAR projet the idea is to learn how autonomious car works from scratch",
+        "media_url": "/static/images/storyline/controller_bb.png",
+        "is_video": false,
+        "order": 0
+    },
+    {
+        "title": "Rendering",
+        "description": "Render using blender",
+        "media_url": "/static/images/storyline/Camera.014.png",
+        "is_video": false,
+        "order": 0
+    },
+    {
+        "title": "PARC ROBOTICS 2025 winner 🥇",
+        "description": "our pray system using ESP32 and app made with Flutter to control remotly",
+        "media_url": "/static/images/storyline/WhatsApp Image 2025-07-19 at 15.05.41_bc37e8ce.jpg",
+        "is_video": false,
+        "order": 0
+    },
+    {
+        "title": "I Try to create my video game in ureal engine",
+        "description": "This this my main character car AIDEN , i used blender, DAZ studio ",
+        "media_url": "/static/images/storyline/0000-0065.mkv",
+        "is_video": true,
+        "order": 0
+    },
+    {
+        "title": "Rendering and animation",
+        "description": "Rendering and animation for client SENFRAIS using KEYSHOT and FUSION 360 for modeling",
+        "media_url": "/static/images/storyline/7dec0db0-8272-11f0-ab3e-bd52082cd0ae.jpg",
+        "is_video": false,
+        "order": 0
+    },
+    {
+        "title": "RC CAR PROJET",
+        "description": "My RC CAR projet the idea is to learn how autonomious car works from scatch",
+        "media_url": "/static/images/storyline/Screenshot 2025-08-09 035219.png",
+        "is_video": false,
+        "order": 0
+    },
+    {
+        "title": "RC CAR PROJET",
+        "description": "My RC CAR projet the idea is to learn how autonomious car works from scatch",
+        "media_url": "/static/images/storyline/Screenshot 2025-07-25 123320.png",
+        "is_video": false,
+        "order": 0
+    },
+    {
+        "title": "RC CAR PROJET",
+        "description": "My RC CAR projet the idea is to learn how autonomious car works from scatch",
+        "media_url": "/static/images/storyline/IMG_20250531_181231.jpg",
+        "is_video": false,
+        "order": 0
+    },
+    {
+        "title": "RC CAR PROJET",
+        "description": "My RC CAR projet the idea is to learn how autonomious car works from scatch",
+        "media_url": "/static/images/storyline/DSC_0334.JPG",
+        "is_video": false,
+        "order": 0
+    },
+    {
+        "title": "RC CAR PROJET",
+        "description": "My RC CAR projet the idea is to learn how autonomious car works from scatch",
+        "media_url": "/static/images/storyline/DSC_0298.JPG",
+        "is_video": false,
+        "order": 0
+    },
+    {
+        "title": "Rendering",
+        "description": "Render using blender",
+        "media_url": "/static/images/storyline/Camera.019.png",
+        "is_video": false,
+        "order": 0
+    },
+    {
+        "title": "Rendering",
+        "description": "Render using blender",
+        "media_url": "/static/images/storyline/Camera.018.png",
+        "is_video": false,
+        "order": 0
+    },
+    {
+        "title": "Rendering",
+        "description": "Render using blender",
+        "media_url": "/static/images/storyline/Camera.016.png",
+        "is_video": false,
+        "order": 0
+    },
+    {
+        "title": "RC CAR PROJET",
+        "description": "My RC CAR projet the idea is to learn how autonomious car works from scatch",
+        "media_url": "/static/images/storyline/Screenshot 2025-08-09 035232.png",
+        "is_video": false,
+        "order": 0
+    },
+    {
+        "title": "Rendering",
+        "description": "Render using blender",
+        "media_url": "/static/images/storyline/Camera.013.png",
+        "is_video": false,
+        "order": 0
+    },
+    {
+        "title": "Rendering",
+        "description": "Render using blender",
+        "media_url": "/static/images/storyline/Camera.012.png",
+        "is_video": false,
+        "order": 0
+    },
+    {
+        "title": "Rendering",
+        "description": "Render using blender",
+        "media_url": "/static/images/storyline/Camera.004.png",
+        "is_video": false,
+        "order": 0
+    },
+    {
+        "title": "Audi RS E TRON",
+        "description": "SOME 3D WORKS",
+        "media_url": "/static/images/storyline/Audi RS GT E vTRON 2022 V4 v3.png",
+        "is_video": false,
+        "order": 0
+    },
+    {
+        "title": "Audi RS E TRON",
+        "description": "Some 3D WORKS",
+        "media_url": "/static/images/storyline/Audi RS GT E dTRON 2022 V4 v3.png",
+        "is_video": false,
+        "order": 0
+    },
+    {
+        "title": "Audi RS E TRON",
+        "description": "Some 3D WORKS",
+        "media_url": "/static/images/storyline/Audi RS GT E TfRON 2022 V4 v3.png",
+        "is_video": false,
+        "order": 0
+    },
+    {
+        "title": "AIDEN",
+        "description": "This is rendering of AIDEN  using Blender",
+        "media_url": "/static/images/storyline/untitled.png",
+        "is_video": false,
+        "order": 0
+    },
+    {
+        "title": "SENFRAIS",
+        "description": "Rendering and animation for client SENFRAIS using KEYSHOT and FUSION 360 for modeling",
+        "media_url": "/static/images/storyline/xwxw.138.mp4",
+        "is_video": true,
+        "order": 0
+    },
+    {
+        "title": "SENFRAIS",
+        "description": "Rendering and animation for client SENFRAIS using KEYSHOT and FUSION 360 for modeling",
+        "media_url": "/static/images/storyline/xwxwxgdg.141.mp4",
+        "is_video": true,
+        "order": 0
+    },
+    {
+        "title": "SENFRAIS",
+        "description": "Rendering and animation for client SENFRAIS using KEYSHOT and FUSION 360 for modeling",
+        "media_url": "/static/images/storyline/xwxwxgdgfj.143.mp4",
+        "is_video": true,
+        "order": 0
+    },
+    {
+        "title": "HIGH ALTITUTE BALLON",
+        "description": "Stratospheric project to lunch ballon in sky to store some data",
+        "media_url": "/static/images/storyline/VID-20250329-WA0006.mp4",
+        "is_video": true,
+        "order": 0
+    },
+    {
+        "title": "PARC ROBOTICS 2025 winner 🥇",
+        "description": "our pray system using ESP32 and app made with Flutter to control remotly",
+        "media_url": "/static/images/storyline/Screenshot 2025-10-04 130329.png",
+        "is_video": false,
+        "order": 0
+    },
+    {
+        "title": "PARC ROBOTICS 2025 winner 🥇",
+        "description": "our pray system using ESP32 and app made with Flutter to control remotly",
+        "media_url": "/static/images/storyline/WhatsApp Image 2025-07-19 at 15.05.40_cdd38b84.jpg",
+        "is_video": false,
+        "order": 0
+    },
+    {
+        "title": "PARC ROBOTICS 2025 winner 🥇",
+        "description": "our pray system using ESP32 and app made with Flutter to control remotly",
+        "media_url": "/static/images/storyline/VID-20250713-WA0020.mp4",
+        "is_video": true,
+        "order": 0
+    },
+    {
+        "title": "PARC ROBOTICS 2025 winner 🥇",
+        "description": "our pray system using ESP32 and app made with Flutter to control remotly",
+        "media_url": "/static/images/storyline/WhatsApp Image 2025-07-19 at 15.05.40_da85f1e7.jpg",
+        "is_video": false,
+        "order": 0
+    },
+    {
+        "title": "PARC ROBOTICS 2025 winner 🥇",
+        "description": "our pray system using ESP32 and app made with Flutter to control remotly",
+        "media_url": "/static/images/storyline/WhatsApp Image 2025-07-19 at 15.05.41_4b851e70.jpg",
+        "is_video": false,
+        "order": 0
+    },
+    {
+        "title": "PARC ROBOTICS 2025 winner 🥇",
+        "description": "our pray system using ESP32 and app made with Flutter to control remotly",
+        "media_url": "/static/images/storyline/VID-20250713-WA0024.mp4",
+        "is_video": true,
+        "order": 0
+    },
+    {
+        "title": "PARC ROBOTICS 2025 winner 🥇",
+        "description": "our pray system animation made with blender",
+        "media_url": "/static/images/storyline/Screenshot 2025-05-31 201326.png",
+        "is_video": false,
+        "order": 0
+    },
+    {
+        "title": "Drone sky show FESNAC 2024",
+        "description": "Drone sky show FESNAC 2024",
+        "media_url": "/static/images/storyline/PXL_20240108_170049212.jpg",
+        "is_video": false,
+        "order": 0
+    },
+    {
+        "title": "Drone sky show FESNAC 2024",
+        "description": "Drone sky show",
+        "media_url": "/static/images/storyline/PXL_20240108_185329086.jpg",
+        "is_video": false,
+        "order": 0
+    },
+    {
+        "title": "Drone sky show",
+        "description": "Drone sky show",
+        "media_url": "/static/images/storyline/PXL_20240108_191613626.NIGHT.jpg",
+        "is_video": false,
+        "order": 0
+    },
+    {
+        "title": "Drone projet",
+        "description": "testing drone indoor",
+        "media_url": "/static/images/storyline/MOV_0058.mp4",
+        "is_video": true,
+        "order": 0
+    },
+    {
+        "title": "RC CAR PROJET ELECTRONIC CONTROLLER",
+        "description": "My RC CAR projet the idea is to learn how autonomious car works from scratch",
+        "media_url": "/static/images/storyline/IMG_20250719_031815.jpg",
+        "is_video": false,
+        "order": 0
+    },
+    {
+        "title": "RC CAR PROJET ELECTRONIC",
+        "description": "My RC CAR projet the idea is to learn how autonomious car works from scratch",
+        "media_url": "/static/images/storyline/IMG_20250622_212640.jpg",
+        "is_video": false,
+        "order": 0
+    },
+    {
+        "title": "RC CAR PROJET ELECTRONIC",
+        "description": "My RC CAR projet the idea is to learn how autonomious car works from scratch",
+        "media_url": "/static/images/storyline/IMG_20250622_212632.jpg",
+        "is_video": false,
+        "order": 0
+    },
+    {
+        "title": "DEFINSPACE HACKATHON",
+        "description": "PANOPTES projet uisng swarm system",
+        "media_url": "/static/images/storyline/Untitled.mp4",
+        "is_video": true,
+        "order": 0
+    },
+    {
+        "title": "RC CAR PROJET CFD USING AUTODESK CFD",
+        "description": "My RC CAR projet the idea is to learn how autonomious car works from scratch",
+        "media_url": "/static/images/storyline/50_2.png",
+        "is_video": false,
+        "order": 0
+    },
+    {
+        "title": "RC CAR PROJET CFD USING AUTODESK CFD",
+        "description": "My RC CAR projet the idea is to learn how autonomious car works from scratch",
+        "media_url": "/static/images/storyline/100_2.png",
+        "is_video": false,
+        "order": 0
+    },
+    {
+        "title": "RC CAR PROJET CFD USING AUTODESK CFD",
+        "description": "My RC CAR projet the idea is to learn how autonomious car works from scratch",
+        "media_url": "/static/images/storyline/Screenshot 2025-07-03 171611.png",
+        "is_video": false,
+        "order": 0
+    },
+    {
+        "title": "RC CAR PROJET CFD USING AUTODEK CFD",
+        "description": "My RC CAR projet the idea is to learn how autonomious car works from scatch",
+        "media_url": "/static/images/storyline/Screenshot 2025-07-03 171557.png",
+        "is_video": false,
+        "order": 0
+    },
+    {
+        "title": "RC CAR PROJET",
+        "description": "My RC CAR projet the idea is to learn how autonomious car works from scatch",
+        "media_url": "/static/images/storyline/main_car.png",
+        "is_video": false,
+        "order": 0
+    },
+    {
+        "title": "RC CAR PROJET",
+        "description": "My RC CAR projet the idea is to learn how autonomious car works from scatch",
+        "media_url": "/static/images/storyline/main_car (v468~recovered)fdfd.png",
+        "is_video": false,
+        "order": 0
+    },
+    {
+        "title": "EXPLENATION",
+        "description": "My RC CAR projet the idea is to learn how autonomious car works from scratch",
+        "media_url": "/static/images/storyline/VID_20250810_121252.mp4",
+        "is_video": true,
+        "order": 1
+    },
+    {
+        "title": "EXPLANATION",
+        "description": "My RC CAR projet the idea is to learn how autonomious car works from scratch",
+        "media_url": "/static/images/storyline/VID_20250620_232347.mp4",
+        "is_video": true,
+        "order": 2
+    },
+    {
+        "title": "Explanation",
+        "description": "My RC CAR projet the idea is to learn how autonomious car works from scratch",
+        "media_url": "/static/images/storyline/VID_20250625_235818.mp4",
+        "is_video": true,
+        "order": 3
+    },
+    {
+        "title": "Explanation",
+        "description": "My RC CAR projet the idea is to learn how autonomious car works from scratch",
+        "media_url": "/static/images/storyline/VID_20250623_195657.mp4",
+        "is_video": true,
+        "order": 4
+    },
+    {
+        "title": "Explanation",
+        "description": "My RC CAR projet the idea is to learn how autonomious car works from scratch",
+        "media_url": "/static/images/storyline/VID_20250907_211514.mp4",
+        "is_video": true,
+        "order": 5
+    }
+]
