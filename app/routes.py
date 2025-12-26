@@ -2,7 +2,7 @@ from flask import (Blueprint, jsonify, Response, redirect, url_for,
                    request, session, send_from_directory, render_template, send_file, abort, current_app)
 import os
 from app.extensions import db, limiter
-from app.models import File, GalleryFile, HDRI, Comment, Like, Download
+from app.models import File, GalleryFile, HDRI, Comment, Like, Download, StorylineItem
 from flask_login import login_required, current_user
 import io
 import base64
@@ -466,16 +466,8 @@ def gallery():
 
 @bp.route('/storyline')
 def storyline():
-    # Compute static folder path relative to this file's location (app/routes.py -> app/static)
-    app_dir = os.path.dirname(os.path.abspath(__file__))
-    images_dir = os.path.join(app_dir, 'static', 'images', 'storyline')
-    gallery_images = []
-    if os.path.exists(images_dir):
-        gallery_images = [f for f in os.listdir(images_dir) if f.lower().endswith(('.png', '.jpg', '.jpeg', '.gif', '.webp', '.mp4', '.mkv', '.mov'))]
-        # Sort specifically to put 'Stars Field' first if it exists, or just alphabetical
-        gallery_images.sort()
-        
-    return render_template('storyline.html', gallery_images=gallery_images)
+    items = StorylineItem.query.order_by(StorylineItem.order.asc(), StorylineItem.date_added.desc()).all()
+    return render_template('storyline.html', items=items)
 
 @bp.route('/download', methods=['POST'])
 def download_file():

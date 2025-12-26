@@ -1,13 +1,95 @@
-from flask import Blueprint, session, jsonify, redirect, url_for, render_template, request, send_file
+from flask import Blueprint, session, jsonify, redirect, url_for, render_template, request, send_file, current_app
 import logging
 import io
+import os
 from app.extensions import db, limiter
 from flask_login import login_required
-from app.models import File, HDRI, GalleryFile, Download
+from app.models import File, HDRI, GalleryFile, Download, StorylineItem
 from app.utils import compress_file, decompress_file
 from sqlalchemy import text
 
 bp = Blueprint('admin', __name__, static_folder='static')
+
+@bp.route('/admin/storyline', methods=['GET', 'POST'])
+@login_required
+def manage_storyline():
+    if request.method == 'POST':
+        action = request.form.get('action')
+        
+        if action == 'add':
+            title = request.form.get('title')
+            description = request.form.get('description')
+            media_url = request.form.get('media_url')
+            is_video = request.form.get('is_video') == 'on'
+            order = request.form.get('order', 0)
+            
+            new_item = StorylineItem(
+                title=title,
+                description=description,
+                media_url=media_url,
+                is_video=is_video,
+                order=int(order)
+            )
+            db.session.add(new_item)
+            db.session.commit()
+            return redirect(url_for('admin.manage_storyline'))
+            
+        elif action == 'delete':
+            item_id = request.form.get('item_id')
+            StorylineItem.query.filter_by(id=item_id).delete()
+            db.session.commit()
+            return redirect(url_for('admin.manage_storyline'))
+
+        elif action == 'update':
+            item_id = request.form.get('item_id')
+            item = db.session.get(StorylineItem, item_id)
+            if item:
+                item.title = request.form.get('title')
+                item.description = request.form.get('description')
+                try:
+                    item.order = int(request.form.get('order', 0))
+                except ValueError:
+                    pass # Keep old order if invalid
+                db.session.commit()
+            return redirect(url_for('admin.manage_storyline'))
+
+    # Fetch existing items
+    storyline_items = StorylineItem.query.order_by(StorylineItem.order.asc(), StorylineItem.date_added.desc()).all()
+
+    # Scan for available media files in static/images
+    media_files = []
+    base_dir = os.path.join(current_app.static_folder, 'images')
+    allowed_extensions = {'.jpg', '.jpeg', '.png', '.gif', '.mp4', '.webm', '.mkv'}
+
+    # Get set of currently used media URLs
+    used_urls = {item.media_url for item in storyline_items}
+
+    for root, dirs, files in os.walk(base_dir):
+        for file in files:
+            file_ext = os.path.splitext(file)[1].lower()
+            if file_ext in allowed_extensions:
+                # Calculate relative path from static folder
+                full_path = os.path.join(root, file)
+                rel_path = os.path.relpath(full_path, current_app.static_folder)
+                
+                # Use forward slashes for URLs
+                url_path = '/static/' + rel_path.replace('\\', '/')
+                
+                # Skip if already in use
+                if url_path in used_urls:
+                    continue
+
+                media_files.append({
+                    'name': file,
+                    'url': url_path,
+                    'is_video': file_ext in {'.mp4', '.webm', '.mkv'},
+                    'folder': os.path.relpath(root, base_dir).replace('\\', '/')
+                })
+    
+    # Sort files by name
+    media_files.sort(key=lambda x: x['name'])
+
+    return render_template('admin/manage_storyline.html', items=storyline_items, media_files=media_files)
 
 def vacuum_database():
     """Shrink the SQLite database file after deletions."""

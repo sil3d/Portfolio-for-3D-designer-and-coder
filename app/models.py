@@ -136,3 +136,13 @@ class Rating(db.Model):
         # Validate rating is between 1 and 5
         if self.rating is not None and (self.rating < 1 or self.rating > 5):
             raise ValueError("Rating must be between 1 and 5")
+
+class StorylineItem(db.Model):
+    __tablename__ = 'storyline_items'
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(255), nullable=False)
+    description = db.Column(db.Text)
+    media_url = db.Column(db.String(500)) # URL to image or video
+    is_video = db.Column(db.Boolean, default=False)
+    order = db.Column(db.Integer, default=0)
+    date_added = db.Column(db.DateTime, default=datetime.utcnow)

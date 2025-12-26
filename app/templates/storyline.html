@@ -52,12 +52,12 @@
             <div class="col-md-6 story-text-col pl-md-5">
                 <h2 class="section-title mb-3">The Spark</h2>
                 <div class="glass-card p-4">
-                    <p class="lead">Every journey begins with a spark. For me, it was the realization that I could bring my imagination to life through 3D design and engineering. I started with simple shapes, learning the fundamentals of CAD.</p>
+                    <p class="lead">Every journey begins with a spark. For me, it was the realization that I could bring my imagination to life through 3D design and engineering. I started with simple shapes  in 2020, learning the fundamentals of CAD. and in June 13th, 2022 i publish my first design to GrabCad.</p>
                 </div>
             </div>
         </div>
 
-        <!-- Story Point 2 (Inverted) -->
+        <!-- Story Point 2 (Inverted)-->
         <div class="row align-items-center mb-5 story-point hidden-scroll flex-row-reverse">
             <div class="col-md-6 mb-4 mb-md-0 story-img-col">
                 <div class="glass-card p-2 transform-hover floating-anim delay-1">
@@ -94,16 +94,16 @@
                  <p class="text-muted">Click on any image or video to view details.</p>
              </div>
              
-             {% for media in gallery_images %}
+             {% for item in items %}
              <div class="col-md-4 mb-4 story-point hidden-scroll">
                  <div class="glass-card p-0 overflow-hidden h-100 floating-anim gallery-item-card" style="animation-delay: {{ loop.index0 * 0.2 }}s; cursor: pointer;" data-index="{{ loop.index0 }}">
-                    {% if media.lower().endswith(('.mp4', '.mkv', '.mov')) %}
+                    {% if item.is_video %}
                         <video controls class="img-fluid w-100 h-100 object-fit-cover">
-                            <source src="{{ url_for('static', filename='images/storyline/' + media) }}" type="video/mp4">
+                            <source src="{{ item.media_url }}" type="video/mp4">
                             Your browser does not support the video tag.
                         </video>
                     {% else %}
-                        <img src="{{ url_for('static', filename='images/storyline/' + media) }}" class="img-fluid w-100 h-100 object-fit-cover transition-zoom" loading="lazy" alt="Story Image">
+                        <img src="{{ item.media_url }}" class="img-fluid w-100 h-100 object-fit-cover transition-zoom" loading="lazy" alt="{{ item.title }}">
                     {% endif %}
                     <div class="gallery-overlay">
                         <i class="fas fa-expand-alt"></i>
@@ -135,9 +135,8 @@
             <div class="modal-text-section">
                 <div class="text-content-inner">
                     <h2 class="modal-title" id="modal-title">Project Title</h2>
-                    <div class="modal-meta" id="modal-meta">
-                        <span class="meta-badge"><i class="fas fa-calendar mr-2"></i>Year</span>
-                        <span class="meta-badge"><i class="fas fa-tag mr-2"></i>Category</span>
+                    <div class="modal-meta" id="modal-meta" style="display: none;">
+                        <!-- Category and Date removed as per user request -->
                     </div>
                     <div class="modal-description" id="modal-description">
                         <p>Project description will appear here.</p>
@@ -193,55 +192,17 @@
 
         let currentIndex = 0;
 
-        // Gallery item data - You can customize these titles and descriptions
+        // Gallery item data from backend
         const galleryData = [
+            {% for item in items %}
             {
-                title: "The Beginning",
-                description: "This marks the start of my journey in 3D design and engineering. Every complex project starts with simple foundations, and this is where I learned the fundamentals that would shape my career.",
-                year: "2022",
-                category: "Foundation"
-            },
-            {
-                title: "First Complex Assembly",
-                description: "Moving beyond basic shapes, I started creating complex mechanical assemblies. This project taught me the importance of precision and how every component must work in harmony.",
-                year: "2022",
-                category: "Mechanical Design"
-            },
-            {
-                title: "Robotics Integration",
-                description: "Combining mechanical design with electronics and programming marked a turning point. I began building systems that could move, sense, and respond to their environment.",
-                year: "2023",
-                category: "Robotics"
-            },
-            {
-                title: "AI-Powered Systems",
-                description: "Integrating AI and computer vision into physical systems opened up new possibilities. These projects demonstrated the power of combining software intelligence with mechanical precision.",
-                year: "2023",
-                category: "AI Integration"
-            },
-            {
-                title: "Competition Success",
-                description: "Achieving recognition in international competitions validated my approach and pushed me to reach higher standards. These experiences taught me to work under pressure and deliver excellence.",
-                year: "2024",
-                category: "Achievement"
-            },
-            {
-                title: "Professional Projects",
-                description: "Working on real-world engineering challenges for startups and companies. These projects required balancing innovation with practical constraints and delivering production-ready solutions.",
-                year: "2024",
-                category: "Professional"
-            }
+                title: "{{ item.title|e }}",
+                description: "{{ item.description|e|replace('\n', '<br>') }}",
+                mediaUrl: "{{ item.media_url }}",
+                isVideo: {{ 'true' if item.is_video else 'false' }}
+            }{% if not loop.last %},{% endif %}
+            {% endfor %}
         ];
-
-        // Extend gallery data if there are more items
-        while (galleryData.length < galleryCards.length) {
-            galleryData.push({
-                title: `Project ${galleryData.length + 1}`,
-                description: "An important milestone in my engineering journey, showcasing technical skills and creative problem-solving.",
-                year: "2024",
-                category: "Engineering"
-            });
-        }
 
         function openModal(index) {
             currentIndex = index;
@@ -270,19 +231,19 @@
             const mediaElement = card.querySelector('img, video');
             modalMediaContainer.innerHTML = '';
             
-            if (mediaElement.tagName === 'VIDEO') {
+            if (data.isVideo) {
                 const video = document.createElement('video');
                 video.controls = true;
                 video.autoplay = true;
                 video.className = 'modal-media';
                 const source = document.createElement('source');
-                source.src = mediaElement.querySelector('source').src;
+                source.src = data.mediaUrl;
                 source.type = 'video/mp4';
                 video.appendChild(source);
                 modalMediaContainer.appendChild(video);
             } else {
                 const img = document.createElement('img');
-                img.src = mediaElement.src;
+                img.src = data.mediaUrl;
                 img.className = 'modal-media';
                 img.alt = data.title;
                 modalMediaContainer.appendChild(img);
